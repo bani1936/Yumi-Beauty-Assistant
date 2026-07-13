@@ -1,13 +1,8 @@
-import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MEMBERSHIP_TIERS } from "@/lib/membership-tiers";
 
 export default function Membership() {
-  const [selectedTier, setSelectedTier] = useState(MEMBERSHIP_TIERS[0]);
-  const [viewMode, setViewMode] = useState<"grid" | "detail">("grid");
+  const topTier = MEMBERSHIP_TIERS[MEMBERSHIP_TIERS.length - 1];
 
   return (
     <div className="min-h-screen bg-background pb-32">
@@ -26,179 +21,237 @@ export default function Membership() {
         </div>
       </nav>
 
-      {/* 主要內容 */}
-      <section className="py-8">
-        <div className="container max-w-6xl mx-auto px-4">
-          {/* 標題 */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#8b6f47" }}>
-              會員位階及升級條件
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              越早升級，現金回饋越多❤️‍🔥
-            </p>
-          </div>
+      {/* Hero 標題區 */}
+      <section
+        className="py-14 px-4 text-center"
+        style={{ background: "linear-gradient(135deg, #F0EAE2, #F5F1ED)" }}
+      >
+        <div
+          className="text-xs font-semibold tracking-[3px] mb-3"
+          style={{ color: "#B59A8A" }}
+        >
+          MEMBERSHIP PROGRAM
+        </div>
+        <h2
+          className="text-3xl md:text-4xl font-bold mb-4"
+          style={{ color: "#5a4632" }}
+        >
+          會員位階與升級禮遇
+        </h2>
+        <p className="text-sm md:text-base" style={{ color: "#6B6B6B" }}>
+          越早升級，回饋越高｜越早加入，越早享有終身課程資格
+        </p>
+      </section>
 
-          {/* 視圖切換 */}
-          <div className="flex justify-center mb-8">
-            <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as "grid" | "detail")}>
-              <TabsList>
-                <TabsTrigger value="grid">所有等級</TabsTrigger>
-                <TabsTrigger value="detail">詳細資訊</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
+      {/* 位階卡片 */}
+      <section className="px-4 -mt-8 relative z-10">
+        <div className="container max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
+          {MEMBERSHIP_TIERS.map((tier) => {
+            const isTop = tier.id === topTier.id;
+            return (
+              <div
+                key={tier.id}
+                className="rounded-2xl p-6 md:p-7"
+                style={
+                  isTop
+                    ? {
+                        background: "linear-gradient(160deg, #FBF6EE, #F3E8D8)",
+                        border: "1.5px solid #C9A876",
+                        boxShadow: "0 8px 24px rgba(139, 111, 71, 0.14)",
+                      }
+                    : {
+                        background: "#fff",
+                        border: "1px solid #E8E4E0",
+                      }
+                }
+              >
+                <div
+                  className="text-xs tracking-wide mb-1"
+                  style={{ color: isTop ? "#9c7a3f" : "#B59A8A" }}
+                >
+                  LV.{tier.order}
+                  {isTop ? " · 最高位階" : ""}
+                </div>
+                <h3
+                  className="text-2xl font-bold mb-4"
+                  style={{ color: "#5a4632", fontFamily: "'Playfair Display', serif" }}
+                >
+                  {tier.name}
+                </h3>
 
-          {/* 位階對比視圖 */}
-          {viewMode === "grid" && (
-            <div className="space-y-6">
-              {/* 位階卡片網格 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {MEMBERSHIP_TIERS.map((tier) => (
+                {/* 差額獎金／折扣／輔導獎金 - 最顯眼的核心數字 */}
+                <div
+                  className="text-center rounded-xl py-4 px-3 mb-5"
+                  style={{ background: isTop ? "rgba(255,255,255,0.5)" : "#FBF6EE" }}
+                >
+                  <div className="text-xs mb-1" style={{ color: "#9c7a3f" }}>
+                    差額獎金
+                  </div>
                   <div
-                    key={tier.id}
-                    className={`${tier.color} rounded-lg p-6 border-2 border-transparent hover:border-primary transition-all`}
+                    className="text-4xl font-bold leading-none"
+                    style={{ color: "#8B6F47", fontFamily: "'Playfair Display', serif" }}
                   >
-                    <div className="text-4xl mb-3">{tier.icon}</div>
-                    <h3 className="text-lg font-bold mb-4" style={{ color: "#8b6f47" }}>
-                      {tier.name}
-                    </h3>
-                    <div className="space-y-2 mb-6">
-                      <div>
-                        <p className="text-xs text-muted-foreground">回饋金</p>
-                        <p className="text-2xl font-bold text-accent">{tier.commission}</p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
-                      onClick={() => {
-                        setSelectedTier(tier);
-                        setViewMode("detail");
-                      }}
-                    >
-                      了解更多
-                    </Button>
+                    {tier.commission}
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 詳細資訊視圖 */}
-          {viewMode === "detail" && (
-            <div className="space-y-6">
-              {/* 頂部：視圖切換和位階導航 */}
-              <div className="flex flex-col gap-4">
-                {/* 位階導航 - 移到上方 */}
-                <div className="flex gap-2 flex-wrap justify-center">
-                  {MEMBERSHIP_TIERS.map((tier) => (
-                    <button
-                      key={tier.id}
-                      onClick={() => setSelectedTier(tier)}
-                      className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                        selectedTier.id === tier.id
-                          ? "bg-primary text-white"
-                          : "bg-secondary text-foreground hover:bg-secondary/80"
-                      }`}
-                    >
-                      {tier.name}
-                    </button>
-                  ))}
-                </div>
-
-
-              </div>
-
-              {/* 詳細卡片 */}
-              <Card className="overflow-hidden border-2" style={{ borderColor: "#8b6f47" }}>
-                <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-8">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="text-6xl mb-4">{selectedTier.icon}</div>
-                      <h2 className="text-4xl font-bold mb-2" style={{ color: "#8b6f47" }}>
-                        {selectedTier.name}
-                      </h2>
-                      <p className="text-muted-foreground"></p>
-                    </div>
-                    <div className="text-right">
-                      <div className="mb-4">
-                        <p className="text-sm text-muted-foreground mb-1">差額獎金</p>
-                        <p className="text-4xl font-bold text-accent">{selectedTier.commission}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground mb-1"></p>
-                        <p className="text-lg font-semibold"></p>
-                      </div>
-                    </div>
+                  <div className="text-xs mt-2" style={{ color: "#B59A8A" }}>
+                    產品折扣 {tier.discount}
+                    {tier.guidanceGenerations
+                      ? `　｜　輔導獎金領 ${tier.guidanceGenerations} 代`
+                      : ""}
                   </div>
                 </div>
 
-                <div className="p-8 space-y-8">
-                  {/* 晉升條件 */}
+                {/* 升等條件 - 精簡條列，符合任一即可 */}
+                <div className="mb-5">
+                  <div className="text-xs font-semibold mb-2" style={{ color: "#8B6F47" }}>
+                    升等條件{tier.requirements.length > 1 ? "（符合任一即可）" : ""}
+                  </div>
+                  <div className="space-y-1.5">
+                    {tier.requirements.map((req, idx) => (
+                      <div key={idx} className="flex gap-1.5 text-xs leading-relaxed" style={{ color: "#6B6B6B" }}>
+                        <span style={{ color: "#C9A876" }}>✓</span>
+                        <span>{req}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 其他位階福利 - 標籤形式 */}
+                {tier.perks.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-bold mb-4" style={{ color: "#8b6f47" }}>
-                      📋 晉升條件
-                    </h3>
-                    <ul className="space-y-3">
-                      {selectedTier.requirements.map((req, idx) => (
-                        <li key={idx} className="flex gap-3">
-                          <span className="text-accent font-bold">✓</span>
-                          <span className="text-foreground">{req}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* 福利和獎勵 */}
-                  <div>
-                    <h3 className="text-xl font-bold mb-4" style={{ color: "#8b6f47" }}>
-                      🎁 位階福利
-                    </h3>
-                    <ul className="space-y-3">
-                      {selectedTier.benefits.map((benefit, idx) => (
-                        <li key={idx} className="flex gap-3">
-                          <span className="text-accent font-bold">★</span>
-                          <span className="text-foreground">{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* 晉升路徑 */}
-                  {selectedTier.order < MEMBERSHIP_TIERS.length && (
-                    <div className="bg-secondary/10 rounded-lg p-6">
-                      <h3 className="text-lg font-bold mb-4" style={{ color: "#8b6f47" }}>
-                        ⬇️ 下一個位階
-                      </h3>
-                      {MEMBERSHIP_TIERS[selectedTier.order] && (
-                        <div className="flex items-center gap-4">
-                          <div>
-                            <p className="text-sm text-muted-foreground mb-1">晉升至</p>
-                            <p className="text-xl font-bold">
-                              {MEMBERSHIP_TIERS[selectedTier.order].name}
-                            </p>
-                          </div>
-                          <div className="flex-1 border-t-2 border-dashed border-border"></div>
-                          <Button
-                            onClick={() => {
-                              setSelectedTier(MEMBERSHIP_TIERS[selectedTier.order]);
-                            }}
-                            className="bg-primary hover:bg-primary/90 text-white"
-                          >
-                            查看條件
-                          </Button>
-                        </div>
-                      )}
+                    <div className="text-xs font-semibold mb-2" style={{ color: "#8B6F47" }}>
+                      位階福利
                     </div>
-                  )}
-                </div>
-              </Card>
+                    <div className="flex flex-wrap gap-1.5">
+                      {tier.perks.map((perk, idx) => (
+                        <span
+                          key={idx}
+                          className="text-xs px-3 py-1 rounded-full"
+                          style={{ background: "#F5F1ED", color: "#5a4632" }}
+                        >
+                          {perk}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
-
+      {/* 權益一覽比較表 */}
+      <section className="px-4 mt-16">
+        <div className="container max-w-5xl mx-auto">
+          <div className="text-center mb-7">
+            <div className="text-xs font-semibold tracking-[3px] mb-2" style={{ color: "#B59A8A" }}>
+              COMPARE BENEFITS
             </div>
-          )}
+            <h2
+              className="text-2xl font-bold"
+              style={{ color: "#5a4632", fontFamily: "'Playfair Display', serif" }}
+            >
+              權益一覽
+            </h2>
+          </div>
+
+          <div className="overflow-x-auto rounded-xl border" style={{ borderColor: "#E8E4E0" }}>
+            <table className="w-full border-collapse bg-white text-sm min-w-[720px]">
+              <thead>
+                <tr style={{ background: "#F5F1ED" }}>
+                  <td className="p-4 font-semibold" style={{ color: "#6B6B6B" }}>
+                    位階
+                  </td>
+                  {MEMBERSHIP_TIERS.map((tier) => {
+                    const isTop = tier.id === topTier.id;
+                    return (
+                      <td
+                        key={tier.id}
+                        className="p-4 text-center font-semibold whitespace-nowrap"
+                        style={
+                          isTop
+                            ? { background: "#F3E8D8", color: "#5a4632" }
+                            : { color: "#6B6B6B" }
+                        }
+                      >
+                        {tier.name}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t" style={{ borderColor: "#EEE9E3" }}>
+                  <td className="p-4" style={{ color: "#8a8a8a" }}>
+                    差額獎金
+                  </td>
+                  {MEMBERSHIP_TIERS.map((tier) => {
+                    const isTop = tier.id === topTier.id;
+                    return (
+                      <td
+                        key={tier.id}
+                        className="p-4 text-center"
+                        style={
+                          isTop
+                            ? { background: "#FBF6EE", color: "#8B6F47", fontWeight: 700 }
+                            : {}
+                        }
+                      >
+                        {tier.commission}
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr className="border-t" style={{ borderColor: "#EEE9E3", background: "#FAFAF8" }}>
+                  <td className="p-4" style={{ color: "#8a8a8a" }}>
+                    產品折扣
+                  </td>
+                  {MEMBERSHIP_TIERS.map((tier) => {
+                    const isTop = tier.id === topTier.id;
+                    return (
+                      <td
+                        key={tier.id}
+                        className="p-4 text-center"
+                        style={
+                          isTop
+                            ? { background: "#FBF6EE", color: "#8B6F47", fontWeight: 600 }
+                            : {}
+                        }
+                      >
+                        {tier.discount}
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr className="border-t" style={{ borderColor: "#EEE9E3" }}>
+                  <td className="p-4" style={{ color: "#8a8a8a" }}>
+                    輔導獎金
+                  </td>
+                  {MEMBERSHIP_TIERS.map((tier) => {
+                    const isTop = tier.id === topTier.id;
+                    const has = Boolean(tier.guidanceGenerations);
+                    return (
+                      <td
+                        key={tier.id}
+                        className="p-4 text-center"
+                        style={
+                          isTop
+                            ? { background: "#FBF6EE", color: "#8B6F47", fontWeight: 700 }
+                            : { color: has ? "#8B6F47" : "#c9c2b8" }
+                        }
+                      >
+                        {has ? "✓" : "—"}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-center mt-3" style={{ color: "#B59A8A" }}>
+            手機版可左右滑動查看完整表格
+          </p>
         </div>
       </section>
     </div>

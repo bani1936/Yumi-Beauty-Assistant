@@ -6,25 +6,28 @@
 export interface MembershipTier {
   id: string;
   name: string;
-  commission: string;
+  commission: string; // 差額獎金 %
+  discount: string; // 產品折扣 %，"—" 表示無
+  guidanceGenerations?: number; // 輔導獎金可領代數，undefined 表示無此福利
   entryFee: string;
-  requirements: string[];
-  benefits: string[];
+  requirements: string[]; // 升等條件（符合任一即可）
+  benefits: string[]; // 完整福利清單（向下相容舊頁面使用）
+  perks: string[]; // 卡片用的精簡福利標籤（差額獎金／折扣／輔導獎金已在卡片上方顯示，這裡不重複）
   color: string;
   icon: string;
   order: number;
 }
-
-// commission 字段現在表示「差額獎金」
 
 export const MEMBERSHIP_TIERS: MembershipTier[] = [
   {
     id: "member",
     name: "會員",
     commission: "0%",
+    discount: "—",
     entryFee: "1000 元入會",
-    requirements: ["入會費 1000 元"],
+    requirements: ["入會費 1,000 元"],
     benefits: ["會員身份", "累積 PV 點數"],
+    perks: ["會員身份", "累積 PV 點數"],
     color: "bg-gray-100",
     icon: "👤",
     order: 1,
@@ -33,6 +36,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     id: "group-leader",
     name: "組長",
     commission: "20%",
+    discount: "20%",
     entryFee: "3 萬 PV",
     requirements: [
       "自己直接購買 3 萬 PV",
@@ -43,6 +47,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "20% 購買產品折扣",
       "終身線上課程(組長以上)",
     ],
+    perks: ["終身線上課程"],
     color: "bg-amber-50",
     icon: "👥",
     order: 2,
@@ -51,11 +56,12 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     id: "section-leader",
     name: "科長",
     commission: "30%",
+    discount: "30%",
     entryFee: "12 萬 PV",
     requirements: [
-      "當月自己累積或直 B 累積 12 萬 PV 或自己直接購買 12 萬 PV",
+      "當月自己累積或直 B 累積 12 萬 PV，或自己直接購買 12 萬 PV",
       "當月介紹 1 位科長及 1 位組長，自己即晉升科長",
-      "當月介紹 4 位直 B 組長自己即晉升科長",
+      "當月介紹 4 位直 B 組長，自己即晉升科長",
       "無限期介紹直 B 累積 20 萬 PV 即晉升科長",
     ],
     benefits: [
@@ -64,6 +70,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "終身線上課程(科長以上)",
       "終身實體技術課程(科長以上)",
     ],
+    perks: ["終身線上課程", "終身實體技術課程"],
     color: "bg-yellow-50",
     icon: "📊",
     order: 3,
@@ -72,11 +79,13 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     id: "small-plate-leader",
     name: "小盤督導",
     commission: "35%",
+    discount: "35%",
+    guidanceGenerations: 2,
     entryFee: "32 萬 PV",
     requirements: [
-      "整組累積 32 萬 PV，自己有 2 位直 B 科長後，自己或新推薦業績達 8 萬 PV：自己須為科長",
+      "整組累積 32 萬 PV，且自己有 2 位直 B 科長（自己或新推薦業績達 8 萬 PV，自己須為科長）",
       "直切小盤：當月自己購買累積 32 萬 PV，不含直 B 業績",
-      "加入成為科長當月起 3 個月內，推薦 2 位直 B 科長即可晉升小盤",
+      "加入科長當月起 3 個月內，推薦 2 位直 B 科長即可晉升小盤",
     ],
     benefits: [
       "輔導獎金領 2 代",
@@ -86,6 +95,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "終身實體技術課程(小盤以上)",
       "終身門店管理課程(小盤以上)",
     ],
+    perks: ["終身線上課程", "終身實體技術課程", "終身門店管理課程"],
     color: "bg-orange-50",
     icon: "🎯",
     order: 4,
@@ -94,10 +104,10 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     id: "mid-plate-leader",
     name: "中盤督導",
     commission: "37%",
+    discount: "35%",
+    guidanceGenerations: 4,
     entryFee: "40400-56400",
-    requirements: [
-      "2 位直 B 小盤督導",
-    ],
+    requirements: ["2 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 4 代",
       "37% 差額獎金",
@@ -106,6 +116,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "終身實體技術課程(小盤以上)",
       "終身門店管理課程(小盤以上)",
     ],
+    perks: ["終身線上課程", "終身實體技術課程", "終身門店管理課程"],
     color: "bg-red-50",
     icon: "📈",
     order: 5,
@@ -114,10 +125,10 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     id: "large-plate-leader",
     name: "大盤督導",
     commission: "38%",
+    discount: "35%",
+    guidanceGenerations: 6,
     entryFee: "43600-59600",
-    requirements: [
-      "1 位直 B 中盤督導及 3 位直 B 小盤督導",
-    ],
+    requirements: ["1 位直 B 中盤督導及 3 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 6 代",
       "38% 差額獎金",
@@ -126,6 +137,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "終身實體技術課程(小盤以上)",
       "終身門店管理課程(小盤以上)",
     ],
+    perks: ["終身線上課程", "終身實體技術課程", "終身門店管理課程"],
     color: "bg-pink-50",
     icon: "👑",
     order: 6,
@@ -134,10 +146,10 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     id: "agent-consultant",
     name: "代理顧問",
     commission: "40%",
+    discount: "35%",
+    guidanceGenerations: 8,
     entryFee: "50000-66000",
-    requirements: [
-      "1 位直 B 大盤督導及 5 位直 B 小盤督導",
-    ],
+    requirements: ["1 位直 B 大盤督導及 5 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 8 代",
       "40% 差額獎金",
@@ -146,6 +158,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "終身實體技術課程(小盤以上)",
       "終身門店管理課程(小盤以上)",
     ],
+    perks: ["終身線上課程", "終身實體技術課程", "終身門店管理課程"],
     color: "bg-purple-50",
     icon: "🎓",
     order: 7,
@@ -154,10 +167,10 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     id: "supervisor",
     name: "總監",
     commission: "45%",
+    discount: "35%",
+    guidanceGenerations: 10,
     entryFee: "66000-82000",
-    requirements: [
-      "2 位直 B 大盤督導及 6 位直 B 小盤督導",
-    ],
+    requirements: ["2 位直 B 大盤督導及 6 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 10 代",
       "45% 差額獎金",
@@ -166,6 +179,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "終身實體技術課程(小盤以上)",
       "終身門店管理課程(小盤以上)",
     ],
+    perks: ["終身線上課程", "終身實體技術課程", "終身門店管理課程"],
     color: "bg-indigo-50",
     icon: "💎",
     order: 8,
