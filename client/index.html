@@ -31,13 +31,14 @@
         const redirectPath = params.get('p');
         if (!redirectPath) return;
 
-        let targetPath = redirectPath.startsWith('/') ? redirectPath : `/${redirectPath}`;
-        const hasRepoBase = window.location.pathname.includes('/Yumi-Beauty-Assistant');
-        if (hasRepoBase && !targetPath.startsWith('/Yumi-Beauty-Assistant')) {
-          targetPath = `/Yumi-Beauty-Assistant${targetPath}`;
-        }
+        const decodedPath = decodeURIComponent(redirectPath);
+        const hasRepoBase = decodedPath.startsWith('/Yumi-Beauty-Assistant');
+        const targetPath = hasRepoBase
+          ? decodedPath
+          : `/Yumi-Beauty-Assistant${decodedPath.startsWith('/') ? decodedPath : `/${decodedPath}`}`;
 
-        window.history.replaceState({}, '', targetPath + window.location.hash);
+        const cleanTarget = targetPath.replace(/\/+$/, '') || '/Yumi-Beauty-Assistant';
+        window.history.replaceState({}, '', cleanTarget + window.location.hash);
       })();
     </script>
     <script type="module" src="/src/main.tsx"></script>
