@@ -64,11 +64,11 @@ export default function SplashScreen({ onComplete, duration = 2000 }: SplashScre
       <div className="relative z-10 flex flex-col items-center justify-center gap-6 px-6">
         {/* Logo 容器 - 縮放進入效果 */}
         <div
-          className="animate-in fade-in zoom-in-50 duration-700"
           style={{
             animation: isExiting
               ? 'none'
               : 'splashLogoEnter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+            willChange: 'transform, opacity',
           }}
         >
           <ImageWithFallback
@@ -76,7 +76,14 @@ export default function SplashScreen({ onComplete, duration = 2000 }: SplashScre
             fallbackSrc="/favicon.png"
             alt="Logo"
             className="w-24 h-24 md:w-32 md:h-32 object-contain rounded-full"
-            style={{ filter: "drop-shadow(0 8px 20px rgba(139, 111, 71, 0.28)) drop-shadow(0 2px 6px rgba(139, 111, 71, 0.18))" }}
+            style={{
+              filter: "drop-shadow(0 8px 20px rgba(139, 111, 71, 0.28)) drop-shadow(0 2px 6px rgba(139, 111, 71, 0.18))",
+              // 強制獨立合成圖層，避免父層 transform 動畫期間 WebKit
+              // 用方形外框重新計算 drop-shadow，導致瞬間變成方形陰影
+              transform: "translateZ(0)",
+              WebkitTransform: "translateZ(0)",
+              willChange: "filter",
+            }}
           />
         </div>
 
