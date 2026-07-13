@@ -94,19 +94,19 @@ export default function Products() {
   }, [categoryFromUrl]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: "#FAFAF8" }}>
       {/* 麵包屑導航 */}
-      <div className="bg-white border-b border-border">
+      <div className="bg-white border-b" style={{ borderColor: "#E8E4E0" }}>
         <div className="container max-w-6xl mx-auto px-4 py-3">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm" style={{ color: "#9c8a76" }}>
             <button
               onClick={() => navigate('/')}
-              className="hover:text-foreground transition-colors"
+              className="hover:opacity-70 transition-opacity"
             >
               全部商品
             </button>
             <span>›</span>
-            <span className="text-foreground font-medium">系列產品介紹</span>
+            <span style={{ color: "#5a4632" }} className="font-medium">系列產品介紹</span>
           </div>
         </div>
       </div>
@@ -115,21 +115,33 @@ export default function Products() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* 左側分類菜單（電腦版） */}
           <div className="hidden md:block">
-            <h3 className="font-semibold text-foreground mb-4"></h3>
-            <div className="space-y-2">
-              {DISPLAY_CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`w-full text-left px-3 py-2 rounded transition-colors ${
-                    selectedCategory === cat
-                      ? 'bg-primary text-white'
-                      : 'hover:bg-muted'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+            <div className="text-xs tracking-wider mb-4" style={{ color: "#9c8a76" }}>系列分類</div>
+            <div className="flex flex-col gap-0.5">
+              {DISPLAY_CATEGORIES.map((cat) => {
+                const isActive = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className="text-left pl-3 pr-2 py-2.5 text-sm transition-all"
+                    style={
+                      isActive
+                        ? {
+                            borderLeft: "2px solid #C9A876",
+                            background: "#FBF6EE",
+                            color: "#8B6F47",
+                            fontWeight: 700,
+                          }
+                        : {
+                            borderLeft: "2px solid transparent",
+                            color: "#6B6B6B",
+                          }
+                    }
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -137,9 +149,12 @@ export default function Products() {
           <div className="md:col-span-3">
             {/* 手機版分類下拉選單 */}
             <div className="md:hidden mb-6">
-              <div className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">選擇系列</div>
+              <div className="mb-2 text-xs tracking-wider" style={{ color: "#9c8a76" }}>選擇系列</div>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-full border-2 border-primary bg-gradient-to-r from-primary/5 to-primary/10 hover:border-primary/80 transition-all shadow-md h-14 text-base font-semibold">
+                <SelectTrigger
+                  className="w-full h-12 text-sm font-medium transition-all"
+                  style={{ border: "1px solid #E0D5C5", background: "#FBF6EE", color: "#5a4632" }}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -150,19 +165,29 @@ export default function Products() {
                   ))}
                 </SelectContent>
               </Select>
-              <div className="mt-2 text-xs text-muted-foreground text-center"></div>
             </div>
 
             {/* 頁面標題 */}
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-              {selectedCategory}
-            </h1>
+            <div className="mb-6">
+              <div className="text-[11px] tracking-[2px] font-semibold mb-1.5" style={{ color: "#B59A8A" }}>
+                FULL COLLECTION
+              </div>
+              <h1
+                className="text-2xl md:text-3xl font-bold"
+                style={{ color: "#5a4632", fontFamily: "'Playfair Display', serif" }}
+              >
+                {selectedCategory}
+              </h1>
+            </div>
 
             {/* 排序和視圖選項 */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
               <div className="flex items-center gap-2">
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger
+                    className="w-40 h-9 text-xs rounded-full"
+                    style={{ border: "1px solid #E8E4E0", color: "#6B6B6B" }}
+                  >
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -174,24 +199,26 @@ export default function Products() {
               </div>
 
               {/* 視圖切換（電腦版） */}
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden md:flex items-center gap-1.5">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded ${
+                  className="p-2 rounded-full transition-colors"
+                  style={
                     viewMode === 'grid'
-                      ? 'bg-primary text-white'
-                      : 'bg-muted text-foreground'
-                  }`}
+                      ? { background: "#FBF6EE", color: "#8B6F47" }
+                      : { background: "transparent", color: "#B0A797" }
+                  }
                 >
                   <Grid3x3 className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded ${
+                  className="p-2 rounded-full transition-colors"
+                  style={
                     viewMode === 'list'
-                      ? 'bg-primary text-white'
-                      : 'bg-muted text-foreground'
-                  }`}
+                      ? { background: "#FBF6EE", color: "#8B6F47" }
+                      : { background: "transparent", color: "#B0A797" }
+                  }
                 >
                   <List className="w-4 h-4" />
                 </button>
@@ -209,11 +236,12 @@ export default function Products() {
               {filteredProducts.map((product) => (
                 <Card
                   key={product.id}
-                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative"
+                  className="overflow-hidden cursor-pointer relative transition-all hover:-translate-y-0.5"
+                  style={{ border: "1px solid #E8E4E0", boxShadow: "none" }}
                   onClick={() => navigate(`/product-detail?id=${product.id}&from=${encodeURIComponent(selectedCategory)}`)}
                 >
                   {/* 產品圖片 */}
-                  <div className="aspect-square bg-muted overflow-hidden relative">
+                  <div className="aspect-square overflow-hidden relative" style={{ background: "#F5F1ED" }}>
                     <ImageWithFallback
                       src={product.image}
                       fallbackSrc="/favicon.png"
@@ -228,27 +256,31 @@ export default function Products() {
                     {/* 產品編號和名稱分兩行顯示 */}
                     <div className="mb-2">
                       {product.productNumber && (
-                        <div className="text-sm md:text-base font-bold text-foreground">
+                        <div className="text-xs mb-0.5" style={{ color: "#B59A8A" }}>
                           {product.productNumber}
                         </div>
                       )}
-                      <div className="text-sm md:text-base font-semibold text-foreground line-clamp-2">
+                      <div className="text-sm md:text-base font-semibold line-clamp-2" style={{ color: "#3a332b" }}>
                         {product.productTitle}
                       </div>
                     </div>
 
                     <div className="flex items-center justify-center mb-3">
-                      <span className="text-lg font-bold text-primary">
+                      <span
+                        className="text-lg md:text-xl font-bold"
+                        style={{ color: "#8B6F47", fontFamily: "'Playfair Display', serif" }}
+                      >
                         NT$ {product.memberPrice || product.price}
                       </span>
                     </div>
                     {/* 福利標籤 */}
                     {product.benefits && product.benefits.length > 0 && (
-                      <div className="flex flex-wrap gap-2 justify-center">
+                      <div className="flex flex-wrap gap-1.5 justify-center">
                         {product.benefits.filter(b => b).map((benefit) => (
                           <span
                             key={benefit}
-                            className="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium"
+                            className="px-2.5 py-1 rounded-full text-xs font-medium"
+                            style={{ background: "#F5F1ED", color: "#8B6F47" }}
                           >
                             {benefit}
                           </span>
