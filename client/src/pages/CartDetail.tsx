@@ -130,7 +130,7 @@ export default function CartDetail() {
 
     // 關閉對話框並跳轉到訂單明細頁面
     setShowCheckout(false);
-    window.location.href = "/order-detail";
+    navigate("/order-detail");
   };
 
   if (isLoading) {

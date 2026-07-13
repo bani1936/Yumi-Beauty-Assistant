@@ -370,7 +370,7 @@ export default function ProductCalculator() {
                 <button
                   onClick={() => {
                     localStorage.setItem('cart', JSON.stringify(cart));
-                    window.location.href = '/cart-detail';
+                    navigate('/cart-detail');
                   }}
                   className="px-6 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors"
                 >
@@ -410,7 +410,7 @@ export default function ProductCalculator() {
                   <button
                     onClick={() => {
                       localStorage.setItem('cart', JSON.stringify(cart));
-                      window.location.href = '/cart-detail';
+                      navigate('/cart-detail');
                     }}
                     className="px-3 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors text-xs whitespace-nowrap h-fit"
                   >
