@@ -75,7 +75,8 @@ export default function SplashScreen({ onComplete, duration = 2000 }: SplashScre
             src="/logo-circle.png"
             fallbackSrc="/favicon.png"
             alt="Logo"
-            className="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-lg"
+            className="w-24 h-24 md:w-32 md:h-32 object-contain"
+            style={{ filter: "drop-shadow(0 8px 20px rgba(139, 111, 71, 0.28)) drop-shadow(0 2px 6px rgba(139, 111, 71, 0.18))" }}
           />
         </div>
 
