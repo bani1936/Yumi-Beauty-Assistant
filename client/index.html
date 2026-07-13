@@ -32,13 +32,9 @@
         if (!redirectPath) return;
 
         const decodedPath = decodeURIComponent(redirectPath);
-        const hasRepoBase = decodedPath.startsWith('/Yumi-Beauty-Assistant');
-        const targetPath = hasRepoBase
-          ? decodedPath
-          : `/Yumi-Beauty-Assistant${decodedPath.startsWith('/') ? decodedPath : `/${decodedPath}`}`;
-
-        const cleanTarget = targetPath.replace(/\/+$/, '') || '/Yumi-Beauty-Assistant';
-        window.history.replaceState({}, '', cleanTarget + window.location.hash);
+        const normalizedPath = decodedPath.startsWith('/') ? decodedPath : `/${decodedPath}`;
+        const targetPath = `/Yumi-Beauty-Assistant/#${normalizedPath}`;
+        window.history.replaceState({}, '', targetPath);
       })();
     </script>
     <script type="module" src="/src/main.tsx"></script>

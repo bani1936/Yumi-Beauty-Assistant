@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -18,18 +19,12 @@ import { ImageWithFallback } from "./components/ui/ImageWithFallback";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
-function getBaseAwarePath(path: string) {
-  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return base && base !== "/" ? `${base}${normalizedPath}` : normalizedPath;
-}
-
 function GlobalNav() {
   const [, navigate] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleNavigate = (path: string) => {
-    navigate(getBaseAwarePath(path));
+    navigate(path);
   };
 
   return (
@@ -115,8 +110,6 @@ function App() {
     }
   }, [showSplash]);
 
-  const routerBase = import.meta.env.BASE_URL === "/" ? "/" : import.meta.env.BASE_URL.replace(/\/$/, "");
-
   return (
     <ErrorBoundary>
       <ThemeProvider
@@ -127,7 +120,7 @@ function App() {
           {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} duration={2000} />}
           <Toaster />
           <GlobalNav />
-          <WouterRouter base={routerBase}>
+          <WouterRouter hook={useHashLocation}>
             <AppRoutes />
           </WouterRouter>
         </TooltipProvider>
