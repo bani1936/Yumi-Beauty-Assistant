@@ -72,7 +72,7 @@ export default function ProductDetail() {
             <span>返回</span>
           </button>
           <h1 className="text-lg font-semibold flex-1 text-center px-4 truncate">
-            {product.productNumber} {product.productTitle.replace('(小)', '').replace('(大)', '').trim()}
+            {product.productNumber ? `${product.productNumber} ` : ''}{product.productTitle.replace('(小)', '').replace('(大)', '').trim()}
           </h1>
           <div className="w-10" />
         </div>
@@ -108,9 +108,11 @@ export default function ProductDetail() {
           <div className="flex flex-col">
             {/* 產品編號與名稱 */}
             <div className="mb-6">
-              <h2 className="text-3xl font-bold mb-2" style={{ color: '#8b6f47' }}>
-                {product.productNumber}
-              </h2>
+              {product.productNumber && (
+                <h2 className="text-3xl font-bold mb-2" style={{ color: '#8b6f47' }}>
+                  {product.productNumber}
+                </h2>
+              )}
               <h3 className="text-xl font-semibold mb-4">{product.productTitle}</h3>
               <p className="text-muted-foreground">{product.description}</p>
             </div>

@@ -474,15 +474,15 @@ export const PRODUCTS: Product[] = [
   {
     id: '38-1-都都好-m',
     productNumber: '38-1',
-    productTitle: '都都好亮顧乳',
-    name: '38-1 都都好亮顧乳',
+    productTitle: '都都好亮顏乳',
+    name: '38-1 都都好亮顏乳',
     category: 'skin-care',
     series: '都都好系列',
     price: 3100,
     memberPrice: 2780,
     description: '控油抵痘，淡化痘疤與粉刷，收斂毛孔',
     image: '/06.jpg',
-    benefits: ['控油', '抵痘', '亮顧'],
+    benefits: ['控油', '抵痘', '亮顏'],
     size: '標準',
     volume: '30ml',
     pv: 2250
@@ -1165,7 +1165,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'special-7',
-    productNumber: '精緻美瞳眼霜',
+    productNumber: '',
     productTitle: '精緻美瞳眼霜',
     name: '精緻美瞳眼霜',
     category: 'special',
@@ -1334,7 +1334,7 @@ export const PRODUCTS: Product[] = [
   // 安瓶保養組
   {
     id: 'ampoule-1',
-    productNumber: '熨斗系列安瓶保養組',
+    productNumber: '',
     productTitle: '熨斗系列安瓶保養組',
     name: '熨斗系列安瓶保養組',
     category: 'ampoule',

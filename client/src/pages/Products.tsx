@@ -227,9 +227,11 @@ export default function Products() {
                   <div className="p-4 text-center">
                     {/* 產品編號和名稱分兩行顯示 */}
                     <div className="mb-2">
-                      <div className="text-sm md:text-base font-bold text-foreground">
-                        {product.productNumber}
-                      </div>
+                      {product.productNumber && (
+                        <div className="text-sm md:text-base font-bold text-foreground">
+                          {product.productNumber}
+                        </div>
+                      )}
                       <div className="text-sm md:text-base font-semibold text-foreground line-clamp-2">
                         {product.productTitle}
                       </div>
