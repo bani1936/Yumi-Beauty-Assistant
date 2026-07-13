@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import { PRODUCTS } from "@/lib/products";
 import {
   Dialog,
@@ -25,6 +26,7 @@ interface CheckoutForm {
 }
 
 export default function CartDetail() {
+  const [, navigate] = useLocation();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showCheckout, setShowCheckout] = useState(false);
