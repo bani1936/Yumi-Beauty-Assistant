@@ -72,7 +72,7 @@ export default function SplashScreen({ onComplete, duration = 2000 }: SplashScre
           }}
         >
           <ImageWithFallback
-            src="/manus-storage/logo_y_design_dadc2671.png"
+            src="/logo-circle.png"
             fallbackSrc="/favicon.png"
             alt="Logo"
             className="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-lg"

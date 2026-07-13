@@ -1,8 +1,16 @@
 import { useState, type SyntheticEvent } from "react";
 import type { ImgHTMLAttributes } from "react";
+import { getAssetUrl } from "@/lib/utils";
 
 interface ImageWithFallbackProps extends ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string;
+}
+
+// Local public assets (e.g. "/favicon.png", "/xxx.jpg") need the deployment
+// base path prefixed so they resolve correctly on sub-path hosts like
+// GitHub Pages. External URLs (http/https) are left as-is.
+function resolveLocalSrc(path: string) {
+  return path.startsWith("/") ? getAssetUrl(path) : path;
 }
 
 export function ImageWithFallback({
@@ -13,18 +21,15 @@ export function ImageWithFallback({
   ...rest
 }: ImageWithFallbackProps) {
   const initialSrc = typeof src === "string" ? src : fallbackSrc;
-  const shouldUseFallback =
-    typeof initialSrc === "string" &&
-    initialSrc.startsWith("/manus-storage") &&
-    import.meta.env.PROD;
 
   const [currentSrc, setCurrentSrc] = useState<string>(
-    shouldUseFallback ? fallbackSrc : initialSrc,
+    resolveLocalSrc(initialSrc),
   );
 
   const handleError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
-    if (currentSrc !== fallbackSrc) {
-      setCurrentSrc(fallbackSrc);
+    const resolvedFallback = resolveLocalSrc(fallbackSrc);
+    if (currentSrc !== resolvedFallback) {
+      setCurrentSrc(resolvedFallback);
     }
     if (onError) {
       onError(event as any);

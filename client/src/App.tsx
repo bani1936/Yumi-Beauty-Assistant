@@ -32,7 +32,7 @@ function GlobalNav() {
       <div className="container max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <ImageWithFallback
-            src="/manus-storage/logo_y_bookmark_ed123a17.png"
+            src="/logo-circle.png"
             fallbackSrc="/favicon.png"
             alt="Yumí Logo"
             className="w-10 h-10 rounded-full object-cover"

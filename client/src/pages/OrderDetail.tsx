@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { PRODUCTS } from "@/lib/products";
 
@@ -23,6 +24,7 @@ interface OrderData {
 }
 
 export default function OrderDetail() {
+  const [, navigate] = useLocation();
   const [order, setOrder] = useState<OrderData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,7 +62,7 @@ export default function OrderDetail() {
 
     // 顯示成功消息並返回首頁
     alert("訂單已成功提交！訂單編號：" + Date.now());
-    window.location.href = "/";
+    navigate("/");
   };
 
   if (isLoading) {
@@ -88,7 +90,7 @@ export default function OrderDetail() {
             <ChevronLeft className="w-5 h-5" />
           </button>
           <ImageWithFallback
-            src="/manus-storage/pasted_file_RWyk1P_image_34c8cc43.png"
+            src="/pasted_file_RWyk1P_image_34c8cc43.png"
             fallbackSrc="/favicon.png"
             alt="Yumí Logo"
             className="w-6 h-6 rounded-full object-cover"
