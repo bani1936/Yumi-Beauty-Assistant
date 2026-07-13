@@ -1,5 +1,32 @@
 import { ChevronLeft } from "lucide-react";
 import { MEMBERSHIP_TIERS } from "@/lib/membership-tiers";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+const FAQ_ITEMS = [
+  {
+    question: "會籍是終身嗎？",
+    answer:
+      "會籍自加入會員起首年至隔年年底，隔年起每年凡消費累積滿 15,000 PV，下一年度自動續會。",
+  },
+  {
+    question: "差額獎金領取方式？",
+    answer:
+      "每年一月購買滿 20,000 PV 整年皆可領取；或要領取當月購買 2,250 PV 含以上，可領取差額獎金。",
+  },
+  {
+    question: "PV 點數會過期嗎？",
+    answer: "PV 點數不會過期，終身累積。",
+  },
+  {
+    question: "刷卡可分期嗎？",
+    answer: "永豐、台新、中信信用卡，享 3、6 期分期零利率。",
+  },
+];
 
 export default function Membership() {
   const topTier = MEMBERSHIP_TIERS[MEMBERSHIP_TIERS.length - 1];
@@ -46,7 +73,7 @@ export default function Membership() {
       {/* 位階卡片 */}
       <section className="px-4 -mt-8 relative z-10">
         <div className="container max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
-          {MEMBERSHIP_TIERS.map((tier) => {
+          {[...MEMBERSHIP_TIERS].reverse().map((tier) => {
             const isTop = tier.id === topTier.id;
             return (
               <div
@@ -252,6 +279,43 @@ export default function Membership() {
           <p className="text-xs text-center mt-3" style={{ color: "#B59A8A" }}>
             手機版可左右滑動查看完整表格
           </p>
+        </div>
+      </section>
+
+      {/* 常見問題 FAQ */}
+      <section className="mt-16 py-16 px-4" style={{ background: "#F5F1ED" }}>
+        <div className="container max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="text-xs font-semibold tracking-[3px] mb-2" style={{ color: "#B59A8A" }}>
+              FAQ
+            </div>
+            <h2
+              className="text-2xl font-bold"
+              style={{ color: "#5a4632", fontFamily: "'Playfair Display', serif" }}
+            >
+              常見問題
+            </h2>
+          </div>
+
+          <Accordion type="single" collapsible className="w-full">
+            {FAQ_ITEMS.map((item, idx) => (
+              <AccordionItem
+                key={idx}
+                value={`faq-${idx}`}
+                style={{ borderColor: "#E0D9CD" }}
+              >
+                <AccordionTrigger
+                  className="text-left font-semibold hover:no-underline"
+                  style={{ color: "#5a4632" }}
+                >
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent style={{ color: "#8a7a68" }}>
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
     </div>
