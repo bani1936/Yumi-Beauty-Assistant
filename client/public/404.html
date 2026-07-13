@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yumí 米米美學｜重定向中</title>
+    <script>
+      const path = window.location.pathname.replace(/\/$/, '');
+      const base = '/Yumi-Beauty-Assistant';
+      const redirectPath = path === '' ? '/' : path;
+      const target = `${base}/?p=${encodeURIComponent(redirectPath + window.location.search + window.location.hash)}`;
+      window.location.replace(target);
+    </script>
+  </head>
+  <body></body>
+</html>
