@@ -119,8 +119,8 @@ function App() {
         <TooltipProvider>
           {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} duration={2000} />}
           <Toaster />
-          <GlobalNav />
           <WouterRouter hook={useHashLocation}>
+            <GlobalNav />
             <AppRoutes />
           </WouterRouter>
         </TooltipProvider>
