@@ -41,7 +41,7 @@ function GlobalNav() {
         </div>
         <div className="hidden md:flex items-center gap-6">
           <button onClick={() => handleNavigate('/products')} className="text-sm hover:text-[#d4a574] transition-colors">全系列產品</button>
-          <button onClick={() => handleNavigate('/product-calculator')} className="text-sm hover:text-[#d4a574] transition-colors">首購計算機</button>
+          <button onClick={() => handleNavigate('/product-calculator')} className="text-sm hover:text-[#d4a574] transition-colors">首購／團購金額試算</button>
           <button onClick={() => handleNavigate('/membership')} className="text-sm hover:text-[#d4a574] transition-colors">會員制度</button>
           <button onClick={() => handleNavigate('/skin-detection')} className="text-sm hover:text-[#d4a574] transition-colors">肌膚檢測小幫手</button>
         </div>
@@ -59,7 +59,7 @@ function GlobalNav() {
             全系列產品
           </button>
           <button onClick={() => { handleNavigate('/product-calculator'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
-            首購計算機
+            首購／團購金額試算
           </button>
           <button onClick={() => { handleNavigate('/membership'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
             會員制度
