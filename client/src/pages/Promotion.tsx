@@ -4,7 +4,14 @@ import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 
 // 實品照片 — 之後把照片放進 client/public/，把檔名加進這個陣列即可自動顯示在下方相簿。
 const GALLERY_IMAGES: string[] = [
-  // 範例："/promo-bag-1.jpg", "/promo-bag-2.jpg",
+  "/promo-gift-1.jpg",
+  "/promo-gift-2.jpg",
+  "/promo-gift-3.jpg",
+  "/promo-gift-4.jpg",
+  "/promo-gift-5.jpg",
+  "/promo-gift-6.jpg",
+  "/promo-gift-7.jpg",
+  "/promo-gift-8.jpg",
 ];
 
 export default function Promotion() {
