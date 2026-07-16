@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useLocation } from 'wouter';
-import { ChevronLeft, ChevronDown, Plus, Minus } from 'lucide-react';
+import { ChevronLeft, ChevronDown, Plus, Minus, ShoppingCart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { PRODUCTS } from '@/lib/products';
 
@@ -187,7 +187,8 @@ export default function ProductCalculator() {
                 onClick={() => setCart([])}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-destructive/10 hover:bg-destructive/20 text-destructive rounded-lg transition-colors text-sm font-medium"
               >
-                🗑️ 清空全部
+                <ShoppingCart className="w-4 h-4" />
+                清空購物車
               </button>
             )}
           </div>
