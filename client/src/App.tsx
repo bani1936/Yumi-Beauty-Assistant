@@ -12,6 +12,7 @@ import Products from "./pages/Products";
 import CartDetail from "./pages/CartDetail";
 import OrderDetail from "./pages/OrderDetail";
 import Membership from "./pages/Membership";
+import Promotion from "./pages/Promotion";
 import ProductDetail from "./pages/ProductDetail";
 
 import SplashScreen from "./components/SplashScreen";
@@ -84,6 +85,7 @@ function AppRoutes() {
       <Route path={"/cart-detail"} component={CartDetail} />
       <Route path={"/order-detail"} component={OrderDetail} />
       <Route path={"/membership"} component={Membership} />
+      <Route path={"/promotion"} component={Promotion} />
       <Route path={"/product-detail"} component={ProductDetail} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

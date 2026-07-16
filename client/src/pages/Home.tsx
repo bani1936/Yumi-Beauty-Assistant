@@ -39,7 +39,7 @@ export default function Home() {
       title: '最新活動',
       description: '新會員消費滿額晉升組長，贈送質感訂製旅行化妝包及居家安瓶保養組 2 組',
       buttonText: '了解詳情',
-      path: '/membership',
+      path: '/promotion',
       highlight: true,
     }
   ];
