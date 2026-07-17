@@ -18,7 +18,7 @@ export const USAGE_SEQUENCES: Record<string, SeriesUsageGuide> = {
       { step: 1, productNumber: '26號', note: '距離 15 公分噴灑，不需拍打' },
       { step: 2, productNumber: '0號' },
       { step: 3, productNumber: '1號' },
-      { step: 4, productNumber: '2號' },
+      { step: 4, productNumber: '2號', note: '使用前搖一搖，搭配拉提手法按摩' },
       { step: 5, productNumber: '3號' },
       { step: 6, productNumber: '4號' },
       { step: 7, productNumber: '5-1號' },
@@ -26,14 +26,14 @@ export const USAGE_SEQUENCES: Record<string, SeriesUsageGuide> = {
       { step: 9, productNumber: '7號' },
       { step: 10, productNumber: '26號', note: '全臉噴灑，作為最後一道防護與保濕' },
     ],
-    fullSetLabel: '0號、1號、2號、3號、4號、5-1號或5-2號、6號、7號、26號',
+    fullSetLabel: '0號、1號、3號、4號、5-1或5-2號、6號、7號、26號',
   },
   '熨斗系列(大)': {
     steps: [
       { step: 1, productNumber: '26號', note: '距離 15 公分噴灑，不需拍打' },
       { step: 2, productNumber: '0號' },
       { step: 3, productNumber: '1號' },
-      { step: 4, productNumber: '2號' },
+      { step: 4, productNumber: '2號', note: '使用前搖一搖，搭配拉提手法按摩' },
       { step: 5, productNumber: '3號' },
       { step: 6, productNumber: '4號' },
       { step: 7, productNumber: '5-2號' },
@@ -41,7 +41,7 @@ export const USAGE_SEQUENCES: Record<string, SeriesUsageGuide> = {
       { step: 9, productNumber: '7號' },
       { step: 10, productNumber: '26號', note: '全臉噴灑，作為最後一道防護與保濕' },
     ],
-    fullSetLabel: '0號、1號、2號、3號、4號、5-1號或5-2號、6號、7號、26號',
+    fullSetLabel: '0號、1號、3號、4號、5-1或5-2號、6號、7號、26號',
   },
   '都都好系列': {
     steps: [
