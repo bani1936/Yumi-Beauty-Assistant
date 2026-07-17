@@ -177,7 +177,7 @@ export default function ProductDetail() {
                     <>
                       {product.productNumber} {product.productTitle} 是「{product.series.replace('(小)', '').replace('(大)', '').trim()}」整組保養的其中一環，完整保養建議：
                       {USAGE_SEQUENCES[product.series].fullSetLabel}
-                      　｜　使用完畢後，單一品可個別購買
+                      　｜　使用完畢後，單一產品可個別購買
                     </>
                   )}
                 </div>
