@@ -173,7 +173,7 @@ export default function ProductDetail() {
                 <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
                   {product.productNumber} {product.productTitle} 是「{product.series.replace('(小)', '').replace('(大)', '').trim()}」整組保養的其中一環，完整保養建議：
                   {USAGE_SEQUENCES[product.series].fullSetLabel}
-                  　｜　使用完畢後，單一品項亦可個別回購
+                  　｜　使用完畢後，單一品可個別購買
                 </div>
               </div>
             </div>

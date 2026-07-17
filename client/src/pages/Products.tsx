@@ -200,7 +200,7 @@ export default function Products() {
                     </div>
                     <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
                       完整保養建議：{USAGE_SEQUENCES[selectedCategory].fullSetLabel}
-                      　｜　使用完畢後，單一品項亦可個別回購
+                      　｜　使用完畢後，單一品可個別購買
                     </div>
                   </div>
                 </div>
