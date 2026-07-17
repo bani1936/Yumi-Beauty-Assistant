@@ -1,6 +1,8 @@
-import { ChevronLeft } from 'lucide-react';
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 // 實品照片 — 之後把照片放進 client/public/，把檔名加進這個陣列即可自動顯示在下方相簿。
 const GALLERY_IMAGES: string[] = [
@@ -16,6 +18,16 @@ const GALLERY_IMAGES: string[] = [
 
 export default function Promotion() {
   const [, navigate] = useLocation();
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+
+  const showPrev = () => {
+    if (previewIndex === null) return;
+    setPreviewIndex((previewIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length);
+  };
+  const showNext = () => {
+    if (previewIndex === null) return;
+    setPreviewIndex((previewIndex + 1) % GALLERY_IMAGES.length);
+  };
 
   return (
     <div className="min-h-screen pb-20" style={{ background: '#FAFAF8' }}>
@@ -57,12 +69,15 @@ export default function Promotion() {
             >
               贈品實拍
             </h2>
+            <p className="text-xs mt-2" style={{ color: '#B0A797' }}>點擊照片可放大預覽</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {GALLERY_IMAGES.map((src, idx) => (
-              <div
+              <button
                 key={idx}
-                className="aspect-square rounded-xl overflow-hidden"
+                type="button"
+                onClick={() => setPreviewIndex(idx)}
+                className="aspect-square rounded-xl overflow-hidden cursor-pointer transition-transform hover:-translate-y-0.5"
                 style={{ border: '1px solid #E8E4E0', background: '#F5F1ED' }}
               >
                 <ImageWithFallback
@@ -71,11 +86,66 @@ export default function Promotion() {
                   alt={`活動贈品實拍 ${idx + 1}`}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </button>
             ))}
           </div>
         </div>
       )}
+
+      {/* 放大預覽燈箱 */}
+      <Dialog open={previewIndex !== null} onOpenChange={(open) => { if (!open) setPreviewIndex(null); }}>
+        <DialogContent
+          className="max-w-3xl w-[95vw] p-0 border-0 bg-transparent shadow-none flex items-center justify-center"
+          showCloseButton={false}
+        >
+          {previewIndex !== null && (
+            <div className="relative w-full flex items-center justify-center">
+              <img
+                src={GALLERY_IMAGES[previewIndex]}
+                alt={`活動贈品實拍 ${previewIndex + 1}`}
+                className="max-h-[80vh] w-auto rounded-xl object-contain"
+              />
+
+              <button
+                type="button"
+                onClick={() => setPreviewIndex(null)}
+                className="absolute -top-3 -right-3 md:top-2 md:right-2 w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md"
+                style={{ color: '#5a4632' }}
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {GALLERY_IMAGES.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={showPrev}
+                    className="absolute left-1 md:-left-14 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
+                    style={{ color: '#5a4632' }}
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={showNext}
+                    className="absolute right-1 md:-right-14 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
+                    style={{ color: '#5a4632' }}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+
+              <div
+                className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full bg-white/90"
+                style={{ color: '#8a8a8a' }}
+              >
+                {previewIndex + 1} / {GALLERY_IMAGES.length}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
