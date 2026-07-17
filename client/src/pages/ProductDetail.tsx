@@ -1,9 +1,11 @@
 import { useLocation } from 'wouter';
 import { ChevronLeft } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products';
+import { USAGE_SEQUENCES } from '@/lib/usage-sequences';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
+import * as React from 'react';
 
 export default function ProductDetail() {
   const [, navigate] = useLocation();
@@ -150,6 +152,81 @@ export default function ProductDetail() {
 
           </div>
         </div>
+
+        {/* 完整使用流程 + 整套提示橫幅 */}
+        {USAGE_SEQUENCES[product.series] && (
+          <div
+            className="rounded-2xl p-5 md:p-7 mb-8"
+            style={{ background: "#FBF6EE", border: "1px solid #E8DCC8" }}
+          >
+            <div className="flex items-start gap-3 mb-6">
+              <div
+                className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-base"
+                style={{ background: "#8B6F47", color: "#fff" }}
+              >
+                ✓
+              </div>
+              <div>
+                <div className="font-semibold mb-1" style={{ color: "#5a4632" }}>
+                  建議整套使用，效果最佳
+                </div>
+                <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
+                  {product.productTitle}（{product.productNumber}）是「{product.series}」整套療程中的一環，完整療程建議：
+                  {USAGE_SEQUENCES[product.series].fullSetLabel}
+                  　｜　使用完畢後，單一品項亦可個別回購
+                </div>
+              </div>
+            </div>
+
+            <div className="text-xs font-semibold mb-3" style={{ color: "#8B6F47" }}>
+              使用順序 &amp; 用法
+            </div>
+            <div className="flex flex-wrap gap-x-1 gap-y-4">
+              {USAGE_SEQUENCES[product.series].steps.map((step, idx) => {
+                const stepProduct = PRODUCTS.find(
+                  (p) => p.productNumber === step.productNumber && p.category === product.category
+                );
+                const isCurrent = step.productNumber === product.productNumber;
+                const isLast = idx === USAGE_SEQUENCES[product.series].steps.length - 1;
+                return (
+                  <React.Fragment key={idx}>
+                    <div className="flex flex-col items-center text-center w-[84px]">
+                      <div
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mb-2"
+                        style={
+                          isCurrent
+                            ? { background: "#C9A876", color: "#fff", boxShadow: "0 0 0 3px #F3E8D8" }
+                            : { background: "#5a4632", color: "#fff" }
+                        }
+                      >
+                        {step.step}
+                      </div>
+                      <div className="text-xs font-semibold" style={{ color: isCurrent ? "#9c7a3f" : "#5a4632" }}>
+                        {step.productNumber}
+                        {isCurrent ? "（本商品）" : ""}
+                      </div>
+                      {stepProduct && (
+                        <div className="text-[10px] leading-tight mt-0.5 line-clamp-2" style={{ color: "#9c8a76" }}>
+                          {stepProduct.productTitle}
+                        </div>
+                      )}
+                      {step.note && (
+                        <div className="text-[10px] leading-tight mt-1" style={{ color: "#B59A8A" }}>
+                          {step.note}
+                        </div>
+                      )}
+                    </div>
+                    {!isLast && (
+                      <div className="flex items-center text-sm" style={{ color: "#D8CFC2" }}>
+                        →
+                      </div>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* 詳細信息 - 單頁滾動式 */}
         <div className="space-y-8">
