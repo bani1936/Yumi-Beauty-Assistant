@@ -100,8 +100,9 @@ export default function Promotion() {
         >
           {previewIndex !== null && (
             <div className="relative w-full flex items-center justify-center">
-              <img
+              <ImageWithFallback
                 src={GALLERY_IMAGES[previewIndex]}
+                fallbackSrc="/favicon.png"
                 alt={`活動贈品實拍 ${previewIndex + 1}`}
                 className="max-h-[80vh] w-auto rounded-xl object-contain"
               />

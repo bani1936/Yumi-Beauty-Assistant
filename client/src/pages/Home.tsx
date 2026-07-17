@@ -10,7 +10,7 @@ export default function Home() {
       id: 'promotion',
       icon: <Gift className="w-7 h-7" />,
       title: '最新活動',
-      description: '新會員消費滿額晉升組長，贈送質感訂製旅行化妝包及居家安瓶保養組 2 組',
+      description: '新會員限定好禮，滿額即享升級禮遇',
       buttonText: '了解詳情',
       path: '/promotion',
       highlight: true,
