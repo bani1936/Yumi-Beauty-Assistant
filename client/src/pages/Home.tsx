@@ -7,21 +7,21 @@ export default function Home() {
 
   const TOOL_CARDS = [
     {
+      id: 'promotion',
+      icon: <Gift className="w-7 h-7" />,
+      title: '最新活動',
+      description: '新會員消費滿額晉升組長，贈送質感訂製旅行化妝包及居家安瓶保養組 2 組',
+      buttonText: '了解詳情',
+      path: '/promotion',
+      highlight: true,
+    },
+    {
       id: 'products',
       icon: <Sparkles className="w-7 h-7" />,
       title: '全系列產品',
       description: '介紹系列產品效果及用法',
       buttonText: '點我瀏覽',
       path: '/products',
-      highlight: false,
-    },
-    {
-      id: 'product-calculator',
-      icon: <Calculator className="w-7 h-7" />,
-      title: '首購／團購金額試算',
-      description: '團購及首購會員顧客使用',
-      buttonText: '快速計算',
-      path: '/product-calculator',
       highlight: false,
     },
     {
@@ -34,13 +34,13 @@ export default function Home() {
       highlight: false,
     },
     {
-      id: 'promotion',
-      icon: <Gift className="w-7 h-7" />,
-      title: '最新活動',
-      description: '新會員消費滿額晉升組長，贈送質感訂製旅行化妝包及居家安瓶保養組 2 組',
-      buttonText: '了解詳情',
-      path: '/promotion',
-      highlight: true,
+      id: 'product-calculator',
+      icon: <Calculator className="w-7 h-7" />,
+      title: '首購／團購金額試算',
+      description: '團購及首購會員顧客使用',
+      buttonText: '快速計算',
+      path: '/product-calculator',
+      highlight: false,
     }
   ];
 

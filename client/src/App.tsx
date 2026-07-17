@@ -41,10 +41,10 @@ function GlobalNav() {
           <span className="text-sm font-semibold" style={{fontSize: '16px', fontWeight: '400'}}>Yumí 米米美學｜高端皮膚管理</span>
         </div>
         <div className="hidden md:flex items-center gap-6">
+          <button onClick={() => handleNavigate('/promotion')} className="text-sm hover:text-[#d4a574] transition-colors">最新活動</button>
           <button onClick={() => handleNavigate('/products')} className="text-sm hover:text-[#d4a574] transition-colors">全系列產品</button>
-          <button onClick={() => handleNavigate('/product-calculator')} className="text-sm hover:text-[#d4a574] transition-colors">首購／團購金額試算</button>
           <button onClick={() => handleNavigate('/membership')} className="text-sm hover:text-[#d4a574] transition-colors">會員制度</button>
-          <button onClick={() => handleNavigate('/skin-detection')} className="text-sm hover:text-[#d4a574] transition-colors">肌膚檢測小幫手</button>
+          <button onClick={() => handleNavigate('/product-calculator')} className="text-sm hover:text-[#d4a574] transition-colors">首購／團購金額試算</button>
         </div>
         {/* 手機版菜單按鈕 */}
         <div className="md:hidden">
@@ -56,17 +56,17 @@ function GlobalNav() {
       {/* 手機版側邊菜單 */}
       {isMenuOpen && (
         <div className="md:hidden bg-gradient-to-r from-[#5a4a3a] to-[#6b5a4a] border-t border-[#4a3a2a] py-4 px-4 space-y-3">
+          <button onClick={() => { handleNavigate('/promotion'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
+            最新活動
+          </button>
           <button onClick={() => { handleNavigate('/products'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
             全系列產品
-          </button>
-          <button onClick={() => { handleNavigate('/product-calculator'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
-            首購／團購金額試算
           </button>
           <button onClick={() => { handleNavigate('/membership'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
             會員制度
           </button>
-          <button onClick={() => { handleNavigate('/skin-detection'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
-            肌膚檢測小幫手
+          <button onClick={() => { handleNavigate('/product-calculator'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
+            首購／團購金額試算
           </button>
         </div>
       )}
