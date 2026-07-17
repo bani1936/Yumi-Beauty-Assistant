@@ -26,7 +26,7 @@ export const USAGE_SEQUENCES: Record<string, SeriesUsageGuide> = {
       { step: 9, productNumber: '7號' },
       { step: 10, productNumber: '26號', note: '全臉噴灑，作為最後一道防護與保濕' },
     ],
-    fullSetLabel: '0號、1號、3號、4號、5-1或5-2號、6號、7號、26號',
+    fullSetLabel: '0號、1號、2號、3號、4號、5-1或5-2號、6號、7號、26號',
   },
   '熨斗系列(大)': {
     steps: [
@@ -41,7 +41,7 @@ export const USAGE_SEQUENCES: Record<string, SeriesUsageGuide> = {
       { step: 9, productNumber: '7號' },
       { step: 10, productNumber: '26號', note: '全臉噴灑，作為最後一道防護與保濕' },
     ],
-    fullSetLabel: '0號、1號、3號、4號、5-1或5-2號、6號、7號、26號',
+    fullSetLabel: '0號、1號、2號、3號、4號、5-1或5-2號、6號、7號、26號',
   },
   '都都好系列': {
     steps: [
