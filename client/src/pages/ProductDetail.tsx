@@ -1,5 +1,5 @@
 import { useLocation } from 'wouter';
-import { ChevronLeft, Target, Leaf, Droplet, Package } from 'lucide-react';
+import { ChevronLeft, Target, Leaf, Droplet, Package, Sparkles } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products';
 import { USAGE_SEQUENCES } from '@/lib/usage-sequences';
 import { Button } from '@/components/ui/button';
@@ -309,10 +309,89 @@ export default function ProductDetail() {
                 使用方法
               </h3>
             </div>
-            <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#5a4632' }}>
+
+            {product.usageSteps && product.usageSteps.length > 0 && (
+              <div className="mb-6">
+                <div className="text-xs font-semibold mb-3" style={{ color: '#9c7a3f' }}>
+                  厚敷修護用法
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {product.usageSteps.map((step, idx) => (
+                    <div key={idx} className="text-center">
+                      <div
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-2"
+                        style={{ background: '#8B6F47', color: '#fff' }}
+                      >
+                        {idx + 1}
+                      </div>
+                      <div className="text-xs font-semibold mb-1" style={{ color: '#5a4632' }}>
+                        {step.title}
+                      </div>
+                      <div className="text-xs leading-relaxed" style={{ color: '#6B6B6B' }}>
+                        {step.description}
+                      </div>
+                      {step.note && (
+                        <div className="text-[10px] mt-1" style={{ color: '#B59A8A' }}>
+                          {step.note}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {product.usageTags && product.usageTags.length > 0 && (
+              <div className="mb-6 pt-5" style={{ borderTop: '1px solid #E8DCC8' }}>
+                <div className="text-xs font-semibold mb-3" style={{ color: '#9c7a3f' }}>
+                  薄塗舒緩用法・適用情境
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {product.usageTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs px-3 py-1.5 rounded-full font-medium"
+                      style={{ background: 'rgba(255,255,255,0.7)', color: '#8B6F47' }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <p
+              className="leading-relaxed whitespace-pre-wrap text-sm"
+              style={{ color: '#5a4632', paddingTop: product.usageSteps || product.usageTags ? '20px' : 0, borderTop: (product.usageSteps || product.usageTags) ? '1px solid #E8DCC8' : 'none' }}
+            >
               {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
             </p>
           </Card>
+
+          {/* 使用小提醒 */}
+          {product.usageTips && product.usageTips.length > 0 && (
+            <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
+              <div className="flex items-center gap-2.5 mb-4">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: '#F5F1ED', color: '#8B6F47' }}
+                >
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                  使用小提醒
+                </h3>
+              </div>
+              <div className="space-y-3">
+                {product.usageTips.map((tip, idx) => (
+                  <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                    <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                    <span>{tip}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
 
           {/* 保存方式 */}
           <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
