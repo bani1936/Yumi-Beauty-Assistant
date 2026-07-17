@@ -168,10 +168,10 @@ export default function ProductDetail() {
               </div>
               <div>
                 <div className="font-semibold mb-1" style={{ color: "#5a4632" }}>
-                  建議整套使用，效果最佳
+                  整套使用效果最佳
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
-                  {product.productTitle}（{product.productNumber}）是「{product.series}」整套療程中的一環，完整療程建議：
+                  {product.productNumber} {product.productTitle} 是「{product.series.replace('(小)', '').replace('(大)', '').trim()}」整組保養的其中一環，完整保養建議：
                   {USAGE_SEQUENCES[product.series].fullSetLabel}
                   　｜　使用完畢後，單一品項亦可個別回購
                 </div>
@@ -203,7 +203,6 @@ export default function ProductDetail() {
                       </div>
                       <div className="text-xs font-semibold" style={{ color: isCurrent ? "#9c7a3f" : "#5a4632" }}>
                         {step.productNumber}
-                        {isCurrent ? "（本商品）" : ""}
                       </div>
                       {stepProduct && (
                         <div className="text-[10px] leading-tight mt-0.5 line-clamp-2" style={{ color: "#9c8a76" }}>

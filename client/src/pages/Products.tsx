@@ -196,10 +196,10 @@ export default function Products() {
                   </div>
                   <div>
                     <div className="font-semibold mb-1" style={{ color: "#5a4632" }}>
-                      建議整套使用，效果最佳
+                      整套使用效果最佳
                     </div>
                     <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
-                      完整療程建議：{USAGE_SEQUENCES[selectedCategory].fullSetLabel}
+                      完整保養建議：{USAGE_SEQUENCES[selectedCategory].fullSetLabel}
                       　｜　使用完畢後，單一品項亦可個別回購
                     </div>
                   </div>
