@@ -1,5 +1,5 @@
 import { useLocation } from 'wouter';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Target, Leaf, Droplet, Package } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products';
 import { USAGE_SEQUENCES } from '@/lib/usage-sequences';
 import { Button } from '@/components/ui/button';
@@ -228,62 +228,102 @@ export default function ProductDetail() {
         )}
 
         {/* 詳細信息 - 單頁滾動式 */}
-        <div className="space-y-8">
+        <div className="space-y-5">
           {/* 產品用途 */}
-          <Card className="p-6">
-            <h3 className="text-lg font-bold mb-4" style={{ color: '#8b6f47' }}>
-              🎯 產品用途
-            </h3>
-            <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+          <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
+            <div className="flex items-center gap-2.5 mb-4">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: '#F5F1ED', color: '#8B6F47' }}
+              >
+                <Target className="w-4 h-4" />
+              </div>
+              <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                產品用途
+              </h3>
+            </div>
+            <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
               {product.usage || product.description}
             </p>
           </Card>
 
+          {/* 主要成分 */}
+          <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
+            <div className="flex items-center gap-2.5 mb-4">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: '#F5F1ED', color: '#8B6F47' }}
+              >
+                <Leaf className="w-4 h-4" />
+              </div>
+              <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                主要成分
+              </h3>
+            </div>
+
+            {product.ingredients && (
+              <div className="flex flex-wrap gap-2 mb-5">
+                {product.ingredients.split('、').map((ing, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs px-3 py-1.5 rounded-full font-medium"
+                    style={{ background: '#FBF6EE', color: '#8B6F47' }}
+                  >
+                    {ing.trim()}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {product.precautions && product.precautions.length > 0 && (
+              <div className="space-y-3 pt-4" style={{ borderTop: '1px solid #F0EAE2' }}>
+                <div className="text-xs font-semibold" style={{ color: '#B59A8A' }}>
+                  成分小知識
+                </div>
+                {product.precautions.map((fact, idx) => (
+                  <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                    <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                    <span>{fact}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+
           {/* 使用方法 */}
-          <Card className="p-6">
-            <h3 className="text-lg font-bold mb-4" style={{ color: '#8b6f47' }}>
-              💧 使用方法
-            </h3>
-            <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+          <Card className="p-6" style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}>
+            <div className="flex items-center gap-2.5 mb-4">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: 'rgba(255,255,255,0.6)', color: '#8B6F47' }}
+              >
+                <Droplet className="w-4 h-4" />
+              </div>
+              <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                使用方法
+              </h3>
+            </div>
+            <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#5a4632' }}>
               {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
             </p>
           </Card>
 
-          {/* 主要成分 */}
-          <Card className="p-6">
-            <h3 className="text-lg font-bold mb-4" style={{ color: '#8b6f47' }}>
-              🌿 主要成分
-            </h3>
-            <p className="text-foreground leading-relaxed whitespace-pre-wrap">
-              {product.ingredients || '天然植物精油配方'}
-            </p>
-          </Card>
-
           {/* 保存方式 */}
-          <Card className="p-6">
-            <h3 className="text-lg font-bold mb-4" style={{ color: '#8b6f47' }}>
-              🏠 保存方式
-            </h3>
-            <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+          <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
+            <div className="flex items-center gap-2.5 mb-4">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: '#F5F1ED', color: '#8B6F47' }}
+              >
+                <Package className="w-4 h-4" />
+              </div>
+              <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                保存方式
+              </h3>
+            </div>
+            <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
               {product.storage || '存放於陰涼乾燥處。避免陽光直射及潮濕環境。'}
             </p>
-
-            {/* 使用注意事項 */}
-            {product.precautions && product.precautions.length > 0 && (
-              <div className="mt-6 pt-6 border-t border-border">
-                <h4 className="font-bold mb-3 text-foreground">⚠️ 使用注意事項</h4>
-                <ul className="space-y-2">
-                  {product.precautions.map((precaution, idx) => (
-                    <li key={`precaution-${idx}`} className="flex gap-3 text-sm text-foreground">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center text-xs font-bold">
-                        {idx + 1}
-                      </span>
-                      <span>{precaution}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </Card>
         </div>
       </div>

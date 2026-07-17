@@ -6,7 +6,6 @@ import { ChevronLeft, ShoppingCart, Grid3x3, List } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import * as React from 'react';
 import { PRODUCTS, PRODUCT_CATEGORIES } from '@/lib/products';
-import { USAGE_SEQUENCES } from '@/lib/usage-sequences';
 import {
   Select,
   SelectContent,
@@ -181,74 +180,6 @@ export default function Products() {
               </h1>
             </div>
 
-            {/* 完整使用流程 + 整套提示橫幅 */}
-            {USAGE_SEQUENCES[selectedCategory] && (
-              <div
-                className="rounded-2xl p-5 md:p-7 mb-8"
-                style={{ background: "#FBF6EE", border: "1px solid #E8DCC8" }}
-              >
-                <div className="flex items-start gap-3 mb-6">
-                  <div
-                    className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-base"
-                    style={{ background: "#8B6F47", color: "#fff" }}
-                  >
-                    ✓
-                  </div>
-                  <div>
-                    <div className="font-semibold mb-1" style={{ color: "#5a4632" }}>
-                      整套使用效果最佳
-                    </div>
-                    <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
-                      完整保養建議：{USAGE_SEQUENCES[selectedCategory].fullSetLabel}
-                      　｜　使用完畢後，單一品可個別購買
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-xs font-semibold mb-3" style={{ color: "#8B6F47" }}>
-                  使用順序 &amp; 用法
-                </div>
-                <div className="flex flex-wrap gap-x-1 gap-y-4">
-                  {USAGE_SEQUENCES[selectedCategory].steps.map((step, idx) => {
-                    const product = PRODUCTS.find(
-                      (p) => p.productNumber === step.productNumber && p.category === CATEGORY_MAP[selectedCategory]
-                    );
-                    const isLast = idx === USAGE_SEQUENCES[selectedCategory].steps.length - 1;
-                    return (
-                      <React.Fragment key={idx}>
-                        <div className="flex flex-col items-center text-center w-[84px]">
-                          <div
-                            className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mb-2"
-                            style={{ background: "#5a4632", color: "#fff" }}
-                          >
-                            {step.step}
-                          </div>
-                          <div className="text-xs font-semibold" style={{ color: "#5a4632" }}>
-                            {step.productNumber}
-                          </div>
-                          {product && (
-                            <div className="text-[10px] leading-tight mt-0.5 line-clamp-2" style={{ color: "#9c8a76" }}>
-                              {product.productTitle}
-                            </div>
-                          )}
-                          {step.note && (
-                            <div className="text-[10px] leading-tight mt-1" style={{ color: "#B59A8A" }}>
-                              {step.note}
-                            </div>
-                          )}
-                        </div>
-                        {!isLast && (
-                          <div className="flex items-center text-sm" style={{ color: "#D8CFC2" }}>
-                            →
-                          </div>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
             {/* 排序和視圖選項 */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
               <div className="flex items-center gap-2">
@@ -325,7 +256,7 @@ export default function Products() {
                     {/* 產品編號和名稱分兩行顯示 */}
                     <div className="mb-2">
                       {product.productNumber && (
-                        <div className="text-sm md:text-base font-bold mb-0.5" style={{ color: "#8B6F47" }}>
+                        <div className="text-xs mb-0.5" style={{ color: "#B59A8A" }}>
                           {product.productNumber}
                         </div>
                       )}
