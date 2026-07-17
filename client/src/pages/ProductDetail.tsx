@@ -248,7 +248,16 @@ export default function ProductDetail() {
                 產品用途
               </h3>
             </div>
-            <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
+            <p
+              className="leading-relaxed whitespace-pre-wrap"
+              style={{
+                color: '#4a4038',
+                fontSize: product.usageModes ? '19px' : '16px',
+                fontWeight: product.usageModes ? 600 : 400,
+                fontFamily: product.usageModes ? "'Playfair Display', serif" : 'inherit',
+                lineHeight: product.usageModes ? 1.7 : 1.75,
+              }}
+            >
               {product.usage || product.description}
             </p>
           </Card>
@@ -297,76 +306,84 @@ export default function ProductDetail() {
           </Card>
 
           {/* 使用方法 */}
-          <Card className="p-6" style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}>
-            <div className="flex items-center gap-2.5 mb-4">
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: 'rgba(255,255,255,0.6)', color: '#8B6F47' }}
-              >
-                <Droplet className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                使用方法
-              </h3>
-            </div>
-
-            {product.usageSteps && product.usageSteps.length > 0 && (
-              <div className="mb-6">
-                <div className="text-xs font-semibold mb-3" style={{ color: '#9c7a3f' }}>
-                  厚敷修護用法
+          {product.usageModes && product.usageModes.length > 0 ? (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2.5 px-1">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: '#F5F1ED', color: '#8B6F47' }}
+                >
+                  <Droplet className="w-4 h-4" />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {product.usageSteps.map((step, idx) => (
-                    <div key={idx} className="text-center">
-                      <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-2"
-                        style={{ background: '#8B6F47', color: '#fff' }}
+                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                  使用方法
+                </h3>
+              </div>
+
+              {product.usageModes.map((mode, idx) => (
+                <Card
+                  key={idx}
+                  className="p-6 md:p-8"
+                  style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}
+                >
+                  <div className="flex gap-5 md:gap-7">
+                    <div
+                      className="flex-shrink-0 text-3xl md:text-4xl font-bold"
+                      style={{ color: '#D9C6A5', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      {mode.label}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4
+                        className="text-lg md:text-xl font-bold mb-2.5"
+                        style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                       >
-                        {idx + 1}
-                      </div>
-                      <div className="text-xs font-semibold mb-1" style={{ color: '#5a4632' }}>
-                        {step.title}
-                      </div>
-                      <div className="text-xs leading-relaxed" style={{ color: '#6B6B6B' }}>
-                        {step.description}
-                      </div>
-                      {step.note && (
-                        <div className="text-[10px] mt-1" style={{ color: '#B59A8A' }}>
-                          {step.note}
+                        {mode.title}
+                      </h4>
+                      <p className="text-sm leading-relaxed mb-3" style={{ color: '#6B6B6B' }}>
+                        {mode.description}
+                      </p>
+                      {mode.tags && mode.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {mode.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-xs px-3 py-1.5 rounded-full font-medium"
+                              style={{ background: 'rgba(255,255,255,0.7)', color: '#8B6F47' }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {mode.note && (
+                        <div className="text-xs" style={{ color: '#B59A8A' }}>
+                          ⚠️ {mode.note}
                         </div>
                       )}
                     </div>
-                  ))}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card className="p-6" style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}>
+              <div className="flex items-center gap-2.5 mb-4">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(255,255,255,0.6)', color: '#8B6F47' }}
+                >
+                  <Droplet className="w-4 h-4" />
                 </div>
+                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                  使用方法
+                </h3>
               </div>
-            )}
-
-            {product.usageTags && product.usageTags.length > 0 && (
-              <div className="mb-6 pt-5" style={{ borderTop: '1px solid #E8DCC8' }}>
-                <div className="text-xs font-semibold mb-3" style={{ color: '#9c7a3f' }}>
-                  薄塗舒緩用法・適用情境
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {product.usageTags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs px-3 py-1.5 rounded-full font-medium"
-                      style={{ background: 'rgba(255,255,255,0.7)', color: '#8B6F47' }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <p
-              className="leading-relaxed whitespace-pre-wrap text-sm"
-              style={{ color: '#5a4632', paddingTop: product.usageSteps || product.usageTags ? '20px' : 0, borderTop: (product.usageSteps || product.usageTags) ? '1px solid #E8DCC8' : 'none' }}
-            >
-              {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
-            </p>
-          </Card>
+              <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#5a4632' }}>
+                {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
+              </p>
+            </Card>
+          )}
 
           {/* 使用小提醒 */}
           {product.usageTips && product.usageTips.length > 0 && (
