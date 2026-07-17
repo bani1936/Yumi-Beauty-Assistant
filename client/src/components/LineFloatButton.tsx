@@ -1,6 +1,6 @@
 // 官方 LINE 帳號連結 —— 請換成您自己的連結
 // (LINE 官方帳號後台「加入好友」設定裡可以複製，通常長這樣：https://lin.ee/xxxxxxx)
-const LINE_URL = "https://lin.ee/REPLACE_ME";
+const LINE_URL = "https://lin.ee/QaAtcuU";
 
 export default function LineFloatButton() {
   return (
