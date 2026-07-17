@@ -30,6 +30,7 @@ export interface Product {
   usageSteps?: { title: string; description: string; note?: string }[];
   usageTags?: string[];   // 適用情境標籤（薄塗舒緩用法等）
   usageTips?: string[];   // 使用小提醒
+  usageModes?: { label: string; title: string; description: string; tags?: string[]; note?: string }[]; // 大區塊式用法（HOW TO USE 風格）
 }
 
 export interface ProductCategory {
@@ -1192,13 +1193,26 @@ export const PRODUCTS: Product[] = [
     pv: 3383,
     usage: '舒緩及修護肌膚，減少肌膚乾澀、脫屑、脫皮狀況，調理肌膚油水平衡。\n每天使用可提升肌膚對環境傷害的保護力，形成肌膚保護膜。',
     instructions: '清潔後，取適量塗抹全身上下所有部位(包含私密處)皆可使用！\n所有情況舉例：泛紅、敏感、過敏、曬傷、發炎、灼燒脫皮、皮膚炎、疹子…等皆可使用！\n\n✦ 加強過夜用法：系列保養品上完後，全臉塗抹約0.2公分厚，睡醒用飲用水擦拭至薄薄一層，再重新上後續保養品即可。',
-    usageSteps: [
-      { title: '厚敷', description: '清潔肌膚後，使用面膜刷將膠原凝露均勻厚敷於全臉約 0.2 公分厚度', note: '適用部位：全臉、全身皆可使用' },
-      { title: '停留', description: '停留 15-20 分鐘' },
-      { title: '擦拭', description: '使用洗臉巾沾取飲用水輕柔擦拭乾淨', note: '建議使用飲用水' },
-      { title: '後續保養', description: '後續再依序使用日常保養品即可' }
+    usageModes: [
+      {
+        label: '01',
+        title: '全臉厚敷，深層修護加乘',
+        description: '清潔肌膚後，使用面膜刷將膠原凝露均勻厚敷於全臉約 0.2 公分厚度，停留 15-20 分鐘，再用飲用水沾濕洗臉巾輕柔擦拭乾淨，後續依序使用日常保養品即可。',
+        note: '適用部位：全臉、全身皆可使用，建議使用飲用水擦拭'
+      },
+      {
+        label: '02',
+        title: '隨時薄塗，舒緩肌膚不適',
+        description: '當肌膚出現不適時，可隨時取適量薄塗於局部或大面積肌膚，幫助舒緩、修復與保濕。',
+        tags: ['曬傷', '灼傷', '脫皮', '發炎', '疹子', '私密處緩解不適'],
+        note: '全身、寶寶尿布疹、私密處皆可使用'
+      },
+      {
+        label: '03',
+        title: '夜間加強，喚醒澎潤光采',
+        description: '系列保養品使用完畢後，全臉塗抹約 0.2 公分厚，睡醒後用飲用水擦拭至薄薄一層，再重新上後續保養品即可。',
+      }
     ],
-    usageTags: ['曬傷', '灼傷', '脫皮', '發炎', '疹子', '私密處緩解不適'],
     usageTips: [
       '冰鎮效果更佳：放置冰箱冷藏後使用，舒緩效果更佳',
       '刺癢感屬正常修護反應：若感覺些微刺癢，但沒有出現紅、腫、痛等異常反應，通常代表肌膚存在較多隱性受損區域，產品正在協助肌膚修護與調理',
