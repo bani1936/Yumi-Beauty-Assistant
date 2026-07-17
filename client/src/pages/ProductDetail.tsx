@@ -171,9 +171,15 @@ export default function ProductDetail() {
                   整套使用效果最佳
                 </div>
                 <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
-                  {product.productNumber} {product.productTitle} 是「{product.series.replace('(小)', '').replace('(大)', '').trim()}」整組保養的其中一環，完整保養建議：
-                  {USAGE_SEQUENCES[product.series].fullSetLabel}
-                  　｜　使用完畢後，單一品可個別購買
+                  {product.productNumber === '7號' ? (
+                    '7號 活膚煥采亮顏乳 可搭配在任一系列保養的最後一道，作為日常防塵防曬使用'
+                  ) : (
+                    <>
+                      {product.productNumber} {product.productTitle} 是「{product.series.replace('(小)', '').replace('(大)', '').trim()}」整組保養的其中一環，完整保養建議：
+                      {USAGE_SEQUENCES[product.series].fullSetLabel}
+                      　｜　使用完畢後，單一品可個別購買
+                    </>
+                  )}
                 </div>
               </div>
             </div>
