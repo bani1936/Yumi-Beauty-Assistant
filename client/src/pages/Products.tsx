@@ -181,6 +181,58 @@ export default function Products() {
               </h1>
             </div>
 
+            {/* 明星商品強打橫幅：膠原凝露 */}
+            {selectedCategory === '明星商品' && (
+              <div
+                className="rounded-2xl overflow-hidden mb-8 grid grid-cols-1 md:grid-cols-2"
+                style={{ border: '1px solid #E8DCC8' }}
+              >
+                <div className="aspect-[4/3] md:aspect-auto">
+                  <img
+                    src="/collagen-gel-hero.jpg"
+                    alt="膠原凝露 - 舒緩・修復・保濕王者"
+                    className="w-full h-full object-cover object-left"
+                  />
+                </div>
+                <div
+                  className="p-7 md:p-10 flex flex-col justify-center"
+                  style={{ background: 'linear-gradient(160deg, #FBF6EE, #F3E8D8)' }}
+                >
+                  <div className="text-[11px] tracking-[2px] font-semibold mb-2" style={{ color: '#9c7a3f' }}>
+                    MONTHLY MUST-HAVE
+                  </div>
+                  <h2
+                    className="text-2xl md:text-3xl font-bold mb-2"
+                    style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                  >
+                    膠原凝露
+                  </h2>
+                  <p className="text-sm font-medium mb-4" style={{ color: '#8B6F47' }}>
+                    舒緩・修復・保濕王者
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {['舒緩敏感', '修復受損', '深層保濕', '全臉全身皆可用'].map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-xs px-3 py-1.5 rounded-full font-medium"
+                        style={{ background: 'rgba(255,255,255,0.6)', color: '#8B6F47' }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => navigate('/product-detail?id=special-38&from=' + encodeURIComponent('明星商品'))}
+                    className="inline-flex items-center gap-2 self-start text-sm font-semibold px-5 py-2.5 rounded-full transition-transform hover:scale-105"
+                    style={{ background: '#8B6F47', color: '#fff' }}
+                  >
+                    查看詳情
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* 完整使用流程 + 整套提示橫幅 */}
             {USAGE_SEQUENCES[selectedCategory] && (
               <div
