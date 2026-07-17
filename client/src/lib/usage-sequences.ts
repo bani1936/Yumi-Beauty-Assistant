@@ -21,7 +21,7 @@ export const USAGE_SEQUENCES: Record<string, SeriesUsageGuide> = {
       { step: 4, productNumber: '2號', note: '使用前搖一搖，搭配拉提手法按摩' },
       { step: 5, productNumber: '3號' },
       { step: 6, productNumber: '4號' },
-      { step: 7, productNumber: '5-1號' },
+      { step: 7, productNumber: '5-2號' },
       { step: 8, productNumber: '6號' },
       { step: 9, productNumber: '7號' },
       { step: 10, productNumber: '26號', note: '全臉噴灑，作為最後一道防護與保濕' },
