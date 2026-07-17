@@ -1,5 +1,6 @@
-// 官方 LINE 帳號連結 —— 請換成您自己的連結
-// (LINE 官方帳號後台「加入好友」設定裡可以複製，通常長這樣：https://lin.ee/xxxxxxx)
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
+
+// 官方 LINE 帳號連結
 const LINE_URL = "https://lin.ee/QaAtcuU";
 
 export default function LineFloatButton() {
@@ -9,12 +10,15 @@ export default function LineFloatButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="加入 LINE 官方帳號"
-      className="fixed bottom-6 right-6 z-[999] w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105"
-      style={{ backgroundColor: "#06C755" }}
+      className="fixed z-[999] w-14 h-14 rounded-full shadow-lg transition-transform hover:scale-105"
+      style={{ right: "24px", top: "62%" }}
     >
-      <svg viewBox="0 0 24 24" width="30" height="30" fill="#fff" aria-hidden="true">
-        <path d="M12 2C6.477 2 2 5.79 2 10.46c0 4.17 3.55 7.66 8.35 8.32.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.82-3.43 7.94-5.87C21.44 13.99 22 12.3 22 10.46 22 5.79 17.52 2 12 2zm-4.66 10.9H6.06a.34.34 0 0 1-.34-.34V8.03c0-.19.15-.34.34-.34.19 0 .34.15.34.34v4.19h.94c.19 0 .34.15.34.34 0 .18-.15.34-.34.34zm2.06 0c-.19 0-.34-.16-.34-.34V8.03c0-.19.15-.34.34-.34.19 0 .34.15.34.34v4.53c0 .18-.15.34-.34.34zm4.44 0a.34.34 0 0 1-.28-.14l-2.1-2.87v2.67c0 .18-.15.34-.34.34a.34.34 0 0 1-.34-.34V8.03c0-.15.1-.28.24-.32a.33.33 0 0 1 .37.12l2.1 2.87V8.03c0-.19.15-.34.34-.34.19 0 .34.15.34.34v4.53c0 .15-.1.28-.24.32a.3.3 0 0 1-.09.02zm3.98-3.53h-1.4v.94h1.4c.19 0 .34.15.34.34 0 .18-.15.34-.34.34h-1.4v.94h1.4c.19 0 .34.15.34.34 0 .18-.15.34-.34.34h-1.74a.34.34 0 0 1-.34-.34V8.03c0-.19.15-.34.34-.34h1.74c.19 0 .34.15.34.34 0 .19-.15.34-.34.34z"/>
-      </svg>
+      <ImageWithFallback
+        src="/line-icon.png"
+        fallbackSrc="/favicon.png"
+        alt="LINE"
+        className="w-full h-full object-contain"
+      />
     </a>
   );
 }
