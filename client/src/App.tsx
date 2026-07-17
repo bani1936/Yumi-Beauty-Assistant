@@ -16,6 +16,7 @@ import Promotion from "./pages/Promotion";
 import ProductDetail from "./pages/ProductDetail";
 
 import SplashScreen from "./components/SplashScreen";
+import LineFloatButton from "./components/LineFloatButton";
 import { ImageWithFallback } from "./components/ui/ImageWithFallback";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -125,6 +126,7 @@ function App() {
             <GlobalNav />
             <AppRoutes />
           </WouterRouter>
+          <LineFloatButton />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
