@@ -188,8 +188,9 @@ export default function Products() {
                 style={{ border: '1px solid #E8DCC8' }}
               >
                 <div className="aspect-[4/3] md:aspect-auto">
-                  <img
+                  <ImageWithFallback
                     src="/collagen-gel-hero.jpg"
+                    fallbackSrc="/favicon.png"
                     alt="膠原凝露 - 舒緩・修復・保濕王者"
                     className="w-full h-full object-cover object-left"
                   />
