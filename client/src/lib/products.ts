@@ -31,6 +31,20 @@ export interface Product {
   usageTags?: string[];   // 適用情境標籤（薄塗舒緩用法等）
   usageTips?: string[];   // 使用小提醒
   usageModes?: { label: string; title: string; description: string; tags?: string[]; note?: string }[]; // 大區塊式用法（HOW TO USE 風格）
+  // 旗艦商品故事頁（選填，用於明星商品的敘事式導覽頁）
+  storySections?: {
+    heroImage?: string;        // 開場橫幅圖（文字已在圖片裡，不用再疊字）
+    intro?: {
+      title: string;
+      cards: string[];
+      warning?: string;
+    };
+    benefits?: {
+      image: string;
+      title: string;
+      points: string[];
+    }[];
+  };
 }
 
 export interface ProductCategory {
@@ -1219,7 +1233,39 @@ export const PRODUCTS: Product[] = [
       '若有異常請停止使用：若出現持續不適、明顯紅腫或其他異常狀況，請立即停止使用並與我們聯繫'
     ],
     ingredients: '蘆薈葉汁萃取、透明質酸、甘露醇萃取。',
-    storage: '存放於陰涼乾燥處。避免陽光直射及潮濕環境。\n在家建議冰冷凍敷效果最佳!'
+    storage: '存放於陰涼乾燥處。避免陽光直射及潮濕環境。\n在家建議冰冷凍敷效果最佳!',
+    storySections: {
+      heroImage: '/collagen-story-hero.jpg',
+      intro: {
+        title: '煥然一新的改變：全方位的肌膚守護',
+        cards: [
+          '急速舒緩急性不適（曬傷、灼傷、發炎減緩）',
+          '高效修復屏障受損（脫皮修復、疹子困擾）',
+          '極致溫和的私密呵護（私密處緩解不適、寶寶尿布疹）',
+        ],
+        warning: '⚠️ 溫和純淨無添加：全身上下、寶寶尿布疹、私密處皆可安心使用。',
+      },
+      benefits: [
+        {
+          image: '/collagen-story-benefit-1.jpg',
+          title: '厚敷修護｜深層舒緩鎮定',
+          points: [
+            '全臉厚敷 0.2 公分，停留 15-20 分鐘',
+            '醫美沙龍級 300ml，用量無負擔',
+            '敏弱肌、術後修復皆適用',
+          ],
+        },
+        {
+          image: '/collagen-story-benefit-2.jpg',
+          title: '薄塗急救｜隨時隨地舒緩',
+          points: [
+            '暗沉、雷射術後、敏感泛紅皆可用',
+            '每天使用，膚況感受得到的變化',
+            '質地清爽好吸收，不黏膩',
+          ],
+        },
+      ],
+    },
   },
 
   {
@@ -1612,11 +1658,11 @@ export const SKIN_QUIZ_QUESTIONS: SkinQuizQuestion[] = [
 // 根據檢測結果推薦產品
 export function getRecommendedProducts(answers: Record<string, string>): Product[] {
   const recommended: Product[] = [];
-  
+
   const skinType = answers['skin-type'];
   const mainConcern = answers['main-concern'];
   const goal = answers['goal'];
-  
+
   // 根據主要困擾推薦
   if (mainConcern === 'acne') {
     recommended.push(
@@ -1639,13 +1685,13 @@ export function getRecommendedProducts(answers: Record<string, string>): Product
       ...PRODUCTS.filter(p => p.series === '晶亮系列' || p.series === 'Q彈精緻系列').slice(0, 3)
     );
   }
-  
+
   // 如果推薦不足，補充基礎產品
   if (recommended.length < 3) {
     recommended.push(
       ...PRODUCTS.filter(p => !recommended.includes(p)).slice(0, 3 - recommended.length)
     );
   }
-  
+
   return recommended.slice(0, 3);
 }
