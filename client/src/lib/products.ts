@@ -36,7 +36,7 @@ export interface Product {
     heroImage?: string;        // 開場橫幅圖（文字已在圖片裡，不用再疊字）
     intro?: {
       title: string;
-      cards: string[];
+      gridImage: string;   // 單張整合圖（含中文標籤，直接印在照片上）
       warning?: string;
     };
     benefits?: {
@@ -1237,12 +1237,8 @@ export const PRODUCTS: Product[] = [
     storySections: {
       heroImage: '/collagen-story-hero.jpg',
       intro: {
-        title: '煥然一新的改變：全方位的肌膚守護',
-        cards: [
-          '急速舒緩急性不適（曬傷、灼傷、發炎減緩）',
-          '高效修復屏障受損（脫皮修復、疹子困擾）',
-          '極致溫和的私密呵護（私密處緩解不適、寶寶尿布疹）',
-        ],
+        title: '純天然植萃，任何受損膚況適用',
+        gridImage: '/collagen-story-concerns-grid.jpg',
         warning: '⚠️ 溫和純淨無添加：全身上下、寶寶尿布疹、私密處皆可安心使用。',
       },
       benefits: [
