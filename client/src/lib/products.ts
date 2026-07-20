@@ -39,6 +39,9 @@ export interface Product {
       gridImage: string;   // 單張整合圖（含中文標籤，直接印在照片上）
       warning?: string;
     };
+    ingredientsSection?: {
+      items: { image: string; name: string; description: string }[];
+    };
     benefits?: {
       image: string;
       title: string;
@@ -1240,6 +1243,25 @@ export const PRODUCTS: Product[] = [
         title: '純天然植萃，任何受損膚況適用',
         gridImage: '/collagen-story-concerns-grid.jpg',
         warning: '⚠️ 溫和純淨無添加：全身上下、寶寶尿布疹、私密處皆可安心使用。',
+      },
+      ingredientsSection: {
+        items: [
+          {
+            image: '/collagen-story-ingredient-1.jpg',
+            name: '蘆薈葉汁萃取液',
+            description: '有「肌膚天然急救箱」之稱，富含天然多醣體與胺基酸，能迅速為肌膚補水，舒緩泛紅與乾燥不適，加速修復力。',
+          },
+          {
+            image: '/collagen-story-ingredient-2.jpg',
+            name: '透明質酸',
+            description: '俗稱玻尿酸，具備優異的鎖水能力，能大量吸附並鎖留水分，維持肌膚澎潤與彈性，減緩乾燥引起的細紋。',
+          },
+          {
+            image: '/collagen-story-ingredient-3.jpg',
+            name: '甘露醇萃取',
+            description: '天然抗氧化多醣醇成分，具舒緩鎮定特性，能降低肌膚敏感反應，幫助維持肌膚水潤與穩定狀態。',
+          },
+        ],
       },
       benefits: [
         {
