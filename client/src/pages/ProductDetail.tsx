@@ -168,31 +168,23 @@ export default function ProductDetail() {
             )}
 
             {product.storySections.intro && (
-              <section className="mb-12 md:mb-16 text-center max-w-3xl mx-auto px-2">
+              <section className="mb-12 md:mb-16 text-center max-w-4xl mx-auto px-2">
                 <h2
                   className="text-2xl md:text-3xl font-bold mb-10 leading-snug"
                   style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                 >
                   {product.storySections.intro.title}
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-                  {product.storySections.intro.cards.map((card, idx) => (
-                    <div
-                      key={idx}
-                      className="rounded-2xl p-6 md:p-7 flex flex-col items-center"
-                      style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}
-                    >
-                      <div
-                        className="w-10 h-10 mb-4 rounded-full flex items-center justify-center flex-shrink-0"
-                        style={{ background: '#8B6F47', color: '#fff' }}
-                      >
-                        <Sparkles className="w-5 h-5" />
-                      </div>
-                      <p className="text-sm md:text-[15px] leading-relaxed font-medium" style={{ color: '#5a4632' }}>
-                        {card}
-                      </p>
-                    </div>
-                  ))}
+                <div
+                  className="rounded-2xl overflow-hidden mb-10"
+                  style={{ border: '1px solid #E8DCC8', boxShadow: '0 2px 12px rgba(139,111,71,0.12)' }}
+                >
+                  <ImageWithFallback
+                    src={product.storySections.intro.gridImage}
+                    fallbackSrc="/favicon.png"
+                    alt={product.storySections.intro.title}
+                    className="w-full h-auto block"
+                  />
                 </div>
                 {product.storySections.intro.warning && (
                   <div
