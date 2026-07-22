@@ -31,23 +31,6 @@ export interface Product {
   usageTags?: string[];   // 適用情境標籤（薄塗舒緩用法等）
   usageTips?: string[];   // 使用小提醒
   usageModes?: { label: string; title: string; description: string; tags?: string[]; note?: string }[]; // 大區塊式用法（HOW TO USE 風格）
-  // 旗艦商品故事頁（選填，用於明星商品的敘事式導覽頁）
-  storySections?: {
-    heroImage?: string;        // 開場橫幅圖（文字已在圖片裡，不用再疊字）
-    intro?: {
-      title: string;
-      gridImage: string;   // 單張整合圖（含中文標籤，直接印在照片上）
-      warning?: string;
-    };
-    ingredientsSection?: {
-      items: { image: string; name: string; description: string }[];
-    };
-    benefits?: {
-      image: string;
-      title: string;
-      points: string[];
-    }[];
-  };
 }
 
 export interface ProductCategory {
@@ -1036,13 +1019,13 @@ export const PRODUCTS: Product[] = [
   {
     id: 'D8-10',
     productNumber: 'D8',
-    productTitle: '精華粉與原液',
-    name: 'D8-精華粉與原液',
+    productTitle: '晶亮精華粉與原液',
+    name: 'D8-晶亮精華粉與原液',
     category: 'brightening',
     series: '晶亮系列',
     price: 4400,
     description: '粉液結合，雙重功效',
-    image: '/10.jpg',
+    image: '/d8-set10.jpg',
     benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '10件組',
@@ -1051,13 +1034,13 @@ export const PRODUCTS: Product[] = [
   {
     id: 'D8-1',
     productNumber: 'D8',
-    productTitle: '精華粉與原液',
-    name: 'D8-精華粉與原液',
+    productTitle: '晶亮精華粉與原液',
+    name: 'D8-晶亮精華粉與原液',
     category: 'brightening',
     series: '晶亮系列',
     price: 580,
     description: '粉液結合，雙重功效',
-    image: '/10.jpg',
+    image: '/d8-set1.jpg',
     benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '1件組',
@@ -1236,54 +1219,7 @@ export const PRODUCTS: Product[] = [
       '若有異常請停止使用：若出現持續不適、明顯紅腫或其他異常狀況，請立即停止使用並與我們聯繫'
     ],
     ingredients: '蘆薈葉汁萃取、透明質酸、甘露醇萃取。',
-    storage: '存放於陰涼乾燥處。避免陽光直射及潮濕環境。\n在家建議冰冷凍敷效果最佳!',
-    storySections: {
-      heroImage: '/collagen-story-hero.jpg',
-      intro: {
-        title: '純天然植萃，任何受損膚況適用',
-        gridImage: '/collagen-story-concerns-grid.jpg',
-        warning: '⚠️ 溫和純淨無添加：全身上下、寶寶尿布疹、私密處皆可安心使用。',
-      },
-      ingredientsSection: {
-        items: [
-          {
-            image: '/collagen-story-ingredient-1.jpg',
-            name: '蘆薈葉汁萃取液',
-            description: '有「肌膚天然急救箱」之稱，富含天然多醣體與胺基酸，能迅速為肌膚補水，舒緩泛紅與乾燥不適，加速修復力。',
-          },
-          {
-            image: '/collagen-story-ingredient-2.jpg',
-            name: '透明質酸',
-            description: '俗稱玻尿酸，具備優異的鎖水能力，能大量吸附並鎖留水分，維持肌膚澎潤與彈性，減緩乾燥引起的細紋。',
-          },
-          {
-            image: '/collagen-story-ingredient-3.jpg',
-            name: '甘露醇萃取',
-            description: '天然抗氧化多醣醇成分，具舒緩鎮定特性，能降低肌膚敏感反應，幫助維持肌膚水潤與穩定狀態。',
-          },
-        ],
-      },
-      benefits: [
-        {
-          image: '/collagen-story-benefit-1.jpg',
-          title: '厚敷修護｜深層舒緩鎮定',
-          points: [
-            '全臉厚敷 0.2 公分，停留 15-20 分鐘',
-            '醫美沙龍級 300ml，用量無負擔',
-            '敏弱肌、術後修復皆適用',
-          ],
-        },
-        {
-          image: '/collagen-story-benefit-2.jpg',
-          title: '薄塗急救｜隨時隨地舒緩',
-          points: [
-            '暗沉、雷射術後、敏感泛紅皆可用',
-            '每天使用，膚況感受得到的變化',
-            '質地清爽好吸收，不黏膩',
-          ],
-        },
-      ],
-    },
+    storage: '存放於陰涼乾燥處。避免陽光直射及潮濕環境。\n在家建議冰冷凍敷效果最佳!'
   },
 
   {
@@ -1676,11 +1612,11 @@ export const SKIN_QUIZ_QUESTIONS: SkinQuizQuestion[] = [
 // 根據檢測結果推薦產品
 export function getRecommendedProducts(answers: Record<string, string>): Product[] {
   const recommended: Product[] = [];
-
+  
   const skinType = answers['skin-type'];
   const mainConcern = answers['main-concern'];
   const goal = answers['goal'];
-
+  
   // 根據主要困擾推薦
   if (mainConcern === 'acne') {
     recommended.push(
@@ -1703,13 +1639,13 @@ export function getRecommendedProducts(answers: Record<string, string>): Product
       ...PRODUCTS.filter(p => p.series === '晶亮系列' || p.series === 'Q彈精緻系列').slice(0, 3)
     );
   }
-
+  
   // 如果推薦不足，補充基礎產品
   if (recommended.length < 3) {
     recommended.push(
       ...PRODUCTS.filter(p => !recommended.includes(p)).slice(0, 3 - recommended.length)
     );
   }
-
+  
   return recommended.slice(0, 3);
 }
