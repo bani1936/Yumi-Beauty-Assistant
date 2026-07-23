@@ -53,7 +53,7 @@ export default function Home() {
         style={{ background: 'linear-gradient(135deg, #F0EAE2, #F5F1ED)' }}
       >
         <div className="text-[11px] tracking-[2px] font-semibold mb-3" style={{ color: '#B59A8A' }}>
-          YUMÍ BEAUTY ASSISTANT
+          PROFESSIONAL SKIN MANAGEMENT
         </div>
         <h1
           className="text-2xl md:text-3xl font-bold mb-3"
