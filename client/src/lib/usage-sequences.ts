@@ -65,3 +65,22 @@ export const USAGE_SEQUENCES: Record<string, SeriesUsageGuide> = {
       { step: 5, productNumber: '58-4' },
       { step: 6, productNumber: '58-5' },
       { step: 7, productNumber: '58-6' },
+      { step: 8, productNumber: '58-7' },
+      { step: 9, productNumber: '58-8', note: '全臉噴灑，作為最後一道防護與保濕' },
+    ],
+    fullSetLabel: '58-1、58-2、58-3、58-4、58-5、58-6、58-7、58-8',
+  },
+  '晶亮系列': {
+    steps: [
+      { step: 1, productNumber: 'D7', note: '噴霧方便，隨時修護，可距離臉部適當距離噴灑' },
+      { step: 2, productNumber: 'D1' },
+      { step: 3, productNumber: 'D2' },
+      { step: 4, productNumber: 'D3' },
+      { step: 5, productNumber: 'D4' },
+      { step: 6, productNumber: 'D5' },
+      { step: 7, productNumber: 'D6' },
+      { step: 8, productNumber: 'D7', note: '全臉噴灑，作為最後一道防護與保濕' },
+    ],
+    fullSetLabel: 'D1、D2、D3、D4、D5、D6、D7',
+  },
+};
