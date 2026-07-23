@@ -106,7 +106,7 @@ export default function SplashScreen({ onComplete, duration = 2000 }: SplashScre
             className="text-sm md:text-base mt-2 font-light tracking-widest"
             style={{ color: '#D4A5A5' }}
           >
-            Yumí Beauty Assistant
+            Professional Skin Management
           </p>
         </div>
 
