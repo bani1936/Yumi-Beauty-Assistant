@@ -717,9 +717,9 @@ export const PRODUCTS: Product[] = [
     category: 'skin-care',
     series: '都都好系列',
     price: 4400,
-    description: '淨痘課程專用',
+    description: '粉液結合，雙重功效',
     image: '/10.jpg',
-    benefits: ['課程專用', '重建精華', '抗菌消炎'],
+    benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '10件組',
     pv: 3740
@@ -732,9 +732,9 @@ export const PRODUCTS: Product[] = [
     category: 'skin-care',
     series: '都都好系列',
     price: 580,
-    description: '淨痘課程專用',
+    description: '粉液結合，雙重功效',
     image: '/10.jpg',
-    benefits: ['課程專用', '重建精華', '抗菌消炎'],
+    benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '1件組',
     pv: 464
@@ -878,9 +878,9 @@ export const PRODUCTS: Product[] = [
     category: 'cleansing',
     series: '淨膚系列',
     price: 1320,
-    description: '淨膚課程專用',
+    description: '粉液結合，經濟實惠',
     image: '/10.jpg',
-    benefits: ['課程專用', '重建精華', '斑點淨化'],
+    benefits: ['精華', '粉體', '經濟'],
     size: '標準',
     volume: '3件組',
     pv: 1122
@@ -893,9 +893,9 @@ export const PRODUCTS: Product[] = [
     category: 'cleansing',
     series: '淨膚系列',
     price: 580,
-    description: '淨膚課程專用',
+    description: '粉液結合，經濟實惠',
     image: '/10.jpg',
-    benefits: ['課程專用', '重建精華', '斑點淨化'],
+    benefits: ['精華', '粉體', '經濟'],
     size: '標準',
     volume: '1件組',
     pv: 464
@@ -916,7 +916,11 @@ export const PRODUCTS: Product[] = [
     benefits: ['晶亮', '光澤', '恢復'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '舒緩敏感，鎮靜紅腫，非常適合敏感肌，有助於小傷口癒合、屏障功能受損肌膚的恢復。',
+    ingredients: '保濕因子、金盞花萃取',
+    instructions: '早晚潔膚後，取適量D1塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd2-晶亮-m',
@@ -932,7 +936,11 @@ export const PRODUCTS: Product[] = [
     benefits: ['柔敏', '溫和', '有效'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '強效保濕、修護、抗敏、舒緩等多重功效，增加皮膚彈性與柔軟度，幫助修復受損角質層，減少刺激、泛紅、乾癢敏感現象。',
+    ingredients: '保濕因子、維他命B5、蘋果萃取液',
+    instructions: '早晚潔膚後，擦完D1後取適量D2塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'D3',
@@ -948,7 +956,11 @@ export const PRODUCTS: Product[] = [
     benefits: ['蛋白', '絲光', '精華'],
     size: '標準',
     volume: '30ml',
-    pv: 2533
+    pv: 2533,
+    usage: '提升肌膚耐受力，減少外界刺激影響。玻尿酸能讓肌膚表面平滑細緻，幫助皮膚細胞維持良好環境，促進受損肌膚修護。',
+    ingredients: '維他命E、水解米蛋白、玻尿酸',
+    instructions: '早晚潔膚後，擦完D2後取適量D3塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd4-晶亮-m',
@@ -964,7 +976,11 @@ export const PRODUCTS: Product[] = [
     benefits: ['精華', '修護', '濃縮'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '天然抗炎成分能夠快速滲透入皮膚，對敏感肌、微發炎肌膚有很好的舒緩效果。',
+    ingredients: '全緣葉澳洲堅果籽油、去離子水、玻尿酸、維他命B3',
+    instructions: '早晚潔膚後，擦完D3後取適量D4塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd5-晶亮-m',
@@ -980,7 +996,11 @@ export const PRODUCTS: Product[] = [
     benefits: ['剔透', '透亮', '質地'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '幫助降低皮膚發炎反應，桑白皮的致敏性低，適用於敏感性肌膚、酒糟肌膚，有助肌膚補水、鎖水。',
+    ingredients: '桑白皮萃取、去離子水、維他命E',
+    instructions: '早晚潔膚後，擦完D4後取適量D5塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd6-晶亮-m',
@@ -998,7 +1018,11 @@ export const PRODUCTS: Product[] = [
     benefits: ['敏感肌', '酒糟肌', '美白'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '肌膚美白，減少黑色素形成，減緩肌膚老化，對抗暗沉蠟黃膚色。',
+    ingredients: '水解黑桑果、去離子水、玻尿酸、人蔘萃取液',
+    instructions: '早晚潔膚後，擦完D5後取適量D6塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd7-晶亮-m',
@@ -1014,7 +1038,11 @@ export const PRODUCTS: Product[] = [
     benefits: ['噴霧', '修護', '便利'],
     size: '標準',
     volume: '120ml',
-    pv: 2250
+    pv: 2250,
+    usage: '有助肌膚補水，隨時保濕、維持肌膚水嫩光滑，白天防曬後仍可進行補水保濕。',
+    ingredients: '燕麥萃取、去離子水、玻尿酸',
+    instructions: '於所有保養品、彩妝品後使用，每3~4小時補充一次，距離臉部約15~20公分，讓噴霧散射出的幅度更廣，較能均勻吸收。請勿拍打肌膚，讓噴液自然吸收。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'D8-10',
@@ -1024,12 +1052,16 @@ export const PRODUCTS: Product[] = [
     category: 'brightening',
     series: '晶亮系列',
     price: 4400,
-    description: '晶亮課程專用',
+    description: '粉液結合，雙重功效',
     image: '/d8-set10.jpg',
-    benefits: ['課程專用', '重建精華', '加強肌膚屏障'],
+    benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '10件組',
-    pv: 3740
+    pv: 3740,
+    usage: '幫助強化肌膚屏障，對炎症、敏感有穩定膚況的作用。使肌膚回復柔順平和的線條並恢復彈性有光澤',
+    ingredients: '野葛根、蘆薈萃取液、褐藻萃取',
+    instructions: '晶亮課程專用，需受過專業培訓之美容師於店內操作課程使用。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'D8-1',
@@ -1039,12 +1071,16 @@ export const PRODUCTS: Product[] = [
     category: 'brightening',
     series: '晶亮系列',
     price: 580,
-    description: '晶亮課程專用',
+    description: '粉液結合，雙重功效',
     image: '/d8-set1.jpg',
-    benefits: ['課程專用', '重建精華', '加強肌膚屏障'],
+    benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '1件組',
-    pv: 464
+    pv: 464,
+    usage: '幫助強化肌膚屏障，對炎症、敏感有穩定膚況的作用。使肌膚回復柔順平和的線條並恢復彈性有光澤',
+    ingredients: '野葛根、蘆薈萃取液、褐藻萃取',
+    instructions: '晶亮課程專用，需受過專業培訓之美容師於店內操作課程使用。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
 
   // Q彈精緻系列 (68系列)
@@ -1150,9 +1186,9 @@ export const PRODUCTS: Product[] = [
     category: 'elasticity',
     series: 'Q彈精緻系列',
     price: 4400,
-    description: '68Q彈課程專用',
+    description: '粉液結合，雙重功效',
     image: '/10.jpg',
-    benefits: ['課程專用', '重建精華', '膠原蛋白生成'],
+    benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '10件組',
     pv: 3740
@@ -1165,9 +1201,9 @@ export const PRODUCTS: Product[] = [
     category: 'elasticity',
     series: 'Q彈精緻系列',
     price: 580,
-    description: '68Q彈課程專用',
+    description: '粉液結合，雙重功效',
     image: '/10.jpg',
-    benefits: ['課程專用', '重建精華', '膠原蛋白生成'],
+    benefits: ['精華', '粉體', '高效'],
     size: '標準',
     volume: '1件組',
     pv: 464
