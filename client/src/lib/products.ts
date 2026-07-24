@@ -167,7 +167,7 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
       { title: '強化肌膚屏障', icon: 'shield', description: '強韌肌底，降低外界刺激對肌膚的傷害。' },
       { title: '無藥性、低敏無負擔', icon: 'leaf', description: '不含刺激性成分，敏感肌、孕婦皆可安心使用。' },
     ],
-    closing: '淨膚系列產品，是肌膚問題反覆發作時最值得信賴的穩定力量。',
+    closing: '淨膚系列，深層補水兼具驅黃淡斑，打造水潤透亮的奶油淨白肌。',
   },
   '都都好系列': {
     title: '都都好系列 淨痘煥膚 毛孔細緻專家',
@@ -178,7 +178,7 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
       { title: '收斂毛孔、細緻肌膚', icon: 'droplet', description: '有效改善毛孔粗大，還原滑嫩膚觸。' },
       { title: '溫和不刺激、無藥性添加', icon: 'leaf', description: '敏感肌也能安心使用，長效穩定膚況。' },
     ],
-    closing: '都都好系列，從肌膚根源淨化修復，讓每一寸肌膚恢復健康、潔淨與自信。',
+    closing: '都都好系列，深層淨痘淡化痘疤，打造平滑細緻的水煮蛋肌。',
   },
   '晶亮系列': {
     title: '晶亮系列 專研肌因修護，重建健康肌本',
@@ -190,7 +190,7 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
       { title: '強化肌膚防禦屏障', icon: 'shield', description: '重建肌膚自我修護力，降低外界刺激傷害。' },
       { title: '無藥性、低敏高效配方', icon: 'leaf', description: '安心溫和，敏弱肌也能長期使用。' },
     ],
-    closing: '晶亮系列，為肌膚找回最初的穩定與健康，是解決肌膚困擾的首選方案。',
+    closing: '晶亮系列，專攻敏弱修護與屏障修護，打造穩定健康的晶透無瑕肌。',
   },
   'Q彈精緻系列': {
     title: 'Q彈精緻系列 平滑肌因 重塑膚觸',
