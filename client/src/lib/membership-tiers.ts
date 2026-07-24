@@ -6,13 +6,13 @@
 export interface MembershipTier {
   id: string;
   name: string;
-  commission: string; // 差額獎金 %
+  commission: string; // 回饋金 %
   discount: string; // 產品折扣 %，"—" 表示無
   guidanceGenerations?: number; // 輔導獎金可領代數，undefined 表示無此福利
   entryFee: string;
   requirements: string[]; // 升等條件（符合任一即可）
   benefits: string[]; // 完整福利清單（向下相容舊頁面使用）
-  perks: string[]; // 卡片用的精簡福利標籤（差額獎金／折扣／輔導獎金已在卡片上方顯示，這裡不重複）
+  perks: string[]; // 卡片用的精簡福利標籤（回饋金／折扣／輔導獎金已在卡片上方顯示，這裡不重複）
   color: string;
   icon: string;
   order: number;
@@ -43,7 +43,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "自己加直 B 累積購買滿 3 萬 PV",
     ],
     benefits: [
-      "20% 差額獎金",
+      "20% 回饋金",
       "20% 購買產品折扣",
       "終身線上課程(組長以上)",
     ],
@@ -65,7 +65,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
       "無限期介紹直 B 累積 20 萬 PV 即晉升科長",
     ],
     benefits: [
-      "30% 差額獎金",
+      "30% 回饋金",
       "30% 購買產品折扣",
       "終身線上課程(科長以上)",
       "終身實體技術課程(科長以上)",
@@ -89,7 +89,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     ],
     benefits: [
       "輔導獎金領 2 代",
-      "35% 差額獎金",
+      "35% 回饋金",
       "35% 購買產品折扣",
       "終身線上課程(小盤以上)",
       "終身實體技術課程(小盤以上)",
@@ -110,7 +110,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     requirements: ["2 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 4 代",
-      "37% 差額獎金",
+      "37% 回饋金",
       "35% 購買產品折扣",
       "終身線上課程(小盤以上)",
       "終身實體技術課程(小盤以上)",
@@ -131,7 +131,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     requirements: ["1 位直 B 中盤督導及 3 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 6 代",
-      "38% 差額獎金",
+      "38% 回饋金",
       "35% 購買產品折扣",
       "終身線上課程(小盤以上)",
       "終身實體技術課程(小盤以上)",
@@ -152,7 +152,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     requirements: ["1 位直 B 大盤督導及 5 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 8 代",
-      "40% 差額獎金",
+      "40% 回饋金",
       "35% 購買產品折扣",
       "終身線上課程(小盤以上)",
       "終身實體技術課程(小盤以上)",
@@ -173,7 +173,7 @@ export const MEMBERSHIP_TIERS: MembershipTier[] = [
     requirements: ["2 位直 B 大盤督導及 6 位直 B 小盤督導"],
     benefits: [
       "輔導獎金領 10 代",
-      "45% 差額獎金",
+      "45% 回饋金",
       "35% 購買產品折扣",
       "終身線上課程(小盤以上)",
       "終身實體技術課程(小盤以上)",
