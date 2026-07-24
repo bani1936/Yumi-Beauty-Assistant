@@ -14,9 +14,9 @@ const FAQ_ITEMS = [
       "會籍自加入會員起當年至隔年年底，隔年起每年消費累積滿 15,000 PV，下一年度自動續會。",
   },
   {
-    question: "差額獎金領取方式？",
+    question: "回饋金領取方式？",
     answer:
-      "每年一月份累積購買滿 20,000 PV ，整年皆可領取；或要領取當月購買 2,250 PV 含以上，可領取差額獎金。",
+      "每年一月份累積購買滿 20,000 PV ，整年皆可領取；或要領取當月購買 2,250 PV 含以上，可領取回饋金。",
   },
   {
     question: "PV 點數會過期嗎？",
@@ -70,10 +70,10 @@ export default function Membership() {
         </p>
       </section>
 
-      {/* 位階卡片 */}
+      {/* 位階卡片：由 LV.1 會員 依序往上排到 LV.8 總監 */}
       <section className="px-4 -mt-8 relative z-10">
         <div className="container max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
-          {[...MEMBERSHIP_TIERS].reverse().map((tier) => {
+          {MEMBERSHIP_TIERS.map((tier) => {
             const isTop = tier.id === topTier.id;
             return (
               <div
@@ -106,13 +106,13 @@ export default function Membership() {
                   {tier.name}
                 </h3>
 
-                {/* 差額獎金／折扣／輔導獎金 - 最顯眼的核心數字 */}
+                {/* 回饋金／折扣／輔導獎金 - 最顯眼的核心數字 */}
                 <div
                   className="text-center rounded-xl py-4 px-3 mb-5"
                   style={{ background: isTop ? "rgba(255,255,255,0.5)" : "#FBF6EE" }}
                 >
                   <div className="text-xs mb-1" style={{ color: "#9c7a3f" }}>
-                    差額獎金
+                    回饋金
                   </div>
                   <div
                     className="text-4xl font-bold leading-none"
@@ -211,7 +211,7 @@ export default function Membership() {
               <tbody>
                 <tr className="border-t" style={{ borderColor: "#EEE9E3" }}>
                   <td className="p-4" style={{ color: "#8a8a8a" }}>
-                    差額獎金
+                    回饋金
                   </td>
                   {MEMBERSHIP_TIERS.map((tier) => {
                     const isTop = tier.id === topTier.id;
