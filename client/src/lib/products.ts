@@ -131,7 +131,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
 export interface SeriesIntro {
   title: string;
   description: string;
-  features: { title: string; description: string }[];
+  features: { title: string; description: string; icon: 'sparkles' | 'shield' | 'droplet' | 'leaf' | 'target' | 'heart' }[];
   closing?: string;
 }
 
@@ -140,10 +140,10 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
     title: '微整型系列 重啟肌膚年輕密碼',
     description: '專為追求緊緻、修復與逆齡效果設計的高效保養品系列，結合尖端生物科技與高濃度活性成分，能夠深入肌底修復受損細胞，立即感受拉提緊緻效果。持續使用，讓肌膚宛如微整般年輕飽滿、輪廓更加立體明亮。',
     features: [
-      { title: '即刻有感拉提', description: '使用後快速緊緻肌膚，明顯改善鬆弛與細紋。' },
-      { title: '細胞級修復', description: '強化肌膚防禦力，活化老化細胞，恢復彈性與光澤。' },
-      { title: '越用越年輕', description: '每一次保養都是深層修護，長效打造緊緻澎潤的年輕肌。' },
-      { title: '無藥性添加', description: '溫和無負擔，敏弱肌也能安心使用。' },
+      { title: '即刻有感拉提', icon: 'sparkles', description: '使用後快速緊緻肌膚，明顯改善鬆弛與細紋。' },
+      { title: '細胞級修復', icon: 'shield', description: '強化肌膚防禦力，活化老化細胞，恢復彈性與光澤。' },
+      { title: '越用越年輕', icon: 'heart', description: '每一次保養都是深層修護，長效打造緊緻澎潤的年輕肌。' },
+      { title: '無藥性添加', icon: 'leaf', description: '溫和無負擔，敏弱肌也能安心使用。' },
     ],
     closing: '不只是保養，是一場逆轉肌齡的科技革命。',
   },
@@ -151,10 +151,10 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
     title: '微整型系列 重啟肌膚年輕密碼',
     description: '專為追求緊緻、修復與逆齡效果設計的高效保養品系列，結合尖端生物科技與高濃度活性成分，能夠深入肌底修復受損細胞，立即感受拉提緊緻效果。持續使用，讓肌膚宛如微整般年輕飽滿、輪廓更加立體明亮。',
     features: [
-      { title: '即刻有感拉提', description: '使用後快速緊緻肌膚，明顯改善鬆弛與細紋。' },
-      { title: '細胞級修復', description: '強化肌膚防禦力，活化老化細胞，恢復彈性與光澤。' },
-      { title: '越用越年輕', description: '每一次保養都是深層修護，長效打造緊緻澎潤的年輕肌。' },
-      { title: '無藥性添加', description: '溫和無負擔，敏弱肌也能安心使用。' },
+      { title: '即刻有感拉提', icon: 'sparkles', description: '使用後快速緊緻肌膚，明顯改善鬆弛與細紋。' },
+      { title: '細胞級修復', icon: 'shield', description: '強化肌膚防禦力，活化老化細胞，恢復彈性與光澤。' },
+      { title: '越用越年輕', icon: 'heart', description: '每一次保養都是深層修護，長效打造緊緻澎潤的年輕肌。' },
+      { title: '無藥性添加', icon: 'leaf', description: '溫和無負擔，敏弱肌也能安心使用。' },
     ],
     closing: '不只是保養，是一場逆轉肌齡的科技革命。',
   },
@@ -162,10 +162,10 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
     title: '58系列 穩膚修護 全面舒緩',
     description: '專為極敏感性肌膚打造的高效修護保養系列，結合溫和安撫與深層修復科技，有效改善肌膚斑點、泛紅、乾癢等不適問題。58系列幫助肌膚重建健康屏障，從根本穩定膚況，找回細緻透亮的自然光采。',
     features: [
-      { title: '舒緩泛紅乾癢', description: '高效植萃舒敏配方，第一時間安撫敏弱膚況。' },
-      { title: '淡化斑點瑕疵', description: '改善因發炎或日曬所引起的色素沉澱，還原淨白膚色。' },
-      { title: '強化肌膚屏障', description: '強韌肌底，降低外界刺激對肌膚的傷害。' },
-      { title: '無藥性、低敏無負擔', description: '不含刺激性成分，敏感肌、孕婦皆可安心使用。' },
+      { title: '舒緩泛紅乾癢', icon: 'droplet', description: '高效植萃舒敏配方，第一時間安撫敏弱膚況。' },
+      { title: '淡化斑點瑕疵', icon: 'sparkles', description: '改善因發炎或日曬所引起的色素沉澱，還原淨白膚色。' },
+      { title: '強化肌膚屏障', icon: 'shield', description: '強韌肌底，降低外界刺激對肌膚的傷害。' },
+      { title: '無藥性、低敏無負擔', icon: 'leaf', description: '不含刺激性成分，敏感肌、孕婦皆可安心使用。' },
     ],
     closing: '58系列產品，是肌膚問題反覆發作時最值得信賴的穩定力量。',
   },
@@ -173,10 +173,10 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
     title: '38系列 淨痘煥膚 毛孔細緻專家',
     description: '為問題性肌膚量身打造的38系列，專注改善痘痘、痘疤、粉刺與毛孔粗大問題，溫和調理肌膚油水平衡，同時強化代謝與修復機能。從淨化到修護，一瓶接著一瓶，循序漸進幫助你重拾平滑無瑕的健康肌。',
     features: [
-      { title: '控油抗痘', description: '深入毛孔清除多餘皮脂與髒污，預防痘痘生成。' },
-      { title: '淡化痘疤與粉刺', description: '加速肌膚代謝，修復痘痘留下的色素與凹凸不平。' },
-      { title: '收斂毛孔、細緻肌膚', description: '有效改善毛孔粗大，還原滑嫩膚觸。' },
-      { title: '溫和不刺激、無藥性添加', description: '敏感肌也能安心使用，長效穩定膚況。' },
+      { title: '控油抗痘', icon: 'target', description: '深入毛孔清除多餘皮脂與髒污，預防痘痘生成。' },
+      { title: '淡化痘疤與粉刺', icon: 'sparkles', description: '加速肌膚代謝，修復痘痘留下的色素與凹凸不平。' },
+      { title: '收斂毛孔、細緻肌膚', icon: 'droplet', description: '有效改善毛孔粗大，還原滑嫩膚觸。' },
+      { title: '溫和不刺激、無藥性添加', icon: 'leaf', description: '敏感肌也能安心使用，長效穩定膚況。' },
     ],
     closing: '38系列，從肌膚根源淨化修復，讓每一寸肌膚恢復健康、潔淨與自信。',
   },
@@ -184,11 +184,11 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
     title: '晶亮系列 專研肌因修護，重建健康肌本',
     description: '為高度問題肌膚設計，專注於修護酒糟肌、敏感肌、脂漏性皮膚炎與粉刺困擾。透過精準調理與肌因級修復科技，深入肌膚核心，幫助調節油脂、舒緩炎症、修護屏障，全面穩定膚況，從根本改善反覆發作的肌膚問題。',
     features: [
-      { title: '舒緩泛紅與刺激', description: '針對酒糟與敏感反應，快速降低肌膚發炎不適。' },
-      { title: '調理皮脂、改善脂漏', description: '平衡油脂分泌，有效減緩脂漏性皮膚炎引起的脫屑與搔癢。' },
-      { title: '深層淨化粉刺源頭', description: '溫和代謝角質，預防毛孔堵塞與粉刺生成。' },
-      { title: '強化肌膚防禦屏障', description: '重建肌膚自我修護力，降低外界刺激傷害。' },
-      { title: '無藥性、低敏高效配方', description: '安心溫和，敏弱肌也能長期使用。' },
+      { title: '舒緩泛紅與刺激', icon: 'droplet', description: '針對酒糟與敏感反應，快速降低肌膚發炎不適。' },
+      { title: '調理皮脂、改善脂漏', icon: 'target', description: '平衡油脂分泌，有效減緩脂漏性皮膚炎引起的脫屑與搔癢。' },
+      { title: '深層淨化粉刺源頭', icon: 'sparkles', description: '溫和代謝角質，預防毛孔堵塞與粉刺生成。' },
+      { title: '強化肌膚防禦屏障', icon: 'shield', description: '重建肌膚自我修護力，降低外界刺激傷害。' },
+      { title: '無藥性、低敏高效配方', icon: 'leaf', description: '安心溫和，敏弱肌也能長期使用。' },
     ],
     closing: '晶亮系列，為肌膚找回最初的穩定與健康，是解決肌膚困擾的首選方案。',
   },
@@ -196,10 +196,10 @@ export const SERIES_INTROS: Record<string, SeriesIntro> = {
     title: '68系列 平滑肌因 重塑膚觸',
     description: '專為凹洞型痘疤與月球表面般的肌膚打造，結合修復、撫平與重建三大關鍵機制，深入肌底啟動膠原蛋白再生，強化肌膚組織結構，從源頭改善痘疤凹陷與肌膚不平整問題。持續使用，肌膚逐漸細緻平滑，重現緊緻光采。',
     features: [
-      { title: '撫平凹洞痘疤', description: '促進膠原增生，修補肌膚凹陷組織，改善肌膚凹凸不平。' },
-      { title: '修復肌底結構', description: '加強肌膚更新與修復力，重建受損肌膚屏障。' },
-      { title: '細緻毛孔、改善膚觸', description: '使粗糙、顆粒感肌膚逐步光滑、平整。' },
-      { title: '無藥性、低敏溫和', description: '適合長期使用，敏弱肌也能安心改善深層肌膚問題。' },
+      { title: '撫平凹洞痘疤', icon: 'sparkles', description: '促進膠原增生，修補肌膚凹陷組織，改善肌膚凹凸不平。' },
+      { title: '修復肌底結構', icon: 'shield', description: '加強肌膚更新與修復力，重建受損肌膚屏障。' },
+      { title: '細緻毛孔、改善膚觸', icon: 'droplet', description: '使粗糙、顆粒感肌膚逐步光滑、平整。' },
+      { title: '無藥性、低敏溫和', icon: 'leaf', description: '適合長期使用，敏弱肌也能安心改善深層肌膚問題。' },
     ],
     closing: '68系列，是專屬凹洞型肌膚的「重建型保養」，讓過去無解的痘疤肌，也能迎來平滑新生。',
   },
