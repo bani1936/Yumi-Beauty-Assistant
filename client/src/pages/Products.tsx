@@ -5,7 +5,7 @@ import { useLocation } from 'wouter';
 import { ChevronLeft, ShoppingCart, Grid3x3, List } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import * as React from 'react';
-import { PRODUCTS, PRODUCT_CATEGORIES } from '@/lib/products';
+import { PRODUCTS, PRODUCT_CATEGORIES, SERIES_INTROS } from '@/lib/products';
 import { USAGE_SEQUENCES } from '@/lib/usage-sequences';
 import {
   Select,
@@ -180,6 +180,36 @@ export default function Products() {
                 {selectedCategory}
               </h1>
             </div>
+
+            {/* 系列介紹：主打功效與特色 */}
+            {SERIES_INTROS[selectedCategory] && (
+              <div
+                className="rounded-2xl p-6 md:p-8 mb-8"
+                style={{ background: "#FBF6EE", border: "1px solid #E8DCC8" }}
+              >
+                <p className="text-sm leading-relaxed mb-5" style={{ color: "#6B6B6B" }}>
+                  {SERIES_INTROS[selectedCategory].description}
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 mb-4">
+                  {SERIES_INTROS[selectedCategory].features.map((f, idx) => (
+                    <div key={idx} className="flex gap-2 text-sm leading-relaxed">
+                      <span className="flex-shrink-0" style={{ color: "#C9A876" }}>✦</span>
+                      <span style={{ color: "#4a4038" }}>
+                        <span className="font-semibold" style={{ color: "#8B6F47" }}>
+                          {f.title}：
+                        </span>
+                        {f.description}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {SERIES_INTROS[selectedCategory].closing && (
+                  <p className="text-sm font-medium pt-3" style={{ color: "#8B6F47", borderTop: "1px solid #E8DCC8" }}>
+                    {SERIES_INTROS[selectedCategory].closing}
+                  </p>
+                )}
+              </div>
+            )}
 
             {/* 明星商品強打橫幅：膠原凝露 */}
             {selectedCategory === '明星商品' && (
