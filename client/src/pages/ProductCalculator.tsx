@@ -53,8 +53,8 @@ export default function ProductCalculator() {
   const addToCart = (productId: string) => {
     const existing = cart.find(item => item.productId === productId);
     if (existing) {
-      setCart(cart.map(item => 
-        item.productId === productId 
+      setCart(cart.map(item =>
+        item.productId === productId
           ? { ...item, quantity: item.quantity + 1 }
           : item
       ));
@@ -69,8 +69,8 @@ export default function ProductCalculator() {
     } else {
       const existing = cart.find(item => item.productId === productId);
       if (existing) {
-        setCart(cart.map(item => 
-          item.productId === productId 
+        setCart(cart.map(item =>
+          item.productId === productId
             ? { ...item, quantity }
             : item
         ));
@@ -87,6 +87,13 @@ export default function ProductCalculator() {
 
   const getProductById = (id: string) => PRODUCTS.find(p => p.id === id);
 
+  // 原價總金額（未套用會員價）
+  const originalSubtotal = cart.reduce((sum, item) => {
+    const product = getProductById(item.productId);
+    return sum + (product?.price || 0) * item.quantity;
+  }, 0);
+
+  // 會員價總金額
   const subtotal = cart.reduce((sum, item) => {
     const product = getProductById(item.productId);
     return sum + (product?.memberPrice || product?.price || 0) * item.quantity;
@@ -140,10 +147,10 @@ export default function ProductCalculator() {
       currentLevel = 3;
     }
 
-    const progress = totalPoints < nextThreshold 
+    const progress = totalPoints < nextThreshold
       ? Math.round(((totalPoints - currentThreshold) / (nextThreshold - currentThreshold)) * 100)
       : 100;
-    
+
     const remaining = Math.max(0, nextThreshold - totalPoints);
 
     return { currentLevel, nextThreshold, progress, remaining };
@@ -152,11 +159,11 @@ export default function ProductCalculator() {
   const progressInfo = getProgressInfo(points);
 
   return (
-    <div className="min-h-screen bg-background pb-40 md:pb-32">
+    <div className="min-h-screen bg-background pb-48 md:pb-36">
       {/* 導航欄 */}
       <nav className="sticky top-16 z-40 bg-white/80 backdrop-blur-md border-b border-border">
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
-          <button 
+          <button
             onClick={() => navigate('/')}
             className="p-2 hover:bg-secondary rounded-lg transition-colors"
           >
@@ -214,7 +221,7 @@ export default function ProductCalculator() {
                           const product = getProductById(item.productId);
                           return product?.series === series;
                         }).reduce((sum, item) => sum + item.quantity, 0);
-                        
+
                         return seriesCount > 0 && (
                           <div className="flex items-center justify-center w-5 h-5 text-white rounded-full text-xs font-bold" style={{ backgroundColor: '#8B6F47' }}>
                             {seriesCount}
@@ -222,7 +229,7 @@ export default function ProductCalculator() {
                         );
                       })()}
                     </div>
-                    <ChevronDown 
+                    <ChevronDown
                       className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                       style={{ color: '#B59A8A' }}
                     />
@@ -233,8 +240,9 @@ export default function ProductCalculator() {
                     <div className="divide-y" style={{ borderColor: '#EEE9E3' }}>
                       {products.map(product => {
                         const cartItem = cart.find(item => item.productId === product.id);
+                        const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
                         return (
-                          <div 
+                          <div
                             key={product.id}
                             className="px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between hover:bg-[#FAFAF8] transition-colors gap-3 md:gap-0"
                           >
@@ -259,9 +267,16 @@ export default function ProductCalculator() {
 
                             {/* 價格與控制 - 固定寬度 */}
                             <div className="flex items-center justify-between md:justify-end gap-3 md:gap-4 w-full md:w-auto">
-                              <span className="text-base md:text-lg font-bold text-primary min-w-fit">
-                                NT${product.memberPrice || product.price}
-                              </span>
+                              <div className="flex flex-col items-end min-w-fit">
+                                {hasDiscount && (
+                                  <span className="text-xs line-through" style={{ color: '#B0A797' }}>
+                                    NT${product.price}
+                                  </span>
+                                )}
+                                <span className="text-base md:text-lg font-bold text-primary">
+                                  NT${product.memberPrice || product.price}
+                                </span>
+                              </div>
 
                               <div className="w-24">
                                 <div className="flex items-center justify-end gap-1 bg-background border border-border rounded-lg p-1">
@@ -301,8 +316,8 @@ export default function ProductCalculator() {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <p className="text-xs text-muted-foreground">
-                {progressInfo.currentLevel === 3 
-                  ? '已達最高等級 🎉' 
+                {progressInfo.currentLevel === 3
+                  ? '已達最高等級 🎉'
                   : `距離下一個折扣門檻：${progressInfo.remaining.toLocaleString()} 點`}
               </p>
               <p className="text-xs font-semibold text-primary">
@@ -310,7 +325,7 @@ export default function ProductCalculator() {
               </p>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-              <div 
+              <div
                 className="bg-gradient-to-r from-primary to-accent h-full transition-all duration-300"
                 style={{ width: `${progressInfo.progress}%` }}
               />
@@ -320,12 +335,12 @@ export default function ProductCalculator() {
       </div>
 
       {/* 進度條 - 手機版本 */}
-      <div className="md:hidden fixed bottom-32 left-0 right-0 bg-background border-b-0 px-4 py-1">
+      <div className="md:hidden fixed bottom-44 left-0 right-0 bg-background border-b-0 px-4 py-1">
         <div className="space-y-0.5">
           <div className="flex justify-between items-center">
             <p className="text-xs text-muted-foreground">
-              {progressInfo.currentLevel === 3 
-                ? '已達最高等級 🎉' 
+              {progressInfo.currentLevel === 3
+                ? '已達最高等級 🎉'
                 : `距離下一個折扣門檻：${progressInfo.remaining.toLocaleString()} 點`}
             </p>
             <p className="text-xs font-semibold text-primary">
@@ -333,7 +348,7 @@ export default function ProductCalculator() {
             </p>
           </div>
           <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-            <div 
+            <div
               className="bg-gradient-to-r from-primary to-accent h-full transition-all duration-300"
               style={{ width: `${progressInfo.progress}%` }}
             />
@@ -345,27 +360,43 @@ export default function ProductCalculator() {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t-0 shadow-lg">
         <div className="container max-w-4xl mx-auto px-4 py-4">
           {/* 桌面版本 */}
-          <div className="hidden md:grid grid-cols-4 gap-4 items-center">
+          <div className="hidden md:grid grid-cols-6 gap-3 items-center">
             {/* 左側資訊 */}
             <div className="col-span-1">
               <p className="text-sm text-muted-foreground mb-2">
                 已選 {cart.length} 項
               </p>
               <p className="text-sm text-muted-foreground">
-                獲得 {points.toLocaleString()} 點
+                獲得 {points.toLocaleString()} PV
+              </p>
+            </div>
+
+            {/* 原價 */}
+            <div className="text-left">
+              <p className="text-sm text-muted-foreground mb-1">原價</p>
+              <p className="text-sm line-through" style={{ color: '#B0A797' }}>
+                NT$ {originalSubtotal.toLocaleString()}
+              </p>
+            </div>
+
+            {/* 會員價 */}
+            <div className="text-left">
+              <p className="text-sm text-muted-foreground mb-1">會員價</p>
+              <p className="text-sm font-semibold text-foreground">
+                NT$ {subtotal.toLocaleString()}
               </p>
             </div>
 
             {/* 折扣資訊 */}
             <div className="text-left">
-              <p className="text-sm text-muted-foreground mb-1">折扣金額</p>
+              <p className="text-sm text-muted-foreground mb-1">折扣金額(PV)</p>
               <p className="text-lg font-semibold text-accent">
                 -NT$ {discount.toLocaleString()}
               </p>
             </div>
 
             {/* 加總金額 */}
-            <div className="col-span-1 text-left">
+            <div className="text-left">
               <p className="text-sm text-muted-foreground mb-1">加總金額</p>
               <p className="text-2xl font-bold text-primary">
                 NT$ {finalPrice.toLocaleString()}
@@ -373,59 +404,55 @@ export default function ProductCalculator() {
             </div>
 
             {/* 查看購物車按鈕 */}
-            {cart.length > 0 && (
-              <div className="col-span-1 flex justify-end">
+            <div className="flex justify-end">
+              {cart.length > 0 && (
                 <button
                   onClick={() => {
                     localStorage.setItem('cart', JSON.stringify(cart));
                     navigate('/cart-detail');
                   }}
-                  className="px-6 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors"
+                  className="px-5 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors whitespace-nowrap"
                 >
                   查看購物車
                 </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* 手機版本 */}
-          <div className="md:hidden space-y-0">
-            {/* 上面：左邊資訊 + 右邊加總金額和查看購物車 */}
-            <div className="flex justify-between items-end">
-              {/* 左邊 */}
+          <div className="md:hidden space-y-2">
+            <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8a8a8a' }}>
+              <span>已選 {cart.length} 項</span>
+              <span className="text-right">獲得 {points.toLocaleString()} PV</span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8a8a8a' }}>
+              <span>
+                原價 <span className="line-through">NT$ {originalSubtotal.toLocaleString()}</span>
+              </span>
+              <span className="text-right">
+                折扣金額(PV) <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
+              </span>
+            </div>
+            <div className="flex justify-between items-end pt-2 border-t" style={{ borderColor: '#EEE9E3' }}>
               <div>
-                <p className="text-xs text-muted-foreground mb-2">
-                  已選 {cart.length} 項
+                <p className="text-xs text-muted-foreground mb-1">
+                  會員價 NT$ {subtotal.toLocaleString()}
                 </p>
-                <p className="text-xs text-muted-foreground mb-2">
-                  獲得 {points.toLocaleString()} 點
-                </p>
-                <p className="text-xs text-muted-foreground mb-1">折扣金額</p>
-                <p className="text-sm font-semibold text-accent">
-                  -NT$ {discount.toLocaleString()}
+                <p className="text-lg font-bold text-primary">
+                  加總 NT$ {finalPrice.toLocaleString()}
                 </p>
               </div>
-
-              {/* 右邊：加總金額 + 查看購物車按鈕 */}
-              <div className="flex flex-col items-end gap-2">
-                <div className="text-right">
-                  <p className="text-xs text-muted-foreground mb-1">加總金額</p>
-                  <p className="text-lg font-bold text-primary">
-                    NT$ {finalPrice.toLocaleString()}
-                  </p>
-                </div>
-                {cart.length > 0 && (
-                  <button
-                    onClick={() => {
-                      localStorage.setItem('cart', JSON.stringify(cart));
-                      navigate('/cart-detail');
-                    }}
-                    className="px-3 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors text-xs whitespace-nowrap h-fit"
-                  >
-                    查看購物車
-                  </button>
-                )}
-              </div>
+              {cart.length > 0 && (
+                <button
+                  onClick={() => {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    navigate('/cart-detail');
+                  }}
+                  className="px-3 py-2 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors text-xs whitespace-nowrap h-fit"
+                >
+                  查看購物車
+                </button>
+              )}
             </div>
           </div>
         </div>

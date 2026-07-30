@@ -12,6 +12,7 @@ interface CartItem {
 
 interface OrderData {
   items: CartItem[];
+  originalSubtotal: number;
   subtotal: number;
   discount: number;
   finalPrice: number;
@@ -117,7 +118,10 @@ export default function OrderDetail() {
               const product = getProductById(item.productId);
               if (!product) return null;
 
-              const itemSubtotal = (product.memberPrice || product.price) * item.quantity;
+              const unitPrice = product.memberPrice || product.price;
+              const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
+              const itemSubtotal = unitPrice * item.quantity;
+              const itemOriginalSubtotal = product.price * item.quantity;
 
               return (
                 <div
@@ -131,12 +135,18 @@ export default function OrderDetail() {
                       <p className="text-xs text-muted-foreground mt-1">{product.volume}</p>
                     </div>
                     <div className="col-span-3 text-right">
-                      <p className="text-sm font-semibold">NT$ {(product.memberPrice || product.price).toLocaleString()}</p>
+                      {hasDiscount && (
+                        <p className="text-xs text-muted-foreground line-through">NT$ {product.price.toLocaleString()}</p>
+                      )}
+                      <p className="text-sm font-semibold">NT$ {unitPrice.toLocaleString()}</p>
                     </div>
                     <div className="col-span-2 text-right">
                       <span className="text-sm font-semibold">{item.quantity}</span>
                     </div>
                     <div className="col-span-3 text-right">
+                      {hasDiscount && (
+                        <p className="text-xs text-muted-foreground line-through">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
+                      )}
                       <p className="text-sm font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
                     </div>
                   </div>
@@ -145,13 +155,18 @@ export default function OrderDetail() {
                   <div className="md:hidden space-y-1">
                     <div className="flex justify-between items-center gap-2">
                       <p className="font-medium text-foreground text-xs flex-1 truncate">{product.name}</p>
-                      <p className="text-xs font-semibold whitespace-nowrap" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                      <div className="text-right whitespace-nowrap">
+                        {hasDiscount && (
+                          <p className="text-[10px] text-muted-foreground line-through leading-tight">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
+                        )}
+                        <p className="text-xs font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                      </div>
                     </div>
                     <div className="flex justify-between items-center text-xs text-muted-foreground">
                       <span>{product.volume}</span>
                       <div className="flex items-center gap-1">
                         <span className="text-xs font-semibold">{item.quantity}</span>
-                        <span className="text-xs text-muted-foreground ml-1">× NT$ {(product.memberPrice || product.price).toLocaleString()}</span>
+                        <span className="text-xs text-muted-foreground ml-1">× NT$ {unitPrice.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
@@ -179,19 +194,23 @@ export default function OrderDetail() {
           {/* 總結資訊 */}
           <div className="bg-secondary/10 rounded-lg p-6 space-y-3 mb-8">
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">小計</span>
+              <span className="text-muted-foreground">原價</span>
+              <span className="font-semibold line-through text-muted-foreground">NT$ {order.originalSubtotal.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">會員價</span>
               <span className="font-semibold">NT$ {order.subtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">折扣</span>
+              <span className="text-muted-foreground">折扣金額(PV)</span>
               <span className="font-semibold text-accent">-NT$ {order.discount.toLocaleString()}</span>
             </div>
             <div className="border-t border-border pt-3 flex justify-between items-center">
-              <span className="font-semibold">總金額</span>
+              <span className="font-semibold">加總金額</span>
               <span className="text-2xl font-bold text-primary">NT$ {order.finalPrice.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center pt-3 border-t border-border">
-              <span className="text-muted-foreground">總 PV 點數</span>
+              <span className="text-muted-foreground">獲得 PV</span>
               <span className="font-semibold text-foreground">{order.totalPV.toLocaleString()}</span>
             </div>
           </div>

@@ -65,15 +65,21 @@ export default function CartDetail() {
       setCart(cart.filter(item => item.productId !== productId));
     } else {
       // 更新數量
-      setCart(cart.map(item => 
-        item.productId === productId 
+      setCart(cart.map(item =>
+        item.productId === productId
           ? { ...item, quantity: newQuantity }
           : item
       ));
     }
   };
 
-  // 計算總金額和總 PV
+  // 原價總金額（未套用會員價）
+  const originalSubtotal = cart.reduce((sum, item) => {
+    const product = getProductById(item.productId);
+    return sum + (product?.price || 0) * item.quantity;
+  }, 0);
+
+  // 會員價總金額和總 PV
   const subtotal = cart.reduce((sum, item) => {
     const product = getProductById(item.productId);
     return sum + (product?.memberPrice || product?.price || 0) * item.quantity;
@@ -120,6 +126,7 @@ export default function CartDetail() {
     // 準備訂單數據
     const orderData = {
       items: cart,
+      originalSubtotal,
       subtotal,
       discount,
       finalPrice,
@@ -181,7 +188,10 @@ export default function CartDetail() {
               const product = getProductById(item.productId);
               if (!product) return null;
 
-              const itemSubtotal = (product.memberPrice || product.price) * item.quantity;
+              const unitPrice = product.memberPrice || product.price;
+              const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
+              const itemSubtotal = unitPrice * item.quantity;
+              const itemOriginalSubtotal = product.price * item.quantity;
 
               return (
                 <div
@@ -195,7 +205,10 @@ export default function CartDetail() {
                       <p className="text-xs text-muted-foreground mt-1">{product.volume}</p>
                     </div>
                     <div className="col-span-3 text-right">
-                      <p className="text-sm font-semibold">NT$ {(product.memberPrice || product.price).toLocaleString()}</p>
+                      {hasDiscount && (
+                        <p className="text-xs text-muted-foreground line-through">NT$ {product.price.toLocaleString()}</p>
+                      )}
+                      <p className="text-sm font-semibold">NT$ {unitPrice.toLocaleString()}</p>
                     </div>
                     <div className="col-span-2 text-right flex items-center justify-end gap-2">
                       <button
@@ -213,6 +226,9 @@ export default function CartDetail() {
                       </button>
                     </div>
                     <div className="col-span-3 text-right">
+                      {hasDiscount && (
+                        <p className="text-xs text-muted-foreground line-through">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
+                      )}
                       <p className="text-sm font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
                     </div>
                   </div>
@@ -221,7 +237,12 @@ export default function CartDetail() {
                   <div className="md:hidden space-y-1">
                     <div className="flex justify-between items-center gap-2">
                       <p className="font-medium text-foreground text-xs flex-1 truncate">{product.name}</p>
-                      <p className="text-xs font-semibold whitespace-nowrap" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                      <div className="text-right whitespace-nowrap">
+                        {hasDiscount && (
+                          <p className="text-[10px] text-muted-foreground line-through leading-tight">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
+                        )}
+                        <p className="text-xs font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                      </div>
                     </div>
                     <div className="flex justify-between items-center text-xs text-muted-foreground">
                       <span>{product.volume}</span>
@@ -239,7 +260,7 @@ export default function CartDetail() {
                         >
                           +
                         </button>
-                        <span className="text-xs text-muted-foreground ml-1">× NT$ {(product.memberPrice || product.price).toLocaleString()}</span>
+                        <span className="text-xs text-muted-foreground ml-1">× NT$ {unitPrice.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
@@ -251,19 +272,23 @@ export default function CartDetail() {
           {/* 總結資訊 */}
           <div className="bg-secondary/10 rounded-lg p-6 space-y-3 mb-8">
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">小計</span>
+              <span className="text-muted-foreground">原價</span>
+              <span className="font-semibold line-through text-muted-foreground">NT$ {originalSubtotal.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-muted-foreground">會員價</span>
               <span className="font-semibold">NT$ {subtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">折扣</span>
+              <span className="text-muted-foreground">折扣金額(PV)</span>
               <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
             </div>
             <div className="border-t border-border pt-3 flex justify-between items-center">
-              <span className="font-semibold">總金額</span>
+              <span className="font-semibold">加總金額</span>
               <span className="text-2xl font-bold text-primary">NT$ {finalPrice.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center pt-3 border-t border-border">
-              <span className="text-muted-foreground">總 PV 點數</span>
+              <span className="text-muted-foreground">獲得 PV</span>
               <span className="font-semibold text-foreground">{totalPV.toLocaleString()}</span>
             </div>
           </div>
@@ -294,15 +319,19 @@ export default function CartDetail() {
             {/* 訂單摘要 */}
             <div className="bg-secondary/10 rounded-lg p-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">小計</span>
+                <span className="text-muted-foreground">原價</span>
+                <span className="font-semibold line-through text-muted-foreground">NT$ {originalSubtotal.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">會員價</span>
                 <span className="font-semibold">NT$ {subtotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">折扣</span>
+                <span className="text-muted-foreground">折扣金額(PV)</span>
                 <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
               </div>
               <div className="border-t border-border pt-2 flex justify-between">
-                <span className="font-semibold">總金額</span>
+                <span className="font-semibold">加總金額</span>
                 <span className="text-lg font-bold text-primary">NT$ {finalPrice.toLocaleString()}</span>
               </div>
             </div>
