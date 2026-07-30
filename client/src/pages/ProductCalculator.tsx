@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import { ChevronLeft, ChevronDown, Plus, Minus, ShoppingCart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { PRODUCTS } from '@/lib/products';
+import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 
 interface CartItem {
   productId: string;
@@ -250,22 +251,31 @@ export default function ProductCalculator() {
                             className="px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between hover:bg-[#FAFAF8] transition-colors gap-3 md:gap-0"
                           >
                             {/* 產品資訊 */}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-baseline gap-2 mb-1 flex-wrap">
-                                <h4 className="text-sm font-semibold text-foreground">
-                                  {product.name}
-                                </h4>
-                                {product.pv && (
-                                  <span className="text-xs text-muted-foreground font-normal">
-                                    PV {product.pv}
-                                  </span>
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              <ImageWithFallback
+                                src={product.image}
+                                fallbackSrc="/favicon.png"
+                                alt={product.name}
+                                className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                                style={{ background: '#F5F1ED' }}
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                                  <h4 className="text-sm font-semibold text-foreground">
+                                    {product.name}
+                                  </h4>
+                                  {product.pv && (
+                                    <span className="text-xs text-muted-foreground font-normal">
+                                      PV {product.pv}
+                                    </span>
+                                  )}
+                                </div>
+                                {product.volume && (
+                                  <p className="text-xs text-muted-foreground">
+                                    {product.volume}
+                                  </p>
                                 )}
                               </div>
-                              {product.volume && (
-                                <p className="text-xs text-muted-foreground">
-                                  {product.volume}
-                                </p>
-                              )}
                             </div>
 
                             {/* 價格與控制 - 固定寬度 */}

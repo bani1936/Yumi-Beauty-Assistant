@@ -130,9 +130,18 @@ export default function OrderDetail() {
                 >
                   {/* 桌面版本 */}
                   <div className="hidden md:grid grid-cols-12 gap-4 items-center">
-                    <div className="col-span-4">
-                      <p className="font-medium text-foreground text-sm">{product.name}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{product.volume}</p>
+                    <div className="col-span-4 flex items-center gap-3 min-w-0">
+                      <ImageWithFallback
+                        src={product.image}
+                        fallbackSrc="/favicon.png"
+                        alt={product.name}
+                        className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                        style={{ background: '#F5F1ED' }}
+                      />
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground text-sm truncate">{product.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{product.volume}</p>
+                      </div>
                     </div>
                     <div className="col-span-3 text-right">
                       {hasDiscount && (
@@ -152,21 +161,27 @@ export default function OrderDetail() {
                   </div>
 
                   {/* 手機版本 */}
-                  <div className="md:hidden space-y-1">
-                    <div className="flex justify-between items-center gap-2">
-                      <p className="font-medium text-foreground text-xs flex-1 truncate">{product.name}</p>
-                      <div className="text-right whitespace-nowrap">
-                        {hasDiscount && (
-                          <p className="text-[10px] text-muted-foreground line-through leading-tight">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
-                        )}
-                        <p className="text-xs font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                  <div className="md:hidden flex gap-3">
+                    <ImageWithFallback
+                      src={product.image}
+                      fallbackSrc="/favicon.png"
+                      alt={product.name}
+                      className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                      style={{ background: '#F5F1ED' }}
+                    />
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="flex justify-between items-start gap-2">
+                        <p className="font-medium text-foreground text-xs flex-1 truncate">{product.name}</p>
+                        <div className="text-right whitespace-nowrap flex-shrink-0">
+                          {hasDiscount && (
+                            <p className="text-[10px] text-muted-foreground line-through leading-tight">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
+                          )}
+                          <p className="text-xs font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center text-xs text-muted-foreground">
-                      <span>{product.volume}</span>
-                      <div className="flex items-center gap-1">
-                        <span className="text-xs font-semibold">{item.quantity}</span>
-                        <span className="text-xs text-muted-foreground ml-1">× NT$ {unitPrice.toLocaleString()}</span>
+                      <div className="flex justify-between items-center text-xs text-muted-foreground">
+                        <span>{product.volume}</span>
+                        <span>數量 {item.quantity} × NT$ {unitPrice.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>

@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Plus, Minus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { PRODUCTS } from "@/lib/products";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import {
   Dialog,
   DialogContent,
@@ -200,9 +201,18 @@ export default function CartDetail() {
                 >
                   {/* 桌面版本 */}
                   <div className="hidden md:grid grid-cols-12 gap-4 items-center">
-                    <div className="col-span-4">
-                      <p className="font-medium text-foreground text-sm">{product.name}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{product.volume}</p>
+                    <div className="col-span-4 flex items-center gap-3 min-w-0">
+                      <ImageWithFallback
+                        src={product.image}
+                        fallbackSrc="/favicon.png"
+                        alt={product.name}
+                        className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                        style={{ background: '#F5F1ED' }}
+                      />
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground text-sm truncate">{product.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{product.volume}</p>
+                      </div>
                     </div>
                     <div className="col-span-3 text-right">
                       {hasDiscount && (
@@ -210,20 +220,22 @@ export default function CartDetail() {
                       )}
                       <p className="text-sm font-semibold">NT$ {unitPrice.toLocaleString()}</p>
                     </div>
-                    <div className="col-span-2 text-right flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                        className="px-2 py-1 hover:bg-secondary rounded transition-colors text-sm"
-                      >
-                        −
-                      </button>
-                      <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                        className="px-2 py-1 hover:bg-secondary rounded transition-colors text-sm"
-                      >
-                        +
-                      </button>
+                    <div className="col-span-2 flex items-center justify-end">
+                      <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-1">
+                        <button
+                          onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                          className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="w-6 text-center font-semibold text-sm flex-shrink-0">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                          className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                     <div className="col-span-3 text-right">
                       {hasDiscount && (
@@ -234,33 +246,41 @@ export default function CartDetail() {
                   </div>
 
                   {/* 手機版本 */}
-                  <div className="md:hidden space-y-1">
-                    <div className="flex justify-between items-center gap-2">
-                      <p className="font-medium text-foreground text-xs flex-1 truncate">{product.name}</p>
-                      <div className="text-right whitespace-nowrap">
-                        {hasDiscount && (
-                          <p className="text-[10px] text-muted-foreground line-through leading-tight">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
-                        )}
-                        <p className="text-xs font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                  <div className="md:hidden flex gap-3">
+                    <ImageWithFallback
+                      src={product.image}
+                      fallbackSrc="/favicon.png"
+                      alt={product.name}
+                      className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                      style={{ background: '#F5F1ED' }}
+                    />
+                    <div className="flex-1 min-w-0 space-y-1.5">
+                      <div className="flex justify-between items-start gap-2">
+                        <p className="font-medium text-foreground text-xs flex-1 truncate">{product.name}</p>
+                        <div className="text-right whitespace-nowrap flex-shrink-0">
+                          {hasDiscount && (
+                            <p className="text-[10px] text-muted-foreground line-through leading-tight">NT$ {itemOriginalSubtotal.toLocaleString()}</p>
+                          )}
+                          <p className="text-xs font-semibold" style={{ color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center text-xs text-muted-foreground">
-                      <span>{product.volume}</span>
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                          className="px-1.5 py-0.5 hover:bg-secondary rounded transition-colors text-xs"
-                        >
-                          −
-                        </button>
-                        <span className="w-6 text-center text-xs font-semibold">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                          className="px-1.5 py-0.5 hover:bg-secondary rounded transition-colors text-xs"
-                        >
-                          +
-                        </button>
-                        <span className="text-xs text-muted-foreground ml-1">× NT$ {unitPrice.toLocaleString()}</span>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-muted-foreground">{product.volume} × NT$ {unitPrice.toLocaleString()}</span>
+                        <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-0.5">
+                          <button
+                            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                            className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
+                          >
+                            <Minus className="w-3.5 h-3.5" />
+                          </button>
+                          <span className="w-5 text-center text-xs font-semibold flex-shrink-0">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                            className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
