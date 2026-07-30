@@ -195,7 +195,7 @@ export default function OrderDetail() {
           <div className="bg-secondary/10 rounded-lg p-6 space-y-3 mb-8">
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">原價</span>
-              <span className="font-semibold line-through text-muted-foreground">NT$ {order.originalSubtotal.toLocaleString()}</span>
+              <span className="font-semibold text-muted-foreground">NT$ {order.originalSubtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">會員價</span>
@@ -206,7 +206,7 @@ export default function OrderDetail() {
               <span className="font-semibold text-accent">-NT$ {order.discount.toLocaleString()}</span>
             </div>
             <div className="border-t border-border pt-3 flex justify-between items-center">
-              <span className="font-semibold">加總金額</span>
+              <span className="font-semibold">總付款金額</span>
               <span className="text-2xl font-bold text-primary">NT$ {order.finalPrice.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center pt-3 border-t border-border">

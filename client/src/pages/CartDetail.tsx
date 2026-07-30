@@ -273,7 +273,7 @@ export default function CartDetail() {
           <div className="bg-secondary/10 rounded-lg p-6 space-y-3 mb-8">
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">原價</span>
-              <span className="font-semibold line-through text-muted-foreground">NT$ {originalSubtotal.toLocaleString()}</span>
+              <span className="font-semibold text-muted-foreground">NT$ {originalSubtotal.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">會員價</span>
@@ -284,7 +284,7 @@ export default function CartDetail() {
               <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
             </div>
             <div className="border-t border-border pt-3 flex justify-between items-center">
-              <span className="font-semibold">加總金額</span>
+              <span className="font-semibold">總付款金額</span>
               <span className="text-2xl font-bold text-primary">NT$ {finalPrice.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center pt-3 border-t border-border">
@@ -320,7 +320,7 @@ export default function CartDetail() {
             <div className="bg-secondary/10 rounded-lg p-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">原價</span>
-                <span className="font-semibold line-through text-muted-foreground">NT$ {originalSubtotal.toLocaleString()}</span>
+                <span className="font-semibold text-muted-foreground">NT$ {originalSubtotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">會員價</span>
@@ -331,7 +331,7 @@ export default function CartDetail() {
                 <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
               </div>
               <div className="border-t border-border pt-2 flex justify-between">
-                <span className="font-semibold">加總金額</span>
+                <span className="font-semibold">總付款金額</span>
                 <span className="text-lg font-bold text-primary">NT$ {finalPrice.toLocaleString()}</span>
               </div>
             </div>
