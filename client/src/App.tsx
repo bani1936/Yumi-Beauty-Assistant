@@ -6,7 +6,6 @@ import { useHashLocation } from "wouter/use-hash-location";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import SkinDetection from "./pages/SkinDetection";
 import ProductCalculator from "./pages/ProductCalculator";
 import Products from "./pages/Products";
 import CartDetail from "./pages/CartDetail";
@@ -80,7 +79,6 @@ function AppRoutes() {
     <Switch>
       <Route path={"\\"} component={Home} />
       <Route path={"/"} component={Home} />
-      <Route path={"/skin-detection"} component={SkinDetection} />
       <Route path={"/product-calculator"} component={ProductCalculator} />
       <Route path={"/products"} component={Products} />
       <Route path={"/cart-detail"} component={CartDetail} />
