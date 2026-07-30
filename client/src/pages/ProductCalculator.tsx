@@ -159,9 +159,12 @@ export default function ProductCalculator() {
   const progressInfo = getProgressInfo(points);
 
   return (
-    <div className="min-h-screen bg-background pb-48 md:pb-36">
+    <div className="min-h-screen bg-background pb-56 md:pb-44">
       {/* 導航欄 */}
-      <nav className="sticky top-16 z-40 bg-white/80 backdrop-blur-md border-b border-border">
+      <nav
+        className="sticky top-16 z-40 bg-white border-b border-border isolate"
+        style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
+      >
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
           <button
             onClick={() => navigate('/')}
@@ -310,11 +313,15 @@ export default function ProductCalculator() {
         </div>
       </section>
 
-      {/* 進度條 - 桌面版本 */}
-      <div className="hidden md:block fixed bottom-32 left-0 right-0 bg-background border-b border-border px-4 py-4">
-        <div className="container max-w-4xl mx-auto">
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
+      {/* 固定底部：折扣進度條 + 結算總結（合併成同一個區塊，避免中間出現縫隙） */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white shadow-lg isolate"
+        style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
+      >
+        {/* 折扣進度條 */}
+        <div className="border-b border-border px-4 py-3">
+          <div className="container max-w-4xl mx-auto">
+            <div className="flex justify-between items-center mb-1.5">
               <p className="text-xs text-muted-foreground">
                 {progressInfo.currentLevel === 3
                   ? '已達最高等級 🎉'
@@ -332,32 +339,8 @@ export default function ProductCalculator() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* 進度條 - 手機版本 */}
-      <div className="md:hidden fixed bottom-44 left-0 right-0 bg-background border-b-0 px-4 py-1">
-        <div className="space-y-0.5">
-          <div className="flex justify-between items-center">
-            <p className="text-xs text-muted-foreground">
-              {progressInfo.currentLevel === 3
-                ? '已達最高等級 🎉'
-                : `距離下一個折扣門檻：${progressInfo.remaining.toLocaleString()} 點`}
-            </p>
-            <p className="text-xs font-semibold text-primary">
-              {progressInfo.progress}%
-            </p>
-          </div>
-          <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-primary to-accent h-full transition-all duration-300"
-              style={{ width: `${progressInfo.progress}%` }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* 固定底部總結 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-0 shadow-lg">
+        {/* 結算總結 */}
         <div className="container max-w-4xl mx-auto px-4 py-4">
           {/* 桌面版本 */}
           <div className="hidden md:grid grid-cols-6 gap-3 items-center">
