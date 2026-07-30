@@ -266,8 +266,8 @@ export default function CartDetail() {
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="text-xs text-muted-foreground leading-snug">
-                          <p>{product.volume}</p>
-                          <p>NT$ {unitPrice.toLocaleString()}</p>
+                          <div>{product.volume}</div>
+                          <div>NT$ {unitPrice.toLocaleString()}</div>
                         </div>
                         <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-0.5">
                           <button
