@@ -29,7 +29,10 @@ function GlobalNav() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-[#5a4a3a] to-[#6b5a4a] text-white border-b border-[#4a3a2a]">
+    <nav
+      className="sticky top-0 z-50 bg-gradient-to-r from-[#5a4a3a] to-[#6b5a4a] text-white border-b border-[#4a3a2a] isolate"
+      style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
+    >
       <div className="container max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <ImageWithFallback
