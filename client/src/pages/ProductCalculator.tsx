@@ -416,15 +416,10 @@ export default function ProductCalculator() {
                 折扣金額(PV) <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
               </span>
             </div>
-            <div className="flex justify-between items-end pt-2 border-t" style={{ borderColor: '#EEE9E3' }}>
-              <div>
-                <p className="text-xs text-muted-foreground mb-1">
-                  會員價 NT$ {subtotal.toLocaleString()}
-                </p>
-                <p className="text-lg font-bold text-primary">
-                  加總 NT$ {finalPrice.toLocaleString()}
-                </p>
-              </div>
+            <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: '#EEE9E3' }}>
+              <p className="text-lg font-bold text-primary">
+                會員價 NT$ {finalPrice.toLocaleString()}
+              </p>
               {cart.length > 0 && (
                 <button
                   onClick={() => {
