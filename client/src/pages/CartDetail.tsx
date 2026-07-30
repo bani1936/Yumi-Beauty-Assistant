@@ -255,7 +255,7 @@ export default function CartDetail() {
                       style={{ background: '#F5F1ED' }}
                     />
                     <div className="flex-1 min-w-0 space-y-1.5">
-                      <div className="flex justify-between items-start gap-2">
+                      <div className="flex justify-between items-center gap-2">
                         <p className="font-medium text-foreground text-xs flex-1 truncate">{product.name}</p>
                         <div className="text-right whitespace-nowrap flex-shrink-0">
                           {hasDiscount && (
@@ -265,7 +265,10 @@ export default function CartDetail() {
                         </div>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-xs text-muted-foreground">{product.volume} × NT$ {unitPrice.toLocaleString()}</span>
+                        <div className="text-xs text-muted-foreground leading-snug">
+                          <p>{product.volume}</p>
+                          <p>NT$ {unitPrice.toLocaleString()}</p>
+                        </div>
                         <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-0.5">
                           <button
                             onClick={() => updateQuantity(item.productId, item.quantity - 1)}
