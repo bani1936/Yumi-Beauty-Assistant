@@ -1540,6 +1540,7 @@ export const PRODUCTS: Product[] = [
     price: 2535,
     memberPrice: 2280,
     description: '美妍飲品，由內而外綻放光采',
+    image: '/luga-beauty-drink.jpg',
     benefits: ['美妍', '飲品', '由內而外'],
     size: '標準',
     volume: '15入',
