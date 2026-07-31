@@ -363,7 +363,7 @@ export default function ProductCalculator() {
             {/* 原價 */}
             <div className="text-left">
               <p className="text-sm text-muted-foreground mb-1">原價</p>
-              <p className="text-sm line-through" style={{ color: '#B0A797' }}>
+              <p className="text-sm" style={{ color: '#B0A797' }}>
                 NT$ {originalSubtotal.toLocaleString()}
               </p>
             </div>
@@ -416,7 +416,7 @@ export default function ProductCalculator() {
             </div>
             <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8a8a8a' }}>
               <span>
-                原價 <span className="line-through">NT$ {originalSubtotal.toLocaleString()}</span>
+                原價 <span>NT$ {originalSubtotal.toLocaleString()}</span>
               </span>
               <span className="text-right">
                 折扣金額(PV) <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
