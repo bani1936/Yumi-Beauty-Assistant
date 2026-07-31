@@ -4,6 +4,13 @@ import { useLocation } from 'wouter';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
+// 活動宣傳圖 — 每張圖是一個獨立活動，直向堆疊顯示。
+// 之後要加新活動，只要把圖片放進 client/public/，把檔名加進這個陣列最後面即可（會顯示在最下面）。
+const PROMO_CAMPAIGNS: string[] = [
+  "/promo-campaign-1.png",
+  "/promo-campaign-2.png",
+];
+
 // 實品照片 — 之後把照片放進 client/public/，把檔名加進這個陣列即可自動顯示在下方相簿。
 const GALLERY_IMAGES: string[] = [
   "/promo-gift-1.jpg",
@@ -24,6 +31,7 @@ export default function Promotion() {
     if (previewIndex === null) return;
     setPreviewIndex((previewIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length);
   };
+
   const showNext = () => {
     if (previewIndex === null) return;
     setPreviewIndex((previewIndex + 1) % GALLERY_IMAGES.length);
@@ -44,16 +52,18 @@ export default function Promotion() {
         </div>
       </nav>
 
-      {/* 主視覺圖 */}
-      <div className="container max-w-2xl mx-auto px-4 pt-8">
-        <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid #E8E4E0' }}>
-          <ImageWithFallback
-            src="/promotion-hero.jpg"
-            fallbackSrc="/favicon.png"
-            alt="最新活動：新會員消費滿額晉升組長，贈送質感訂製旅行化妝包及居家安瓶保養組2組"
-            className="w-full h-auto block"
-          />
-        </div>
+      {/* 主視覺圖 — 多筆活動直向堆疊 */}
+      <div className="container max-w-2xl mx-auto px-4 pt-8 space-y-6">
+        {PROMO_CAMPAIGNS.map((src, idx) => (
+          <div key={idx} className="rounded-2xl overflow-hidden" style={{ border: '1px solid #E8E4E0' }}>
+            <ImageWithFallback
+              src={src}
+              fallbackSrc="/favicon.png"
+              alt={`最新活動 ${idx + 1}`}
+              className="w-full h-auto block"
+            />
+          </div>
+        ))}
       </div>
 
       {/* 實品照片相簿 */}
@@ -71,6 +81,7 @@ export default function Promotion() {
             </h2>
             <p className="text-xs mt-2" style={{ color: '#B0A797' }}>點擊照片可放大預覽</p>
           </div>
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {GALLERY_IMAGES.map((src, idx) => (
               <button
@@ -107,7 +118,6 @@ export default function Promotion() {
                 alt={`活動贈品實拍 ${previewIndex + 1}`}
                 className="max-h-[80vh] w-auto rounded-xl object-contain"
               />
-
               <button
                 type="button"
                 onClick={() => setPreviewIndex(null)}
@@ -116,7 +126,6 @@ export default function Promotion() {
               >
                 <X className="w-5 h-5" />
               </button>
-
               {GALLERY_IMAGES.length > 1 && (
                 <>
                   <button
@@ -137,7 +146,6 @@ export default function Promotion() {
                   </button>
                 </>
               )}
-
               <div
                 className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full bg-white/90"
                 style={{ color: '#8a8a8a' }}
