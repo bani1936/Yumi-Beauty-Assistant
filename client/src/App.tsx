@@ -122,11 +122,6 @@ function App() {
         // switchable
       >
         <TooltipProvider>
-          {/* 頂部安全區白色遮罩：避免手機上滑到底時，狀態列區域露出殘影內容 */}
-          <div
-            className="fixed top-0 left-0 right-0 z-[100] bg-white pointer-events-none"
-            style={{ height: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
-          />
           {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} duration={2000} />}
           <Toaster />
           <WouterRouter hook={useHashLocation}>
