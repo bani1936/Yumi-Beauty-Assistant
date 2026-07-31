@@ -13,7 +13,6 @@ import OrderDetail from "./pages/OrderDetail";
 import Membership from "./pages/Membership";
 import Promotion from "./pages/Promotion";
 import ProductDetail from "./pages/ProductDetail";
-
 import SplashScreen from "./components/SplashScreen";
 import LineFloatButton from "./components/LineFloatButton";
 import { ImageWithFallback } from "./components/ui/ImageWithFallback";
@@ -43,12 +42,14 @@ function GlobalNav() {
           />
           <span className="text-sm font-semibold" style={{fontSize: '16px', fontWeight: '400'}}>Yumí 米米美學｜高端皮膚管理</span>
         </div>
+
         <div className="hidden md:flex items-center gap-6">
           <button onClick={() => handleNavigate('/promotion')} className="text-sm hover:text-[#d4a574] transition-colors">最新活動</button>
           <button onClick={() => handleNavigate('/products')} className="text-sm hover:text-[#d4a574] transition-colors">全系列產品</button>
           <button onClick={() => handleNavigate('/membership')} className="text-sm hover:text-[#d4a574] transition-colors">會員制度</button>
           <button onClick={() => handleNavigate('/product-calculator')} className="text-sm hover:text-[#d4a574] transition-colors">首購／團購金額試算</button>
         </div>
+
         {/* 手機版菜單按鈕 */}
         <div className="md:hidden">
           <button onClick={(e) => { e.stopPropagation(); setIsMenuOpen(!isMenuOpen); }} className="hover:text-[#d4a574] transition-colors">
@@ -56,6 +57,7 @@ function GlobalNav() {
           </button>
         </div>
       </div>
+
       {/* 手機版側邊菜單 */}
       {isMenuOpen && (
         <div className="md:hidden bg-gradient-to-r from-[#5a4a3a] to-[#6b5a4a] border-t border-[#4a3a2a] py-4 px-4 space-y-3">
@@ -100,7 +102,6 @@ function AppRoutes() {
 // - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
 //   to keep consistent foreground/background color across components
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
 function App() {
   const [showSplash, setShowSplash] = useState(() => {
     // 檢查 sessionStorage 中是否已經顯示過 Splash Screen
@@ -121,6 +122,11 @@ function App() {
         // switchable
       >
         <TooltipProvider>
+          {/* 頂部安全區白色遮罩：避免手機上滑到底時，狀態列區域露出殘影內容 */}
+          <div
+            className="fixed top-0 left-0 right-0 z-[100] bg-white pointer-events-none"
+            style={{ height: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
+          />
           {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} duration={2000} />}
           <Toaster />
           <WouterRouter hook={useHashLocation}>
