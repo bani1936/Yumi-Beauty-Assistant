@@ -119,7 +119,6 @@ export default function ProductCalculator() {
     }
   };
 
-
   const discount = calculateDiscount(points);
   const finalPrice = subtotal - discount;
 
@@ -151,7 +150,6 @@ export default function ProductCalculator() {
     const progress = totalPoints < nextThreshold
       ? Math.round(((totalPoints - currentThreshold) / (nextThreshold - currentThreshold)) * 100)
       : 100;
-
     const remaining = Math.max(0, nextThreshold - totalPoints);
 
     return { currentLevel, nextThreshold, progress, remaining };
@@ -225,7 +223,6 @@ export default function ProductCalculator() {
                           const product = getProductById(item.productId);
                           return product?.series === series;
                         }).reduce((sum, item) => sum + item.quantity, 0);
-
                         return seriesCount > 0 && (
                           <div className="flex items-center justify-center w-5 h-5 text-white rounded-full text-xs font-bold" style={{ backgroundColor: '#8B6F47' }}>
                             {seriesCount}
@@ -282,15 +279,14 @@ export default function ProductCalculator() {
                             <div className="flex items-center justify-between md:justify-end gap-3 md:gap-4 w-full md:w-auto">
                               <div className="flex flex-col items-end min-w-fit">
                                 {hasDiscount && (
-                                  <span className="text-xs line-through" style={{ color: '#B0A797' }}>
-                                    NT${product.price}
+                                  <span className="text-xs" style={{ color: '#B0A797' }}>
+                                    原價 NT${product.price}
                                   </span>
                                 )}
                                 <span className="text-base md:text-lg font-bold text-primary">
                                   NT${product.memberPrice || product.price}
                                 </span>
                               </div>
-
                               <div className="w-24">
                                 <div className="flex items-center justify-end gap-1 bg-background border border-border rounded-lg p-1">
                                   <button
