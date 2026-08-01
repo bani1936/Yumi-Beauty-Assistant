@@ -47,6 +47,19 @@ export interface Product {
       title: string;
       points: string[];
     }[];
+    // 三大關鍵配方（如：源頭阻斷／深層修復／表層改善）
+    keyFormulas?: {
+      image?: string;
+      items: { label: string; title: string; tags: string }[];
+    };
+    // 科學實證數據（如：CRP下降20-25%）
+    clinicalStats?: { value: string; label: string }[];
+    // 使用方法（icon + 短文字，如：100-150ml溫涼水／餐後30分鐘內／每日1包）
+    howToUse?: { icon: 'cup' | 'clock' | 'calendar'; text: string }[];
+    // 常見問題
+    faqs?: { q: string; a: string }[];
+    // 產品規格（如：風味／包裝／產地）
+    specs?: { label: string; value: string }[];
   };
 }
 
@@ -1563,15 +1576,38 @@ export const PRODUCTS: Product[] = [
     storySections: {
       heroImage: '/luga-beauty-drink.jpg',
       intro: {
-        title: '慢性發炎，是老化的隱形推手',
+        title: '慢性發炎如何引發老化惡性循環',
         gridImage: '/luga-story-cycle.jpg',
-        warning: '慢性發炎會破壞膠原蛋白、降低細胞修復力，形成「發炎→修復力下降→老化」的惡性循環。',
       },
-      ingredientsSection: {
+      keyFormulas: {
+        image: '/luga-story-icons.jpg',
         items: [
-          { image: '/luga-story-icons.jpg', name: '源頭阻斷．深層修復．表層改善', description: 'MSM、牛磺酸從源頭抑制發炎反應；白藜蘆醇、輔酶Q10深入修復細胞與粒線體活力；玻尿酸、銀耳萃取物、維生素C與鋅則由表層補水鎖水、促進膠原蛋白合成。' },
+          { label: '01', title: '源頭阻斷．預防發炎', tags: 'MSM．牛磺酸' },
+          { label: '02', title: '深層修復．重啟細胞活力', tags: '白藜蘆醇．輔酶Q10．牛磺酸' },
+          { label: '03', title: '表層改善．實現水潤透亮', tags: '玻尿酸．銀耳萃取．維生素C＆鋅' },
         ],
       },
+      clinicalStats: [
+        { value: '-20~25%', label: '發炎指標CRP' },
+        { value: '+11%', label: '面部含水量' },
+        { value: '-15.6%', label: '皺紋改善' },
+        { value: '40%', label: '挽救膠原流失' },
+      ],
+      howToUse: [
+        { icon: 'cup', text: '100-150ml溫涼水' },
+        { icon: 'clock', text: '餐後30分鐘內' },
+        { icon: 'calendar', text: '每日1包' },
+      ],
+      faqs: [
+        { q: '素食者可以食用嗎？', a: '可以，本產品為全素配方。' },
+        { q: '哪些人應避免使用？', a: '15歲以下兒童、孕婦與哺乳期婦女、服用抗凝血藥物者。' },
+        { q: '生理期是否可以食用？', a: '主要成分無禁忌，但配方含洛神花性偏寒涼，經期體質虛寒者建議酌量或暫停。' },
+      ],
+      specs: [
+        { label: '風味', value: '玫瑰洛神' },
+        { label: '包裝', value: '每包6g，每盒15份' },
+        { label: '產地', value: '台灣製造' },
+      ],
     },
   },
 
