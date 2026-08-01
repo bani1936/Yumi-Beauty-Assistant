@@ -1,6 +1,8 @@
 import { useLocation } from 'wouter';
-import { ChevronLeft, Target, Leaf, Droplet, Package, Sparkles } from 'lucide-react';
+import { ChevronLeft, Target, Leaf, Droplet, Package, Sparkles, GlassWater, Clock, Calendar } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products';
+
+const HOW_TO_USE_ICONS = { cup: GlassWater, clock: Clock, calendar: Calendar } as const;
 import { USAGE_SEQUENCES } from '@/lib/usage-sequences';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -197,6 +199,93 @@ export default function ProductDetail() {
               </section>
             )}
 
+            {product.storySections.keyFormulas && product.storySections.keyFormulas.items.length > 0 && (
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  三大關鍵配方
+                </h2>
+                {product.storySections.keyFormulas.image && (
+                  <div
+                    className="rounded-2xl overflow-hidden mb-8"
+                    style={{ border: '1px solid #E8DCC8' }}
+                  >
+                    <ImageWithFallback
+                      src={product.storySections.keyFormulas.image}
+                      fallbackSrc="/favicon.png"
+                      alt="三大關鍵配方"
+                      className="w-full h-auto block"
+                    />
+                  </div>
+                )}
+                <div className="space-y-3">
+                  {product.storySections.keyFormulas.items.map((f, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-2xl p-5 text-center"
+                      style={{ border: '1px solid #E8DCC8', background: '#FBF6EE' }}
+                    >
+                      <div className="text-sm font-bold mb-1" style={{ color: '#5a4632' }}>
+                        {f.label} {f.title}
+                      </div>
+                      <div className="text-xs" style={{ color: '#8a7960' }}>
+                        {f.tags}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {product.storySections.clinicalStats && product.storySections.clinicalStats.length > 0 && (
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  科學實證
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {product.storySections.clinicalStats.map((s, idx) => (
+                    <div key={idx} className="rounded-2xl p-4 text-center" style={{ background: '#F5F1ED' }}>
+                      <div className="text-xl md:text-2xl font-bold mb-1" style={{ color: '#B5654A' }}>
+                        {s.value}
+                      </div>
+                      <div className="text-xs" style={{ color: '#8a7960' }}>
+                        {s.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {product.storySections.howToUse && product.storySections.howToUse.length > 0 && (
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  使用方法
+                </h2>
+                <div className="flex justify-center gap-10 md:gap-16">
+                  {product.storySections.howToUse.map((h, idx) => {
+                    const Icon = HOW_TO_USE_ICONS[h.icon] || GlassWater;
+                    return (
+                      <div key={idx} className="text-center">
+                        <Icon className="w-6 h-6 mx-auto mb-2" style={{ color: '#8B6F47' }} />
+                        <div className="text-xs" style={{ color: '#5a4632' }}>
+                          {h.text}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+
             {product.storySections.ingredientsSection && product.storySections.ingredientsSection.items.length > 0 && (
               <section className="mb-12 md:mb-16 max-w-3xl mx-auto">
                 <div className="text-center mb-10">
@@ -277,6 +366,54 @@ export default function ProductDetail() {
                     </div>
                   ))}
                 </div>
+              </section>
+            )}
+
+            {product.storySections.faqs && product.storySections.faqs.length > 0 && (
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  常見問題
+                </h2>
+                <div style={{ borderTop: '1px solid #E8E4E0' }}>
+                  {product.storySections.faqs.map((f, idx) => (
+                    <div key={idx} className="py-4" style={{ borderBottom: '1px solid #E8E4E0' }}>
+                      <div className="text-sm font-semibold mb-1.5" style={{ color: '#5a4632' }}>
+                        {f.q}
+                      </div>
+                      <div className="text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                        {f.a}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {product.storySections.specs && product.storySections.specs.length > 0 && (
+              <section className="max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  產品規格
+                </h2>
+                <table className="w-full text-sm">
+                  <tbody>
+                    {product.storySections.specs.map((s, idx) => (
+                      <tr key={idx} style={{ borderTop: idx === 0 ? 'none' : '1px solid #E8E4E0' }}>
+                        <td className="py-2.5" style={{ color: '#8a7960' }}>
+                          {s.label}
+                        </td>
+                        <td className="py-2.5 text-right font-medium" style={{ color: '#5a4632' }}>
+                          {s.value}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </section>
             )}
           </div>
