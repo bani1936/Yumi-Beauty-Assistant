@@ -69,7 +69,7 @@ export default function Promotion() {
     <div className="min-h-screen pb-20" style={{ background: '#FAFAF8' }}>
       {/* 導航欄 */}
       <nav
-        className="sticky top-24 z-40 bg-white border-b isolate"
+        className="sticky top-16 z-40 bg-white border-b isolate"
         style={{ borderColor: '#E8E4E0', transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
       >
         <div className="container max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">

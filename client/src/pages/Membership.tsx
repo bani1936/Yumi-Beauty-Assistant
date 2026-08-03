@@ -35,7 +35,7 @@ export default function Membership() {
     <div className="min-h-screen bg-background pb-32">
       {/* 導航欄 */}
       <nav
-        className="sticky top-24 z-40 bg-white border-b border-border isolate"
+        className="sticky top-16 z-40 bg-white border-b border-border isolate"
         style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
       >
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
