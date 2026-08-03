@@ -137,6 +137,7 @@
 
 html {
   overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 @keyframes marquee-scroll {
@@ -160,6 +161,7 @@ html {
     @apply bg-background text-foreground;
     font-family: 'Noto Sans TC', sans-serif;
     overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
   }
 
   /* 標題排版系統 */
