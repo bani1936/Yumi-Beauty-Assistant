@@ -149,7 +149,7 @@ html {
 }
 
 .animate-marquee {
-  animation: marquee-scroll 45s linear infinite;
+  animation: marquee-scroll 75s linear infinite;
 }
 
 @layer base {
