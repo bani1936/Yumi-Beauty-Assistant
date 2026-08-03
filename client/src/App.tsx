@@ -19,6 +19,9 @@ import { ImageWithFallback } from "./components/ui/ImageWithFallback";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
+const MARQUEE_TEXT = "購買產品刷卡　永豐、台新、中信　3、6期　零利率！";
+const MARQUEE_REPEAT = 12;
+
 function GlobalNav() {
   const [, navigate] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -83,8 +86,16 @@ function GlobalNav() {
       {/* 刷卡分期跑馬燈 */}
       <div className="bg-black overflow-hidden py-2">
         <div className="inline-flex whitespace-nowrap animate-marquee">
-          <span className="text-white text-xs tracking-wide px-8">購買產品刷卡　永豐、台新、中信　3、6期　零利率！</span>
-          <span className="text-white text-xs tracking-wide px-8">購買產品刷卡　永豐、台新、中信　3、6期　零利率！</span>
+          <span className="inline-flex">
+            {Array.from({ length: MARQUEE_REPEAT }).map((_, i) => (
+              <span key={`m1-${i}`} className="text-white text-xs tracking-wide px-6">{MARQUEE_TEXT}</span>
+            ))}
+          </span>
+          <span className="inline-flex">
+            {Array.from({ length: MARQUEE_REPEAT }).map((_, i) => (
+              <span key={`m2-${i}`} className="text-white text-xs tracking-wide px-6">{MARQUEE_TEXT}</span>
+            ))}
+          </span>
         </div>
       </div>
     </div>
