@@ -159,7 +159,10 @@ export default function CartDetail() {
   return (
     <div className="min-h-screen bg-background pb-32">
       {/* 導航欄 */}
-      <nav className="sticky top-24 z-40 bg-white/80 backdrop-blur-md border-b border-border">
+      <nav
+        className="sticky top-24 z-40 bg-white border-b border-border isolate"
+        style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
+      >
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
           <button
             onClick={() => window.history.back()}
