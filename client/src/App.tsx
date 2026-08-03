@@ -28,9 +28,12 @@ function GlobalNav() {
   };
 
   return (
-    <nav
-      className="sticky top-0 z-50 bg-gradient-to-r from-[#5a4a3a] to-[#6b5a4a] text-white border-b border-[#4a3a2a] isolate"
+    <div
+      className="sticky top-0 z-50 isolate"
       style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
+    >
+    <nav
+      className="bg-gradient-to-r from-[#5a4a3a] to-[#6b5a4a] text-white border-b border-[#4a3a2a]"
     >
       <div className="container max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -76,6 +79,15 @@ function GlobalNav() {
         </div>
       )}
     </nav>
+
+      {/* 刷卡分期跑馬燈 */}
+      <div className="bg-black overflow-hidden py-2">
+        <div className="inline-flex whitespace-nowrap animate-marquee">
+          <span className="text-white text-xs tracking-wide px-8">購買產品刷卡　永豐、台新、中信　3、6期　零利率！</span>
+          <span className="text-white text-xs tracking-wide px-8">購買產品刷卡　永豐、台新、中信　3、6期　零利率！</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
