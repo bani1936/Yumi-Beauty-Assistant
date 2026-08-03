@@ -23,8 +23,11 @@ const MARQUEE_TEXT = "永豐、台新、中信　刷卡3、6期　零利率！";
 const MARQUEE_REPEAT = 10;
 
 function GlobalNav() {
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // 跑馬燈只在首頁顯示，避免其他頁面覺得干擾
+  const isHome = location === '/' || location === '\\' || location === '';
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -83,21 +86,23 @@ function GlobalNav() {
       )}
     </nav>
 
-      {/* 刷卡分期跑馬燈 */}
-      <div className="bg-black overflow-hidden py-2">
-        <div className="inline-flex whitespace-nowrap animate-marquee">
-          <span className="inline-flex">
-            {Array.from({ length: MARQUEE_REPEAT }).map((_, i) => (
-              <span key={`m1-${i}`} className="text-white text-xs tracking-wide px-14">{MARQUEE_TEXT}</span>
-            ))}
-          </span>
-          <span className="inline-flex">
-            {Array.from({ length: MARQUEE_REPEAT }).map((_, i) => (
-              <span key={`m2-${i}`} className="text-white text-xs tracking-wide px-14">{MARQUEE_TEXT}</span>
-            ))}
-          </span>
+      {/* 刷卡分期跑馬燈：只在首頁顯示 */}
+      {isHome && (
+        <div className="bg-black overflow-hidden py-2">
+          <div className="inline-flex whitespace-nowrap animate-marquee">
+            <span className="inline-flex">
+              {Array.from({ length: MARQUEE_REPEAT }).map((_, i) => (
+                <span key={`m1-${i}`} className="text-white text-xs tracking-wide px-14">{MARQUEE_TEXT}</span>
+              ))}
+            </span>
+            <span className="inline-flex">
+              {Array.from({ length: MARQUEE_REPEAT }).map((_, i) => (
+                <span key={`m2-${i}`} className="text-white text-xs tracking-wide px-14">{MARQUEE_TEXT}</span>
+              ))}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
