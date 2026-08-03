@@ -34,6 +34,10 @@ const PROMO_CAMPAIGNS: PromoCampaign[] = [
     image: "/promo-campaign-2.png",
     label: "盛夏不鬧肌",
   },
+  {
+    image: "/promo-campaign-3.png",
+    label: "點點成金，PV換好禮",
+  },
 ];
 
 export default function Promotion() {
