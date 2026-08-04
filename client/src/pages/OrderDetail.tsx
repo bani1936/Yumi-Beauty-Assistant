@@ -5,7 +5,6 @@ import { useLocation } from "wouter";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { PRODUCTS } from "@/lib/products";
 import { getAssetUrl } from "@/lib/utils";
-import { GIFT_TIERS } from "@/lib/giftTiers";
 
 // 動態載入外部腳本（避免重複載入）
 function loadScript(src: string): Promise<void> {
@@ -20,6 +19,16 @@ function loadScript(src: string): Promise<void> {
     script.onerror = () => reject(new Error(`無法載入 ${src}`));
     document.body.appendChild(script);
   });
+}
+
+// 把贈品的重複選擇統整成「品項×數量」，例如 5 組安瓶保養組選了 2 組熨斗系列、3 組都都好系列，
+// 就整理成 ["熨斗系列安瓶保養組×2組", "38都都好安瓶保養組×3組"]，而不是一筆一筆重複列出
+function summarizeGiftSelections(selections: string[], unit: string): string[] {
+  const counts = new Map<string, number>();
+  selections.filter(Boolean).forEach((label) => {
+    counts.set(label, (counts.get(label) || 0) + 1);
+  });
+  return Array.from(counts.entries()).map(([label, count]) => `${label}×${count}${unit}`);
 }
 
 // 產生「日期+時間+姓名」檔名，例如 2608041359_蔡依廷
@@ -99,11 +108,15 @@ interface OrderGiftItem {
   label: string;
   qty: number;
   unit: string;
+  note?: string;
   selections: string[];
 }
 
 interface OrderGifts {
-  tierId: string;
+  campaignId: string;
+  campaignName: string;
+  thresholdValue: number;
+  basis: 'pv' | 'amount';
   items: OrderGiftItem[];
 }
 
@@ -119,7 +132,13 @@ interface OrderData {
     phone: string;
     address: string;
   };
-  gifts?: OrderGifts | null;
+  gifts?: OrderGifts[] | null;
+}
+
+function giftThresholdLabel(gift: OrderGifts): string {
+  return gift.basis === 'amount'
+    ? `訂單滿 NT$ ${gift.thresholdValue.toLocaleString()}`
+    : `滿 ${gift.thresholdValue.toLocaleString()} PV`;
 }
 
 interface CustomerInfo {
@@ -258,15 +277,13 @@ export default function OrderDetail() {
     );
   }
 
-  const hasGifts = !!order.gifts && order.gifts.items.length > 0;
-  const giftTier = order.gifts ? GIFT_TIERS.find((t) => t.id === order.gifts!.tierId) : undefined;
-  const giftTierLabel = giftTier
-    ? (giftTier.basis === 'amount'
-        ? `訂單滿 NT$ ${giftTier.thresholdValue.toLocaleString()}`
-        : `滿 ${giftTier.thresholdValue.toLocaleString()} PV`)
-    : '';
-  // PDF 內贈品區塊估計高度，分頁時要一併預留，避免跟頁碼或總結資訊重疊
-  const giftsPdfHeight = hasGifts ? 50 + (order.gifts?.items.length || 0) * 28 : 0;
+  const gifts = order.gifts || [];
+  const hasGifts = gifts.length > 0;
+  // PDF 內贈品區塊估計高度（每個活動一個標題+每個品項最多 qty 行明細），
+  // 分頁時一併預留，避免跟頁碼或總結資訊重疊
+  const giftsPdfHeight = hasGifts
+    ? gifts.reduce((sum, gift) => sum + 34 + gift.items.reduce((s, item) => s + 18 + item.qty * 16, 0), 0)
+    : 0;
   const printPages = buildPrintPages(order.items, giftsPdfHeight);
 
   return (
@@ -401,27 +418,41 @@ export default function OrderDetail() {
             </div>
           </div>
 
-          {/* 滿額贈禮：只有在達成門檻並帶有贈品資料時才顯示 */}
+          {/* 滿額贈禮：達成的每個活動各自列出一塊，只有在有贈品資料時才顯示 */}
           {hasGifts && (
             <div className="bg-secondary/10 rounded-lg p-6 mb-8">
               <div className="flex items-center gap-2 mb-3">
                 <Gift className="w-5 h-5" style={{ color: '#5a4632' }} />
-                <span className="font-semibold" style={{ color: '#5a4632' }}>
-                  滿額贈禮{giftTierLabel ? `（${giftTierLabel}）` : ''}
-                </span>
+                <span className="font-semibold" style={{ color: '#5a4632' }}>滿額贈禮</span>
               </div>
-              <div className="space-y-2">
-                {order.gifts!.items.map((item, idx) => {
-                  const chosen = item.selections.filter(Boolean);
-                  return (
-                    <div key={idx} className="text-sm">
-                      <span className="font-medium text-foreground">{item.label}×{item.qty}{item.unit}</span>
-                      {chosen.length > 0 && (
-                        <span className="text-muted-foreground">　已選：{chosen.join('、')}</span>
-                      )}
+              <div className="space-y-4">
+                {gifts.map((gift, giftIdx) => (
+                  <div key={gift.campaignId} style={{ borderTop: giftIdx > 0 ? '1px solid #E8E4E0' : 'none', paddingTop: giftIdx > 0 ? '14px' : 0 }}>
+                    <div className="text-xs font-semibold mb-2" style={{ color: '#8b6f47' }}>
+                      {gift.campaignName}（{giftThresholdLabel(gift)}）
                     </div>
-                  );
-                })}
+                    <div className="space-y-3">
+                      {gift.items.map((item, idx) => {
+                        const summarized = summarizeGiftSelections(item.selections, item.unit);
+                        return (
+                          <div key={idx} className="text-sm">
+                            <div className="font-medium text-foreground">
+                              {item.label}×{item.qty}{item.unit}
+                              {item.note && <span className="text-xs font-normal ml-1" style={{ color: '#b3714a' }}>（{item.note}，需另行確認）</span>}
+                            </div>
+                            {summarized.length > 0 && (
+                              <div className="text-muted-foreground mt-1 space-y-0.5">
+                                {summarized.map((line, i) => (
+                                  <div key={i}>・{line}</div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -588,18 +619,28 @@ export default function OrderDetail() {
 
                 {hasGifts && (
                   <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '0.5px solid #E8E4E0' }}>
-                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#5a4632', marginBottom: '8px' }}>
-                      滿額贈禮{giftTierLabel ? `（${giftTierLabel}）` : ''}
-                    </div>
-                    {order.gifts!.items.map((item, idx) => {
-                      const chosen = item.selections.filter(Boolean);
-                      return (
-                        <div key={idx} style={{ fontSize: '12px', color: '#8a7960', marginBottom: '4px' }}>
-                          {item.label}×{item.qty}{item.unit}
-                          {chosen.length > 0 && `　已選：${chosen.join('、')}`}
+                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#5a4632', marginBottom: '8px' }}>滿額贈禮</div>
+                    {gifts.map((gift) => (
+                      <div key={gift.campaignId} style={{ marginBottom: '10px' }}>
+                        <div style={{ fontSize: '12px', fontWeight: 600, color: '#8b6f47', marginBottom: '4px' }}>
+                          {gift.campaignName}（{giftThresholdLabel(gift)}）
                         </div>
-                      );
-                    })}
+                        {gift.items.map((item, idx) => {
+                          const summarized = summarizeGiftSelections(item.selections, item.unit);
+                          return (
+                            <div key={idx} style={{ marginBottom: '6px' }}>
+                              <div style={{ fontSize: '12px', color: '#3a2f24', fontWeight: 600 }}>
+                                {item.label}×{item.qty}{item.unit}
+                                {item.note && <span style={{ fontWeight: 400, color: '#b3714a' }}>　（{item.note}，需另行確認）</span>}
+                              </div>
+                              {summarized.map((line, i) => (
+                                <div key={i} style={{ fontSize: '12px', color: '#8a7960', marginTop: '2px' }}>・{line}</div>
+                              ))}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
                   </div>
                 )}
 
