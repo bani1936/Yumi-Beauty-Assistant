@@ -619,7 +619,10 @@ export default function OrderDetail() {
 
                 {hasGifts && (
                   <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '0.5px solid #E8E4E0' }}>
-                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#5a4632', marginBottom: '8px' }}>滿額贈禮</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                      <Gift style={{ width: '15px', height: '15px', color: '#5a4632' }} />
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: '#5a4632' }}>滿額贈禮</div>
+                    </div>
                     {gifts.map((gift) => (
                       <div key={gift.campaignId} style={{ marginBottom: '10px' }}>
                         <div style={{ fontSize: '12px', fontWeight: 600, color: '#8b6f47', marginBottom: '4px' }}>
