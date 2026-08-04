@@ -369,7 +369,7 @@ export default function OrderDetail() {
 
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid #E8E4E0' }}>
+              <tr style={{ borderBottom: '2px solid #5a4632' }}>
                 <th style={{ textAlign: 'left', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>產品名稱</th>
                 <th style={{ textAlign: 'right', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>單價</th>
                 <th style={{ textAlign: 'center', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>數量</th>
@@ -377,15 +377,14 @@ export default function OrderDetail() {
               </tr>
             </thead>
             <tbody>
-              {order.items.map((item) => {
+              {order.items.map((item, index) => {
                 const product = getProductById(item.productId);
                 if (!product) return null;
                 const unitPrice = product.memberPrice || product.price;
-                const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
                 const itemSubtotal = unitPrice * item.quantity;
-                const itemOriginalSubtotal = product.price * item.quantity;
+                const isLast = index === order.items.length - 1;
                 return (
-                  <tr key={item.productId} style={{ borderBottom: '1px solid #E8E4E0' }}>
+                  <tr key={item.productId} style={{ borderBottom: isLast ? 'none' : '1px solid #E8E4E0' }}>
                     <td style={{ padding: '16px 8px', verticalAlign: 'middle' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         {product.image ? (
@@ -404,25 +403,9 @@ export default function OrderDetail() {
                         </div>
                       </div>
                     </td>
-                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle' }}>
-                      {hasDiscount && (
-                        <span style={{ position: 'relative', display: 'inline-block', fontSize: '12px', color: '#b5a894' }}>
-                          NT$ {product.price.toLocaleString()}
-                          <span style={{ position: 'absolute', left: 0, right: 0, top: '50%', borderTop: '1px solid #b5a894' }} />
-                        </span>
-                      )}
-                      <div style={{ fontSize: '14px', fontWeight: 600, color: '#3a2f24', marginTop: hasDiscount ? '2px' : 0 }}>NT$ {unitPrice.toLocaleString()}</div>
-                    </td>
+                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>NT$ {unitPrice.toLocaleString()}</td>
                     <td style={{ textAlign: 'center', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{item.quantity}</td>
-                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle' }}>
-                      {hasDiscount && (
-                        <span style={{ position: 'relative', display: 'inline-block', fontSize: '12px', color: '#b5a894' }}>
-                          NT$ {itemOriginalSubtotal.toLocaleString()}
-                          <span style={{ position: 'absolute', left: 0, right: 0, top: '50%', borderTop: '1px solid #b5a894' }} />
-                        </span>
-                      )}
-                      <div style={{ fontSize: '14px', fontWeight: 700, color: '#8b6f47', marginTop: hasDiscount ? '2px' : 0 }}>NT$ {itemSubtotal.toLocaleString()}</div>
-                    </td>
+                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 700, color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</td>
                   </tr>
                 );
               })}
