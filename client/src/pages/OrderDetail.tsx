@@ -528,8 +528,7 @@ export default function OrderDetail() {
                 id="customerPaymentMethod"
                 value={customerInfo.paymentMethod}
                 onChange={(e) => setCustomerInfo({ ...customerInfo, paymentMethod: e.target.value })}
-                className="w-full bg-transparent outline-none"
-                style={{ fontWeight: customerInfo.paymentMethod ? 600 : 400, color: customerInfo.paymentMethod ? undefined : '#9a8f7d' }}
+                className={`w-full bg-transparent outline-none ${customerInfo.paymentMethod ? 'font-semibold text-foreground' : 'text-muted-foreground'}`}
               >
                 <option value="">請選擇付款方式</option>
                 <option value="現金">現金</option>
@@ -543,8 +542,7 @@ export default function OrderDetail() {
                 id="customerInvoiceType"
                 value={customerInfo.invoiceType}
                 onChange={(e) => setCustomerInfo({ ...customerInfo, invoiceType: e.target.value })}
-                className="w-full bg-transparent outline-none"
-                style={{ fontWeight: customerInfo.invoiceType ? 600 : 400, color: customerInfo.invoiceType ? undefined : '#9a8f7d' }}
+                className={`w-full bg-transparent outline-none ${customerInfo.invoiceType ? 'font-semibold text-foreground' : 'text-muted-foreground'}`}
               >
                 <option value="">請選擇發票類型</option>
                 <option value="手機載具">手機載具</option>
@@ -559,7 +557,7 @@ export default function OrderDetail() {
                   type="text"
                   value={customerInfo.mobileBarcode}
                   onChange={(e) => setCustomerInfo({ ...customerInfo, mobileBarcode: e.target.value })}
-                  placeholder="/FX00L9R"
+                  placeholder="請輸入載具號碼"
                   className="w-full bg-transparent outline-none font-semibold placeholder:font-normal placeholder:text-muted-foreground"
                 />
               </div>
