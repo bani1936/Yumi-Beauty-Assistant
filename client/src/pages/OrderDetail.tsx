@@ -53,11 +53,18 @@ interface OrderData {
   };
 }
 
+interface CustomerInfo {
+  name: string;
+  phone: string;
+  address: string;
+}
+
 export default function OrderDetail() {
   const [, navigate] = useLocation();
   const [order, setOrder] = useState<OrderData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSavingPdf, setIsSavingPdf] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({ name: "", phone: "", address: "" });
   const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,7 +72,11 @@ export default function OrderDetail() {
     const currentOrder = sessionStorage.getItem("currentOrder");
     if (currentOrder) {
       try {
-        setOrder(JSON.parse(currentOrder));
+        const parsed = JSON.parse(currentOrder);
+        setOrder(parsed);
+        if (parsed?.customer) {
+          setCustomerInfo(parsed.customer);
+        }
       } catch (e) {
         console.error("Failed to parse order:", e);
       }
@@ -97,8 +108,10 @@ export default function OrderDetail() {
     navigate("/");
   };
 
+  const isNameFilled = customerInfo.name.trim().length > 0;
+
   const handleSavePdf = async () => {
-    if (!order || !printRef.current || isSavingPdf) return;
+    if (!order || !printRef.current || isSavingPdf || !isNameFilled) return;
     setIsSavingPdf(true);
     try {
       await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
@@ -147,7 +160,7 @@ export default function OrderDetail() {
         heightLeft -= pageHeight;
       }
 
-      pdf.save(`${buildOrderFileName(order.customer.name)}.pdf`);
+      pdf.save(`${buildOrderFileName(customerInfo.name)}.pdf`);
     } catch (err) {
       console.error("儲存訂單 PDF 失敗:", err);
       alert("儲存 PDF 時發生問題，請稍後再試一次。");
@@ -277,22 +290,6 @@ export default function OrderDetail() {
             })}
           </div>
 
-          {/* 客戶信息 */}
-          <div className="bg-secondary/10 rounded-lg p-6 mb-8 space-y-3">
-            <div className="border-b border-border pb-3">
-              <p className="text-sm text-muted-foreground">收件人</p>
-              <p className="font-semibold">{order.customer.name}</p>
-            </div>
-            <div className="border-b border-border pb-3">
-              <p className="text-sm text-muted-foreground">電話</p>
-              <p className="font-semibold">{order.customer.phone}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">收件地址</p>
-              <p className="font-semibold">{order.customer.address}</p>
-            </div>
-          </div>
-
           {/* 總結資訊 */}
           <div className="bg-secondary/10 rounded-lg p-6 space-y-3 mb-8">
             <div className="flex justify-between items-center">
@@ -317,11 +314,49 @@ export default function OrderDetail() {
             </div>
           </div>
 
+          {/* 收件人資訊：可編輯，訂購人為必填才能儲存訂單 */}
+          <div className="bg-secondary/10 rounded-lg p-6 mb-8 space-y-3">
+            <div className="border-b border-border pb-3">
+              <label htmlFor="customerName" className="text-sm text-muted-foreground">訂購人</label>
+              <input
+                id="customerName"
+                type="text"
+                value={customerInfo.name}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                placeholder="請輸入訂購人姓名"
+                className="w-full bg-transparent outline-none font-semibold placeholder:font-normal placeholder:text-muted-foreground"
+              />
+            </div>
+            <div className="border-b border-border pb-3">
+              <label htmlFor="customerPhone" className="text-sm text-muted-foreground">電話</label>
+              <input
+                id="customerPhone"
+                type="text"
+                value={customerInfo.phone}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                placeholder="請輸入電話"
+                className="w-full bg-transparent outline-none font-semibold placeholder:font-normal placeholder:text-muted-foreground"
+              />
+            </div>
+            <div>
+              <label htmlFor="customerAddress" className="text-sm text-muted-foreground">地址</label>
+              <input
+                id="customerAddress"
+                type="text"
+                value={customerInfo.address}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                placeholder="請輸入地址"
+                className="w-full bg-transparent outline-none font-semibold placeholder:font-normal placeholder:text-muted-foreground"
+              />
+            </div>
+            <p className="text-xs pt-1" style={{ color: '#b3714a' }}>*填寫訂購人資訊可儲存訂單</p>
+          </div>
+
           {/* 儲存訂單 PDF */}
           <Button
             onClick={handleSavePdf}
-            disabled={isSavingPdf}
-            className="w-full py-6 text-base"
+            disabled={isSavingPdf || !isNameFilled}
+            className="w-full py-6 text-base disabled:opacity-50"
             style={{ background: '#5a4632', color: '#fff' }}
           >
             <Download className="w-4 h-4 mr-2" />
@@ -362,9 +397,9 @@ export default function OrderDetail() {
             }}
           >
             <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
-            <div>訂購人：{order.customer.name}</div>
-            <div>電話：{order.customer.phone}</div>
-            <div>地址：{order.customer.address}</div>
+            <div>訂購人：{customerInfo.name}</div>
+            <div>電話：{customerInfo.phone}</div>
+            <div>地址：{customerInfo.address}</div>
           </div>
 
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>

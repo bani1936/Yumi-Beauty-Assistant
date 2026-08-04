@@ -4,39 +4,16 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { PRODUCTS } from "@/lib/products";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
 interface CartItem {
   productId: string;
   quantity: number;
 }
 
-interface CheckoutForm {
-  name: string;
-  phone: string;
-  address: string;
-}
-
 export default function CartDetail() {
   const [, navigate] = useLocation();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [formData, setFormData] = useState<CheckoutForm>({
-    name: "",
-    phone: "",
-    address: "",
-  });
-  const [formErrors, setFormErrors] = useState<Partial<CheckoutForm>>({});
 
   useEffect(() => {
     // 從 localStorage 讀取購物車數據
@@ -107,24 +84,9 @@ export default function CartDetail() {
   const discount = calculateDiscount(totalPV);
   const finalPrice = subtotal - discount;
 
-  const validateForm = (): boolean => {
-    const errors: Partial<CheckoutForm> = {};
-
-    // 電話格式驗證（如果填寫了的話）
-    if (formData.phone.trim() && !/^[\d\-\+\(\)\s]+$/.test(formData.phone)) {
-      errors.phone = "電話格式不正確";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmitOrder = () => {
-    if (!validateForm()) {
-      return;
-    }
-
-    // 準備訂單數據
+  // 確認訂單：不再彈出表單，直接帶著空白的收件人資訊跳轉到訂單明細，
+  // 訂購人姓名等資訊改在訂單明細頁面填寫
+  const handleConfirmOrder = () => {
     const orderData = {
       items: cart,
       originalSubtotal,
@@ -132,14 +94,10 @@ export default function CartDetail() {
       discount,
       finalPrice,
       totalPV,
-      customer: formData,
+      customer: { name: "", phone: "", address: "" },
     };
 
-    // 保存訂單數據到 sessionStorage 用於訂單明細頁面
     sessionStorage.setItem("currentOrder", JSON.stringify(orderData));
-
-    // 關閉對話框並跳轉到訂單明細頁面
-    setShowCheckout(false);
     navigate("/order-detail");
   };
 
@@ -319,10 +277,10 @@ export default function CartDetail() {
             </div>
           </div>
 
-          {/* 確認訂單按鈕 */}
+          {/* 確認訂單按鈕：直接跳轉到訂單明細，不再彈出表單 */}
           <div className="flex justify-center">
             <Button
-              onClick={() => setShowCheckout(true)}
+              onClick={handleConfirmOrder}
               className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg font-semibold"
             >
               確認訂單
@@ -330,120 +288,6 @@ export default function CartDetail() {
           </div>
         </div>
       </section>
-
-      {/* 結帳表單對話框 */}
-      <Dialog open={showCheckout} onOpenChange={setShowCheckout}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>確認訂單</DialogTitle>
-            <DialogDescription>
-              請填寫您的基本信息以完成訂單
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-6">
-            {/* 訂單摘要 */}
-            <div className="bg-secondary/10 rounded-lg p-4 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">原價</span>
-                <span className="font-semibold text-muted-foreground">NT$ {originalSubtotal.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">會員價</span>
-                <span className="font-semibold">NT$ {subtotal.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">折扣金額(PV)</span>
-                <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
-              </div>
-              <div className="border-t border-border pt-2 flex justify-between">
-                <span className="font-semibold">總付款金額</span>
-                <span className="text-lg font-bold text-primary">NT$ {finalPrice.toLocaleString()}</span>
-              </div>
-            </div>
-
-            {/* 表單 */}
-            <div className="space-y-4">
-              {/* 姓名 */}
-              <div className="space-y-2">
-                <Label htmlFor="name">姓名</Label>
-                <Input
-                  id="name"
-                  placeholder="請輸入您的姓名"
-                  value={formData.name}
-                  onChange={(e) => {
-                    setFormData({ ...formData, name: e.target.value });
-                    if (formErrors.name) {
-                      setFormErrors({ ...formErrors, name: undefined });
-                    }
-                  }}
-                  className={formErrors.name ? "border-red-500" : ""}
-                />
-                {formErrors.name && (
-                  <p className="text-sm text-red-500">{formErrors.name}</p>
-                )}
-              </div>
-
-              {/* 電話 */}
-              <div className="space-y-2">
-                <Label htmlFor="phone">電話</Label>
-                <Input
-                  id="phone"
-                  placeholder="請輸入您的電話號碼"
-                  value={formData.phone}
-                  onChange={(e) => {
-                    setFormData({ ...formData, phone: e.target.value });
-                    if (formErrors.phone) {
-                      setFormErrors({ ...formErrors, phone: undefined });
-                    }
-                  }}
-                  className={formErrors.phone ? "border-red-500" : ""}
-                />
-                {formErrors.phone && (
-                  <p className="text-sm text-red-500">{formErrors.phone}</p>
-                )}
-              </div>
-
-              {/* 地址 */}
-              <div className="space-y-2">
-                <Label htmlFor="address">收件地址</Label>
-                <Textarea
-                  id="address"
-                  placeholder="請輸入您的收件地址"
-                  value={formData.address}
-                  onChange={(e) => {
-                    setFormData({ ...formData, address: e.target.value });
-                    if (formErrors.address) {
-                      setFormErrors({ ...formErrors, address: undefined });
-                    }
-                  }}
-                  className={`resize-none ${formErrors.address ? "border-red-500" : ""}`}
-                  rows={3}
-                />
-                {formErrors.address && (
-                  <p className="text-sm text-red-500">{formErrors.address}</p>
-                )}
-              </div>
-            </div>
-
-            {/* 按鈕 */}
-            <div className="flex gap-3 justify-end">
-              <Button
-                variant="outline"
-                onClick={() => setShowCheckout(false)}
-              >
-                取消
-              </Button>
-              <Button
-                onClick={handleSubmitOrder}
-                className="bg-primary hover:bg-primary/90 text-white"
-              >
-                提交訂單
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
