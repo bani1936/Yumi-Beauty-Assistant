@@ -406,14 +406,20 @@ export default function OrderDetail() {
                     </td>
                     <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle' }}>
                       {hasDiscount && (
-                        <div style={{ fontSize: '12px', color: '#b5a894', textDecoration: 'line-through' }}>NT$ {product.price.toLocaleString()}</div>
+                        <span style={{ position: 'relative', display: 'inline-block', fontSize: '12px', color: '#b5a894' }}>
+                          NT$ {product.price.toLocaleString()}
+                          <span style={{ position: 'absolute', left: 0, right: 0, top: '50%', borderTop: '1px solid #b5a894' }} />
+                        </span>
                       )}
                       <div style={{ fontSize: '14px', fontWeight: 600, color: '#3a2f24', marginTop: hasDiscount ? '2px' : 0 }}>NT$ {unitPrice.toLocaleString()}</div>
                     </td>
                     <td style={{ textAlign: 'center', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{item.quantity}</td>
                     <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle' }}>
                       {hasDiscount && (
-                        <div style={{ fontSize: '12px', color: '#b5a894', textDecoration: 'line-through' }}>NT$ {itemOriginalSubtotal.toLocaleString()}</div>
+                        <span style={{ position: 'relative', display: 'inline-block', fontSize: '12px', color: '#b5a894' }}>
+                          NT$ {itemOriginalSubtotal.toLocaleString()}
+                          <span style={{ position: 'absolute', left: 0, right: 0, top: '50%', borderTop: '1px solid #b5a894' }} />
+                        </span>
                       )}
                       <div style={{ fontSize: '14px', fontWeight: 700, color: '#8b6f47', marginTop: hasDiscount ? '2px' : 0 }}>NT$ {itemSubtotal.toLocaleString()}</div>
                     </td>
