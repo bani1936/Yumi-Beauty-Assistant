@@ -1,9 +1,37 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronLeft, Download } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { PRODUCTS } from "@/lib/products";
+
+// 動態載入外部腳本（避免重複載入）
+function loadScript(src: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`無法載入 ${src}`));
+    document.body.appendChild(script);
+  });
+}
+
+// 產生「日期+時間+姓名」檔名，例如 2608041359_蔡依廷
+function buildOrderFileName(name: string) {
+  const now = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const yy = pad(now.getFullYear() % 100);
+  const mm = pad(now.getMonth() + 1);
+  const dd = pad(now.getDate());
+  const hh = pad(now.getHours());
+  const min = pad(now.getMinutes());
+  const safeName = (name || "顧客").trim().replace(/[\\/:*?"<>|]/g, "");
+  return `${yy}${mm}${dd}${hh}${min}_${safeName}`;
+}
 
 interface CartItem {
   productId: string;
@@ -28,6 +56,8 @@ export default function OrderDetail() {
   const [, navigate] = useLocation();
   const [order, setOrder] = useState<OrderData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSavingPdf, setIsSavingPdf] = useState(false);
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // 從 sessionStorage 讀取當前訂單數據
@@ -66,6 +96,51 @@ export default function OrderDetail() {
     navigate("/");
   };
 
+  const handleSavePdf = async () => {
+    if (!order || !printRef.current || isSavingPdf) return;
+    setIsSavingPdf(true);
+    try {
+      await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+      await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+
+      const html2canvas = (window as any).html2canvas;
+      const { jsPDF } = (window as any).jspdf;
+
+      const canvas = await html2canvas(printRef.current, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`${buildOrderFileName(order.customer.name)}.pdf`);
+    } catch (err) {
+      console.error("儲存訂單 PDF 失敗:", err);
+      alert("儲存 PDF 時發生問題，請稍後再試一次。");
+    } finally {
+      setIsSavingPdf(false);
+    }
+  };
+
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">載入中...</div>;
   }
@@ -83,7 +158,7 @@ export default function OrderDetail() {
     <div className="min-h-screen bg-background pb-32">
       {/* 導航欄 */}
       <nav
-        className="sticky top-16 z-40 bg-white border-b border-border isolate"
+        className="sticky top-24 z-40 bg-white border-b border-border isolate"
         style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
       >
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
@@ -233,9 +308,107 @@ export default function OrderDetail() {
             </div>
           </div>
 
+          {/* 儲存訂單 PDF */}
+          <Button
+            onClick={handleSavePdf}
+            disabled={isSavingPdf}
+            className="w-full py-6 text-base"
+            style={{ background: '#5a4632', color: '#fff' }}
+          >
+            <Download className="w-4 h-4 mr-2" />
+            {isSavingPdf ? "產生 PDF 中…" : "儲存訂單（PDF）"}
+          </Button>
 
         </div>
       </section>
+
+      {/* 隱藏的列印版訂單明細，僅供產生 PDF 截圖使用 */}
+      <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+        <div
+          ref={printRef}
+          style={{
+            width: '780px',
+            background: '#ffffff',
+            padding: '48px 44px',
+            fontFamily: "'Noto Sans TC', sans-serif",
+            color: '#3a2f24',
+          }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <div style={{ fontSize: '13px', letterSpacing: '3px', color: '#B0A797' }}>YUMÍ 米米美學｜高端皮膚管理</div>
+            <div style={{ fontSize: '24px', fontWeight: 600, color: '#3a2f24', marginTop: '6px' }}>訂單明細</div>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: '13px',
+              color: '#5a4632',
+              borderTop: '0.5px solid #E8E4E0',
+              borderBottom: '0.5px solid #E8E4E0',
+              padding: '12px 0',
+              marginBottom: '20px',
+            }}
+          >
+            <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
+            <div>訂購人：{order.customer.name}</div>
+            <div>電話：{order.customer.phone}</div>
+          </div>
+
+          <div style={{ fontSize: '13px', color: '#8a7960', marginBottom: '16px' }}>
+            收件地址：{order.customer.address}
+          </div>
+
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid #5a4632' }}>
+                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632' }}>品名</th>
+                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632' }}>規格</th>
+                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632' }}>數量</th>
+                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632' }}>單價</th>
+                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632' }}>小計</th>
+              </tr>
+            </thead>
+            <tbody>
+              {order.items.map((item) => {
+                const product = getProductById(item.productId);
+                if (!product) return null;
+                const unitPrice = product.memberPrice || product.price;
+                const itemSubtotal = unitPrice * item.quantity;
+                return (
+                  <tr key={item.productId} style={{ borderBottom: '0.5px solid #E8E4E0' }}>
+                    <td style={{ padding: '8px 4px', color: '#3a2f24' }}>{product.name}</td>
+                    <td style={{ textAlign: 'center', padding: '8px 4px', color: '#8a7960' }}>{product.volume}</td>
+                    <td style={{ textAlign: 'center', padding: '8px 4px', color: '#8a7960' }}>{item.quantity}</td>
+                    <td style={{ textAlign: 'right', padding: '8px 4px', color: '#8a7960' }}>{unitPrice.toLocaleString()}</td>
+                    <td style={{ textAlign: 'right', padding: '8px 4px', color: '#3a2f24' }}>{itemSubtotal.toLocaleString()}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '2px solid #5a4632' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
+              <span>原價合計</span><span>NT$ {order.originalSubtotal.toLocaleString()}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
+              <span>折扣金額(PV)</span><span>-NT$ {order.discount.toLocaleString()}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 700, color: '#b3714a' }}>
+              <span>訂單總額</span><span>NT$ {order.finalPrice.toLocaleString()}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#8a7960', marginTop: '8px' }}>
+              <span>獲得 PV</span><span>{order.totalPV.toLocaleString()}</span>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '28px', textAlign: 'center', fontSize: '11px', color: '#c9bfae' }}>
+            感謝您的訂購 · Yumí 米米美學
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
