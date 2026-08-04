@@ -358,8 +358,8 @@ export default function OrderDetail() {
             style={{
               fontSize: '13px',
               color: '#5a4632',
-              borderTop: '1px solid #5a4632',
-              borderBottom: '1px solid #5a4632',
+              borderTop: '0.5px solid #E8E4E0',
+              borderBottom: '0.5px solid #E8E4E0',
               padding: '14px 4px',
               marginBottom: '24px',
               display: 'flex',
