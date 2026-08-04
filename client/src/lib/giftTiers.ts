@@ -149,7 +149,7 @@ export const GIFT_CAMPAIGNS: GiftCampaign[] = [
   {
     id: 'pvExchange',
     name: '【2026 年集點贈】點點成金，PV換好禮！',
-    periodLabel: '',
+    periodLabel: '2026/1/1～2026/12/31',
     group: 'addon',
     isActive: () => true,
     tiers: [
@@ -181,8 +181,8 @@ export const GIFT_CAMPAIGNS: GiftCampaign[] = [
   },
   {
     id: 'makeupBag',
-    name: '【2026 門市限定】UIS訂製化妝包滿額贈',
-    periodLabel: '',
+    name: '【門市限定】UIS訂製化妝包滿額贈',
+    periodLabel: '數量有限，送完為止！',
     group: 'addon',
     isActive: () => true,
     tiers: [
