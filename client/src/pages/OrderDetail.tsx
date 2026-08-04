@@ -172,9 +172,10 @@ interface CustomerInfo {
   address: string;
   paymentMethod: string;
   invoiceType: string;
+  mobileBarcode: string;
 }
 
-const EMPTY_CUSTOMER_INFO: CustomerInfo = { name: "", phone: "", address: "", paymentMethod: "", invoiceType: "" };
+const EMPTY_CUSTOMER_INFO: CustomerInfo = { name: "", phone: "", address: "", paymentMethod: "", invoiceType: "", mobileBarcode: "" };
 
 export default function OrderDetail() {
   const [, navigate] = useLocation();
@@ -527,7 +528,8 @@ export default function OrderDetail() {
                 id="customerPaymentMethod"
                 value={customerInfo.paymentMethod}
                 onChange={(e) => setCustomerInfo({ ...customerInfo, paymentMethod: e.target.value })}
-                className="w-full bg-transparent outline-none font-semibold text-foreground"
+                className="w-full bg-transparent outline-none"
+                style={{ fontWeight: customerInfo.paymentMethod ? 600 : 400, color: customerInfo.paymentMethod ? undefined : '#9a8f7d' }}
               >
                 <option value="">請選擇付款方式</option>
                 <option value="現金">現金</option>
@@ -535,20 +537,34 @@ export default function OrderDetail() {
                 <option value="網銀轉帳">網銀轉帳</option>
               </select>
             </div>
-            <div>
+            <div className={customerInfo.invoiceType === '手機載具' ? 'border-b border-border pb-3' : ''}>
               <label htmlFor="customerInvoiceType" className="text-sm text-muted-foreground">發票</label>
               <select
                 id="customerInvoiceType"
                 value={customerInfo.invoiceType}
                 onChange={(e) => setCustomerInfo({ ...customerInfo, invoiceType: e.target.value })}
-                className="w-full bg-transparent outline-none font-semibold text-foreground"
+                className="w-full bg-transparent outline-none"
+                style={{ fontWeight: customerInfo.invoiceType ? 600 : 400, color: customerInfo.invoiceType ? undefined : '#9a8f7d' }}
               >
                 <option value="">請選擇發票類型</option>
                 <option value="手機載具">手機載具</option>
                 <option value="紙本發票">紙本發票</option>
               </select>
             </div>
-            <p className="text-xs pt-1" style={{ color: '#b3714a' }}>*填寫訂購人資訊可儲存訂單（付款方式、發票為選填）</p>
+            {customerInfo.invoiceType === '手機載具' && (
+              <div>
+                <label htmlFor="customerMobileBarcode" className="text-sm text-muted-foreground">手機載具號碼</label>
+                <input
+                  id="customerMobileBarcode"
+                  type="text"
+                  value={customerInfo.mobileBarcode}
+                  onChange={(e) => setCustomerInfo({ ...customerInfo, mobileBarcode: e.target.value })}
+                  placeholder="/FX00L9R"
+                  className="w-full bg-transparent outline-none font-semibold placeholder:font-normal placeholder:text-muted-foreground"
+                />
+              </div>
+            )}
+            <p className="text-xs pt-1" style={{ color: '#b3714a' }}>*填寫訂購人資訊可儲存訂單</p>
           </div>
 
           {/* 儲存訂單 PDF */}
@@ -603,14 +619,17 @@ export default function OrderDetail() {
                 }}
               >
                 <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
-                <div>訂購人：{customerInfo.name}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>電話：{customerInfo.phone}</span>
+                  <span>訂購人：{customerInfo.name}</span>
                   <span>付款方式：{customerInfo.paymentMethod}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>地址：{customerInfo.address}</span>
+                  <span>電話：{customerInfo.phone}</span>
                   <span>發票：{customerInfo.invoiceType}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>地址：{customerInfo.address}</span>
+                  <span>載具號碼：{customerInfo.mobileBarcode}</span>
                 </div>
               </div>
             )}
