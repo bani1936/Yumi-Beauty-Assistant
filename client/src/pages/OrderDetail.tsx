@@ -39,6 +39,59 @@ interface CartItem {
   quantity: number;
 }
 
+// PDF 分頁邏輯：以 A4（794×1123px，96dpi）為單位，估算各區塊高度，
+// 讓表頭在每一頁都固定顯示，且不會把某一列產品切成兩半
+interface PrintPage {
+  items: CartItem[];
+  isFirstPage: boolean;
+  showTotals: boolean;
+}
+
+const PDF_PAGE_WIDTH = 794;
+const PDF_PAGE_HEIGHT = 1123;
+const PDF_PAGE_PADDING = 40;
+const PDF_CONTENT_HEIGHT = PDF_PAGE_HEIGHT - PDF_PAGE_PADDING * 2;
+const PDF_HEADER_HEIGHT = 70;
+const PDF_CUSTOMER_INFO_HEIGHT = 132;
+const PDF_TABLE_HEADER_HEIGHT = 46;
+const PDF_ROW_HEIGHT = 88;
+const PDF_TOTALS_HEIGHT = 150;
+const PDF_FOOTER_HEIGHT = 40;
+
+function buildPrintPages(items: CartItem[]): PrintPage[] {
+  if (items.length === 0) {
+    return [{ items: [], isFirstPage: true, showTotals: true }];
+  }
+
+  const firstPageCapacity = PDF_CONTENT_HEIGHT - PDF_HEADER_HEIGHT - PDF_CUSTOMER_INFO_HEIGHT - PDF_TABLE_HEADER_HEIGHT;
+  const otherPageCapacity = PDF_CONTENT_HEIGHT - PDF_HEADER_HEIGHT - PDF_TABLE_HEADER_HEIGHT;
+  const rowsFirstPage = Math.max(1, Math.floor(firstPageCapacity / PDF_ROW_HEIGHT));
+  const rowsOtherPage = Math.max(1, Math.floor(otherPageCapacity / PDF_ROW_HEIGHT));
+
+  const pages: PrintPage[] = [];
+  let remaining = items;
+  let isFirst = true;
+
+  while (remaining.length > 0) {
+    const capacity = isFirst ? rowsFirstPage : rowsOtherPage;
+    pages.push({ items: remaining.slice(0, capacity), isFirstPage: isFirst, showTotals: false });
+    remaining = remaining.slice(capacity);
+    isFirst = false;
+  }
+
+  const lastPage = pages[pages.length - 1];
+  const lastPageCapacity = lastPage.isFirstPage ? firstPageCapacity : otherPageCapacity;
+  const spaceLeft = lastPageCapacity - lastPage.items.length * PDF_ROW_HEIGHT;
+
+  if (spaceLeft >= PDF_TOTALS_HEIGHT + PDF_FOOTER_HEIGHT) {
+    lastPage.showTotals = true;
+  } else {
+    pages.push({ items: [], isFirstPage: false, showTotals: true });
+  }
+
+  return pages;
+}
+
 interface OrderData {
   items: CartItem[];
   originalSubtotal: number;
@@ -65,7 +118,7 @@ export default function OrderDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSavingPdf, setIsSavingPdf] = useState(false);
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({ name: "", phone: "", address: "" });
-  const printRef = useRef<HTMLDivElement>(null);
+  const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     // 從 sessionStorage 讀取當前訂單數據
@@ -111,7 +164,7 @@ export default function OrderDetail() {
   const isNameFilled = customerInfo.name.trim().length > 0;
 
   const handleSavePdf = async () => {
-    if (!order || !printRef.current || isSavingPdf || !isNameFilled) return;
+    if (!order || isSavingPdf || !isNameFilled) return;
     setIsSavingPdf(true);
     try {
       await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
@@ -120,8 +173,10 @@ export default function OrderDetail() {
       const html2canvas = (window as any).html2canvas;
       const { jsPDF } = (window as any).jspdf;
 
-      // 確保圖片都載入完成再截圖，避免產品縮圖沒畫進去
-      const imgs = Array.from(printRef.current.querySelectorAll("img"));
+      const pageEls = pageRefs.current.filter((el): el is HTMLDivElement => !!el);
+
+      // 確保每一頁的圖片都載入完成再截圖，避免產品縮圖沒畫進去
+      const imgs = pageEls.flatMap((el) => Array.from(el.querySelectorAll("img")));
       await Promise.all(
         imgs.map((img) =>
           img.complete
@@ -133,31 +188,30 @@ export default function OrderDetail() {
         )
       );
 
-      const canvas = await html2canvas(printRef.current, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true,
-        allowTaint: true,
-      });
-
-      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pageWidthMm = pdf.internal.pageSize.getWidth();
+      const pageHeightMm = pdf.internal.pageSize.getHeight();
 
-      let heightLeft = imgHeight;
-      let position = 0;
-      const pageHeight = pdf.internal.pageSize.getHeight();
+      // 逐頁截圖，每一頁對應 PDF 的一個實體頁面（A4），表頭會在每頁重複
+      for (let i = 0; i < pageEls.length; i++) {
+        const canvas = await html2canvas(pageEls[i], {
+          scale: 2,
+          backgroundColor: "#ffffff",
+          useCORS: true,
+          allowTaint: true,
+        });
+        const imgData = canvas.toDataURL("image/png");
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, 0, pageWidthMm, pageHeightMm);
+      }
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+      // 加上頁碼（第 X / 共 Y 頁），置於每頁下方置中
+      const totalPages = pageEls.length;
+      for (let i = 0; i < totalPages; i++) {
+        pdf.setPage(i + 1);
+        pdf.setFontSize(9);
+        pdf.setTextColor(150, 140, 125);
+        pdf.text(`${i + 1} / ${totalPages}`, pageWidthMm / 2, pageHeightMm - 10, { align: "center" });
       }
 
       pdf.save(`${buildOrderFileName(customerInfo.name)}.pdf`);
@@ -181,6 +235,8 @@ export default function OrderDetail() {
       </div>
     );
   }
+
+  const printPages = buildPrintPages(order.items);
 
   return (
     <div className="min-h-screen bg-background pb-32">
@@ -366,106 +422,119 @@ export default function OrderDetail() {
         </div>
       </section>
 
-      {/* 隱藏的列印版訂單明細，僅供產生 PDF 截圖使用 */}
+      {/* 隱藏的列印版訂單明細，每一頁對應 PDF 的一個 A4 實體頁面，表頭在每頁重複 */}
       <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-        <div
-          ref={printRef}
-          style={{
-            width: '880px',
-            background: '#ffffff',
-            padding: '48px 44px',
-            fontFamily: "'Noto Sans TC', sans-serif",
-            color: '#3a2f24',
-          }}
-        >
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <div style={{ fontSize: '13px', letterSpacing: '3px', color: '#B0A797' }}>YUMÍ 米米美學｜高端皮膚管理</div>
-            <div style={{ fontSize: '24px', fontWeight: 600, color: '#3a2f24', marginTop: '6px' }}>訂單明細</div>
-          </div>
-
+        {printPages.map((page, pageIndex) => (
           <div
+            key={pageIndex}
+            ref={(el) => { pageRefs.current[pageIndex] = el; }}
             style={{
-              fontSize: '13px',
-              color: '#5a4632',
-              borderTop: '0.5px solid #E8E4E0',
-              borderBottom: '0.5px solid #E8E4E0',
-              padding: '14px 4px',
-              marginBottom: '24px',
-              display: 'flex',
-              flexDirection: 'column',
-              rowGap: '10px',
+              width: `${PDF_PAGE_WIDTH}px`,
+              height: `${PDF_PAGE_HEIGHT}px`,
+              boxSizing: 'border-box',
+              background: '#ffffff',
+              padding: `${PDF_PAGE_PADDING}px`,
+              fontFamily: "'Noto Sans TC', sans-serif",
+              color: '#3a2f24',
             }}
           >
-            <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
-            <div>訂購人：{customerInfo.name}</div>
-            <div>電話：{customerInfo.phone}</div>
-            <div>地址：{customerInfo.address}</div>
-          </div>
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              <div style={{ fontSize: '13px', letterSpacing: '3px', color: '#B0A797' }}>YUMÍ 米米美學｜高端皮膚管理</div>
+              <div style={{ fontSize: '24px', fontWeight: 600, color: '#3a2f24', marginTop: '6px' }}>訂單明細</div>
+            </div>
 
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #5a4632' }}>
-                <th style={{ textAlign: 'left', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>產品名稱</th>
-                <th style={{ textAlign: 'right', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>單價</th>
-                <th style={{ textAlign: 'center', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>數量</th>
-                <th style={{ textAlign: 'right', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>小計</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.items.map((item, index) => {
-                const product = getProductById(item.productId);
-                if (!product) return null;
-                const unitPrice = product.memberPrice || product.price;
-                const itemSubtotal = unitPrice * item.quantity;
-                const isLast = index === order.items.length - 1;
-                return (
-                  <tr key={item.productId} style={{ borderBottom: isLast ? 'none' : '1px solid #E8E4E0' }}>
-                    <td style={{ padding: '16px 8px', verticalAlign: 'middle' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        {product.image ? (
-                          <img
-                            src={getAssetUrl(product.image)}
-                            alt={product.name}
-                            crossOrigin="anonymous"
-                            style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px', background: '#F5F1ED', display: 'block', flexShrink: 0 }}
-                          />
-                        ) : (
-                          <div style={{ width: '56px', height: '56px', borderRadius: '8px', background: '#F5F1ED', flexShrink: 0 }} />
-                        )}
-                        <div>
-                          <div style={{ fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{product.name}</div>
-                          <div style={{ fontSize: '12px', color: '#9a8f7d', marginTop: '4px' }}>{product.volume}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>NT$ {unitPrice.toLocaleString()}</td>
-                    <td style={{ textAlign: 'center', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{item.quantity}</td>
-                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 700, color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</td>
+            {page.isFirstPage && (
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#5a4632',
+                  borderTop: '0.5px solid #E8E4E0',
+                  borderBottom: '0.5px solid #E8E4E0',
+                  padding: '14px 4px',
+                  marginBottom: '24px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  rowGap: '10px',
+                }}
+              >
+                <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
+                <div>訂購人：{customerInfo.name}</div>
+                <div>電話：{customerInfo.phone}</div>
+                <div>地址：{customerInfo.address}</div>
+              </div>
+            )}
+
+            {page.items.length > 0 && (
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #5a4632' }}>
+                    <th style={{ textAlign: 'left', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>產品名稱</th>
+                    <th style={{ textAlign: 'right', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>單價</th>
+                    <th style={{ textAlign: 'center', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>數量</th>
+                    <th style={{ textAlign: 'right', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>小計</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {page.items.map((item, index) => {
+                    const product = getProductById(item.productId);
+                    if (!product) return null;
+                    const unitPrice = product.memberPrice || product.price;
+                    const itemSubtotal = unitPrice * item.quantity;
+                    const isLast = index === page.items.length - 1;
+                    return (
+                      <tr key={item.productId} style={{ borderBottom: isLast ? 'none' : '1px solid #E8E4E0' }}>
+                        <td style={{ padding: '16px 8px', verticalAlign: 'middle' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            {product.image ? (
+                              <img
+                                src={getAssetUrl(product.image)}
+                                alt={product.name}
+                                crossOrigin="anonymous"
+                                style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px', background: '#F5F1ED', display: 'block', flexShrink: 0 }}
+                              />
+                            ) : (
+                              <div style={{ width: '56px', height: '56px', borderRadius: '8px', background: '#F5F1ED', flexShrink: 0 }} />
+                            )}
+                            <div>
+                              <div style={{ fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{product.name}</div>
+                              <div style={{ fontSize: '12px', color: '#9a8f7d', marginTop: '4px' }}>{product.volume}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>NT$ {unitPrice.toLocaleString()}</td>
+                        <td style={{ textAlign: 'center', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{item.quantity}</td>
+                        <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 700, color: '#8b6f47' }}>NT$ {itemSubtotal.toLocaleString()}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
 
-          <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '2px solid #5a4632' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
-              <span>原價合計</span><span>NT$ {order.originalSubtotal.toLocaleString()}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
-              <span>折扣金額(PV)</span><span>-NT$ {order.discount.toLocaleString()}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 700, color: '#b3714a' }}>
-              <span>訂單總額</span><span>NT$ {order.finalPrice.toLocaleString()}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#8a7960', marginTop: '8px' }}>
-              <span>獲得 PV</span><span>{order.totalPV.toLocaleString()}</span>
-            </div>
-          </div>
+            {page.showTotals && (
+              <>
+                <div style={{ marginTop: page.items.length > 0 ? '20px' : '40px', paddingTop: '16px', borderTop: '2px solid #5a4632' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
+                    <span>原價合計</span><span>NT$ {order.originalSubtotal.toLocaleString()}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
+                    <span>折扣金額(PV)</span><span>-NT$ {order.discount.toLocaleString()}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 700, color: '#b3714a' }}>
+                    <span>訂單總額</span><span>NT$ {order.finalPrice.toLocaleString()}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#8a7960', marginTop: '8px' }}>
+                    <span>獲得 PV</span><span>{order.totalPV.toLocaleString()}</span>
+                  </div>
+                </div>
 
-          <div style={{ marginTop: '28px', textAlign: 'center', fontSize: '11px', color: '#c9bfae' }}>
-            感謝您的訂購 · Yumí 米米美學
+                <div style={{ marginTop: '28px', textAlign: 'center', fontSize: '11px', color: '#c9bfae' }}>
+                  感謝您的訂購 · Yumí 米米美學
+                </div>
+              </>
+            )}
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
