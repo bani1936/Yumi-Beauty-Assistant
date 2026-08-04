@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Download } from "lucide-react";
+import { ChevronLeft, Download, Gift } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { PRODUCTS } from "@/lib/products";
 import { getAssetUrl } from "@/lib/utils";
+import { GIFT_TIERS } from "@/lib/giftTiers";
 
 // 動態載入外部腳本（避免重複載入）
 function loadScript(src: string): Promise<void> {
@@ -60,7 +61,7 @@ const PDF_ROW_HEIGHT = 96;
 const PDF_TOTALS_HEIGHT = 160;
 const PDF_FOOTER_HEIGHT = 44;
 
-function buildPrintPages(items: CartItem[]): PrintPage[] {
+function buildPrintPages(items: CartItem[], extraLastPageHeight = 0): PrintPage[] {
   if (items.length === 0) {
     return [{ items: [], isFirstPage: true, showTotals: true }];
   }
@@ -85,13 +86,25 @@ function buildPrintPages(items: CartItem[]): PrintPage[] {
   const lastPageCapacity = lastPage.isFirstPage ? firstPageCapacity : otherPageCapacity;
   const spaceLeft = lastPageCapacity - lastPage.items.length * PDF_ROW_HEIGHT;
 
-  if (spaceLeft >= PDF_TOTALS_HEIGHT + PDF_FOOTER_HEIGHT) {
+  if (spaceLeft >= PDF_TOTALS_HEIGHT + PDF_FOOTER_HEIGHT + extraLastPageHeight) {
     lastPage.showTotals = true;
   } else {
     pages.push({ items: [], isFirstPage: false, showTotals: true });
   }
 
   return pages;
+}
+
+interface OrderGiftItem {
+  label: string;
+  qty: number;
+  unit: string;
+  selections: string[];
+}
+
+interface OrderGifts {
+  tierId: string;
+  items: OrderGiftItem[];
 }
 
 interface OrderData {
@@ -106,6 +119,7 @@ interface OrderData {
     phone: string;
     address: string;
   };
+  gifts?: OrderGifts | null;
 }
 
 interface CustomerInfo {
@@ -244,7 +258,16 @@ export default function OrderDetail() {
     );
   }
 
-  const printPages = buildPrintPages(order.items);
+  const hasGifts = !!order.gifts && order.gifts.items.length > 0;
+  const giftTier = order.gifts ? GIFT_TIERS.find((t) => t.id === order.gifts!.tierId) : undefined;
+  const giftTierLabel = giftTier
+    ? (giftTier.basis === 'amount'
+        ? `訂單滿 NT$ ${giftTier.thresholdValue.toLocaleString()}`
+        : `滿 ${giftTier.thresholdValue.toLocaleString()} PV`)
+    : '';
+  // PDF 內贈品區塊估計高度，分頁時要一併預留，避免跟頁碼或總結資訊重疊
+  const giftsPdfHeight = hasGifts ? 50 + (order.gifts?.items.length || 0) * 28 : 0;
+  const printPages = buildPrintPages(order.items, giftsPdfHeight);
 
   return (
     <div className="min-h-screen bg-background pb-32">
@@ -377,6 +400,31 @@ export default function OrderDetail() {
               <span className="font-semibold text-foreground">{order.totalPV.toLocaleString()}</span>
             </div>
           </div>
+
+          {/* 滿額贈禮：只有在達成門檻並帶有贈品資料時才顯示 */}
+          {hasGifts && (
+            <div className="bg-secondary/10 rounded-lg p-6 mb-8">
+              <div className="flex items-center gap-2 mb-3">
+                <Gift className="w-5 h-5" style={{ color: '#5a4632' }} />
+                <span className="font-semibold" style={{ color: '#5a4632' }}>
+                  滿額贈禮{giftTierLabel ? `（${giftTierLabel}）` : ''}
+                </span>
+              </div>
+              <div className="space-y-2">
+                {order.gifts!.items.map((item, idx) => {
+                  const chosen = item.selections.filter(Boolean);
+                  return (
+                    <div key={idx} className="text-sm">
+                      <span className="font-medium text-foreground">{item.label}×{item.qty}{item.unit}</span>
+                      {chosen.length > 0 && (
+                        <span className="text-muted-foreground">　已選：{chosen.join('、')}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* 收件人資訊：可編輯，訂購人為必填才能儲存訂單 */}
           <div className="bg-secondary/10 rounded-lg p-6 mb-8 space-y-3">
@@ -537,6 +585,23 @@ export default function OrderDetail() {
                     <span>獲得 PV</span><span>{order.totalPV.toLocaleString()}</span>
                   </div>
                 </div>
+
+                {hasGifts && (
+                  <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '0.5px solid #E8E4E0' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#5a4632', marginBottom: '8px' }}>
+                      滿額贈禮{giftTierLabel ? `（${giftTierLabel}）` : ''}
+                    </div>
+                    {order.gifts!.items.map((item, idx) => {
+                      const chosen = item.selections.filter(Boolean);
+                      return (
+                        <div key={idx} style={{ fontSize: '12px', color: '#8a7960', marginBottom: '4px' }}>
+                          {item.label}×{item.qty}{item.unit}
+                          {chosen.length > 0 && `　已選：${chosen.join('、')}`}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
 
                 <div style={{ marginTop: '28px', textAlign: 'center', fontSize: '11px', color: '#c9bfae' }}>
                   感謝您的訂購 · Yumí 米米美學
