@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Plus, Minus } from "lucide-react";
+import { ChevronLeft, Plus, Minus, Gift } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { PRODUCTS } from "@/lib/products";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
+import {
+  GIFT_TIERS,
+  AMPOULE_SET_OPTIONS,
+  SPRAY_120ML_OPTIONS,
+  SALON_SET_SERIES_OPTIONS,
+  type GiftChooseFrom,
+} from "@/lib/giftTiers";
 
 interface CartItem {
   productId: string;
@@ -14,6 +21,8 @@ export default function CartDetail() {
   const [, navigate] = useLocation();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  // 滿額贈禮的選擇，key 為 "tierId-itemIndex"，value 為每一份贈品選擇的內容
+  const [giftSelections, setGiftSelections] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
     // 從 localStorage 讀取購物車數據
@@ -84,9 +93,61 @@ export default function CartDetail() {
   const discount = calculateDiscount(totalPV);
   const finalPrice = subtotal - discount;
 
+  // 2250 PV 商品任選的選項，直接從商品庫抓取所有 pv === 2250 的品項
+  const pv2250Options = PRODUCTS.filter((p) => p.pv === 2250).map((p) => p.name);
+
+  const getOptionsFor = (chooseFrom: GiftChooseFrom): string[] => {
+    switch (chooseFrom) {
+      case 'ampoule':
+        return AMPOULE_SET_OPTIONS;
+      case 'spray':
+        return SPRAY_120ML_OPTIONS;
+      case 'salonSeries':
+        return SALON_SET_SERIES_OPTIONS;
+      case 'pv2250':
+        return pv2250Options;
+      default:
+        return [];
+    }
+  };
+
+  // 判斷目前訂單達成的最高滿額贈禮階層（tier5 用總付款金額判斷，其餘用 PV 判斷）
+  const currentTierIndex = GIFT_TIERS.reduce((acc, tier, idx) => {
+    const value = tier.basis === 'amount' ? finalPrice : totalPV;
+    return value >= tier.thresholdValue ? idx : acc;
+  }, -1);
+
+  const getGiftSelection = (tierId: string, itemIndex: number, qty: number): string[] => {
+    const key = `${tierId}-${itemIndex}`;
+    return giftSelections[key] || Array(qty).fill("");
+  };
+
+  const setGiftSelectionAt = (tierId: string, itemIndex: number, qty: number, pos: number, value: string) => {
+    const key = `${tierId}-${itemIndex}`;
+    setGiftSelections((prev) => {
+      const current = prev[key] || Array(qty).fill("");
+      const next = [...current];
+      next[pos] = value;
+      return { ...prev, [key]: next };
+    });
+  };
+
   // 確認訂單：不再彈出表單，直接帶著空白的收件人資訊跳轉到訂單明細，
   // 訂購人姓名等資訊改在訂單明細頁面填寫
   const handleConfirmOrder = () => {
+    const currentTier = GIFT_TIERS[currentTierIndex];
+    const gifts = currentTier
+      ? {
+          tierId: currentTier.id,
+          items: currentTier.items.map((item, itemIndex) => ({
+            label: item.label,
+            qty: item.qty,
+            unit: item.unit,
+            selections: item.chooseFrom ? getGiftSelection(currentTier.id, itemIndex, item.qty) : [],
+          })),
+        }
+      : null;
+
     const orderData = {
       items: cart,
       originalSubtotal,
@@ -95,6 +156,7 @@ export default function CartDetail() {
       finalPrice,
       totalPV,
       customer: { name: "", phone: "", address: "" },
+      gifts,
     };
 
     sessionStorage.setItem("currentOrder", JSON.stringify(orderData));
@@ -275,6 +337,120 @@ export default function CartDetail() {
               <span className="text-muted-foreground">獲得 PV</span>
               <span className="font-semibold text-foreground">{totalPV.toLocaleString()}</span>
             </div>
+          </div>
+
+          {/* 滿額贈禮 */}
+          <div className="bg-white rounded-lg p-6 mb-8" style={{ border: '1px solid #E8DCC8' }}>
+            <div className="flex items-center gap-2 mb-1">
+              <Gift className="w-5 h-5" style={{ color: '#5a4632' }} />
+              <span className="text-base font-bold" style={{ color: '#5a4632' }}>滿額贈禮</span>
+            </div>
+            <div className="text-xs mb-4" style={{ color: '#8a7960' }}>
+              目前訂單 PV：<span className="font-bold" style={{ color: '#5a4632' }}>{totalPV.toLocaleString()}</span>
+              {" ・ "}總付款金額：<span className="font-bold" style={{ color: '#5a4632' }}>NT$ {finalPrice.toLocaleString()}</span>
+            </div>
+
+            <div className="flex flex-col">
+              {GIFT_TIERS.map((tier, tierIdx) => {
+                const achieved = tierIdx <= currentTierIndex;
+                const isCurrent = tierIdx === currentTierIndex;
+                const thresholdLabel = tier.basis === 'amount'
+                  ? `訂單滿 NT$ ${tier.thresholdValue.toLocaleString()}`
+                  : `滿 ${tier.thresholdValue.toLocaleString()} PV`;
+                const summary = tier.items.map((it) => `${it.label}×${it.qty}${it.unit}`).join('、');
+
+                if (isCurrent) {
+                  return (
+                    <div key={tier.id} className="rounded-lg my-1 p-3" style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}>
+                      <div className="flex gap-2.5 mb-2.5">
+                        <div
+                          className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5"
+                          style={{ background: '#5a4632' }}
+                        >
+                          ✓
+                        </div>
+                        <div>
+                          <div className="text-sm font-bold" style={{ color: '#5a4632' }}>{thresholdLabel} ・ 目前已達成</div>
+                          <div className="text-xs" style={{ color: '#9a8f7d' }}>贈 {summary}</div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-3 pl-7">
+                        {tier.items.map((item, itemIdx) => {
+                          if (!item.chooseFrom) return null;
+                          const options = getOptionsFor(item.chooseFrom);
+                          const selections = getGiftSelection(tier.id, itemIdx, item.qty);
+                          return (
+                            <div key={itemIdx}>
+                              <div className="text-xs mb-1.5" style={{ color: '#8a7960' }}>
+                                {item.label}（可任選系列，共 {item.qty} {item.unit}）
+                              </div>
+                              <div className="flex flex-col gap-2">
+                                {Array.from({ length: item.qty }).map((_, pos) => (
+                                  <div key={pos} className="flex items-center gap-2">
+                                    {item.qty > 1 && (
+                                      <span className="text-xs w-14 flex-shrink-0" style={{ color: '#8a7960' }}>
+                                        第 {pos + 1} {item.unit}
+                                      </span>
+                                    )}
+                                    <select
+                                      value={selections[pos] || ""}
+                                      onChange={(e) => setGiftSelectionAt(tier.id, itemIdx, item.qty, pos, e.target.value)}
+                                      className="flex-1 text-sm px-3 py-2 rounded-md border bg-white outline-none"
+                                      style={{ borderColor: '#E8DCC8' }}
+                                    >
+                                      <option value="">請選擇</option>
+                                      {options.map((opt) => (
+                                        <option key={opt} value={opt}>{opt}</option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div
+                    key={tier.id}
+                    className="flex gap-2.5 py-2.5"
+                    style={{
+                      borderBottom: tierIdx < GIFT_TIERS.length - 1 ? '1px solid #F0EAE0' : 'none',
+                      opacity: achieved ? 1 : 0.55,
+                    }}
+                  >
+                    <div
+                      className="w-5 h-5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center text-white text-xs"
+                      style={achieved ? { background: '#5a4632' } : { border: '1.5px solid #C9BFAE' }}
+                    >
+                      {achieved ? '✓' : ''}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold" style={{ color: achieved ? '#5a4632' : '#7a7060' }}>{thresholdLabel}</div>
+                      <div className="text-xs" style={{ color: achieved ? '#9a8f7d' : '#a89e8e' }}>贈 {summary}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {currentTierIndex + 1 < GIFT_TIERS.length && (() => {
+              const nextTier = GIFT_TIERS[currentTierIndex + 1];
+              const currentValue = nextTier.basis === 'amount' ? finalPrice : totalPV;
+              const remaining = Math.max(0, nextTier.thresholdValue - currentValue);
+              const remainingLabel = nextTier.basis === 'amount'
+                ? `NT$ ${remaining.toLocaleString()}`
+                : `${remaining.toLocaleString()} PV`;
+              return (
+                <div className="text-xs pl-7 pt-1" style={{ color: '#b3714a' }}>
+                  再加購 {remainingLabel} 即可升級下一階贈禮
+                </div>
+              );
+            })()}
           </div>
 
           {/* 確認訂單按鈕：直接跳轉到訂單明細，不再彈出表單 */}
