@@ -170,14 +170,18 @@ interface CustomerInfo {
   name: string;
   phone: string;
   address: string;
+  paymentMethod: string;
+  invoiceType: string;
 }
+
+const EMPTY_CUSTOMER_INFO: CustomerInfo = { name: "", phone: "", address: "", paymentMethod: "", invoiceType: "" };
 
 export default function OrderDetail() {
   const [, navigate] = useLocation();
   const [order, setOrder] = useState<OrderData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSavingPdf, setIsSavingPdf] = useState(false);
-  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({ name: "", phone: "", address: "" });
+  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>(EMPTY_CUSTOMER_INFO);
   const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -188,7 +192,7 @@ export default function OrderDetail() {
         const parsed = JSON.parse(currentOrder);
         setOrder(parsed);
         if (parsed?.customer) {
-          setCustomerInfo(parsed.customer);
+          setCustomerInfo({ ...EMPTY_CUSTOMER_INFO, ...parsed.customer });
         }
       } catch (e) {
         console.error("Failed to parse order:", e);
@@ -506,7 +510,7 @@ export default function OrderDetail() {
                 className="w-full bg-transparent outline-none font-semibold placeholder:font-normal placeholder:text-muted-foreground"
               />
             </div>
-            <div>
+            <div className="border-b border-border pb-3">
               <label htmlFor="customerAddress" className="text-sm text-muted-foreground">地址</label>
               <input
                 id="customerAddress"
@@ -517,7 +521,34 @@ export default function OrderDetail() {
                 className="w-full bg-transparent outline-none font-semibold placeholder:font-normal placeholder:text-muted-foreground"
               />
             </div>
-            <p className="text-xs pt-1" style={{ color: '#b3714a' }}>*填寫訂購人資訊可儲存訂單</p>
+            <div className="border-b border-border pb-3">
+              <label htmlFor="customerPaymentMethod" className="text-sm text-muted-foreground">付款方式</label>
+              <select
+                id="customerPaymentMethod"
+                value={customerInfo.paymentMethod}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, paymentMethod: e.target.value })}
+                className="w-full bg-transparent outline-none font-semibold text-foreground"
+              >
+                <option value="">請選擇付款方式</option>
+                <option value="現金">現金</option>
+                <option value="刷卡">刷卡</option>
+                <option value="網銀轉帳">網銀轉帳</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="customerInvoiceType" className="text-sm text-muted-foreground">發票</label>
+              <select
+                id="customerInvoiceType"
+                value={customerInfo.invoiceType}
+                onChange={(e) => setCustomerInfo({ ...customerInfo, invoiceType: e.target.value })}
+                className="w-full bg-transparent outline-none font-semibold text-foreground"
+              >
+                <option value="">請選擇發票類型</option>
+                <option value="手機載具">手機載具</option>
+                <option value="紙本發票">紙本發票</option>
+              </select>
+            </div>
+            <p className="text-xs pt-1" style={{ color: '#b3714a' }}>*填寫訂購人資訊可儲存訂單（付款方式、發票為選填）</p>
           </div>
 
           {/* 儲存訂單 PDF */}
@@ -573,8 +604,14 @@ export default function OrderDetail() {
               >
                 <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
                 <div>訂購人：{customerInfo.name}</div>
-                <div>電話：{customerInfo.phone}</div>
-                <div>地址：{customerInfo.address}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>電話：{customerInfo.phone}</span>
+                  <span>付款方式：{customerInfo.paymentMethod}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>地址：{customerInfo.address}</span>
+                  <span>發票：{customerInfo.invoiceType}</span>
+                </div>
               </div>
             )}
 
