@@ -342,7 +342,7 @@ export default function OrderDetail() {
         <div
           ref={printRef}
           style={{
-            width: '840px',
+            width: '880px',
             background: '#ffffff',
             padding: '48px 44px',
             fontFamily: "'Noto Sans TC', sans-serif",
@@ -373,15 +373,13 @@ export default function OrderDetail() {
             <div>地址：{order.customer.address}</div>
           </div>
 
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
             <thead>
-              <tr style={{ borderBottom: '2px solid #5a4632' }}>
-                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>圖片</th>
-                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>品名</th>
-                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>規格</th>
-                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>數量</th>
-                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>單價</th>
-                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>小計</th>
+              <tr style={{ borderBottom: '1px solid #E8E4E0' }}>
+                <th style={{ textAlign: 'left', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>產品名稱</th>
+                <th style={{ textAlign: 'right', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>單價</th>
+                <th style={{ textAlign: 'center', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>數量</th>
+                <th style={{ textAlign: 'right', padding: '14px 8px', color: '#3a2f24', fontWeight: 600, verticalAlign: 'middle' }}>小計</th>
               </tr>
             </thead>
             <tbody>
@@ -389,26 +387,42 @@ export default function OrderDetail() {
                 const product = getProductById(item.productId);
                 if (!product) return null;
                 const unitPrice = product.memberPrice || product.price;
+                const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
                 const itemSubtotal = unitPrice * item.quantity;
+                const itemOriginalSubtotal = product.price * item.quantity;
                 return (
-                  <tr key={item.productId} style={{ borderBottom: '0.5px solid #E8E4E0' }}>
-                    <td style={{ padding: '10px 4px', verticalAlign: 'middle' }}>
-                      {product.image ? (
-                        <img
-                          src={getAssetUrl(product.image)}
-                          alt={product.name}
-                          crossOrigin="anonymous"
-                          style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '6px', background: '#F5F1ED', display: 'block' }}
-                        />
-                      ) : (
-                        <div style={{ width: '44px', height: '44px', borderRadius: '6px', background: '#F5F1ED' }} />
-                      )}
+                  <tr key={item.productId} style={{ borderBottom: '1px solid #E8E4E0' }}>
+                    <td style={{ padding: '16px 8px', verticalAlign: 'middle' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        {product.image ? (
+                          <img
+                            src={getAssetUrl(product.image)}
+                            alt={product.name}
+                            crossOrigin="anonymous"
+                            style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '8px', background: '#F5F1ED', display: 'block', flexShrink: 0 }}
+                          />
+                        ) : (
+                          <div style={{ width: '56px', height: '56px', borderRadius: '8px', background: '#F5F1ED', flexShrink: 0 }} />
+                        )}
+                        <div>
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{product.name}</div>
+                          <div style={{ fontSize: '12px', color: '#9a8f7d', marginTop: '4px' }}>{product.volume}</div>
+                        </div>
+                      </div>
                     </td>
-                    <td style={{ padding: '10px 4px', color: '#3a2f24', verticalAlign: 'middle' }}>{product.name}</td>
-                    <td style={{ textAlign: 'center', padding: '10px 4px', color: '#8a7960', verticalAlign: 'middle' }}>{product.volume}</td>
-                    <td style={{ textAlign: 'center', padding: '10px 4px', color: '#8a7960', verticalAlign: 'middle' }}>{item.quantity}</td>
-                    <td style={{ textAlign: 'right', padding: '10px 4px', color: '#8a7960', verticalAlign: 'middle' }}>{unitPrice.toLocaleString()}</td>
-                    <td style={{ textAlign: 'right', padding: '10px 4px', color: '#3a2f24', verticalAlign: 'middle' }}>{itemSubtotal.toLocaleString()}</td>
+                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle' }}>
+                      {hasDiscount && (
+                        <div style={{ fontSize: '12px', color: '#b5a894', textDecoration: 'line-through' }}>NT$ {product.price.toLocaleString()}</div>
+                      )}
+                      <div style={{ fontSize: '14px', fontWeight: 600, color: '#3a2f24', marginTop: hasDiscount ? '2px' : 0 }}>NT$ {unitPrice.toLocaleString()}</div>
+                    </td>
+                    <td style={{ textAlign: 'center', padding: '16px 8px', verticalAlign: 'middle', fontSize: '14px', fontWeight: 600, color: '#3a2f24' }}>{item.quantity}</td>
+                    <td style={{ textAlign: 'right', padding: '16px 8px', verticalAlign: 'middle' }}>
+                      {hasDiscount && (
+                        <div style={{ fontSize: '12px', color: '#b5a894', textDecoration: 'line-through' }}>NT$ {itemOriginalSubtotal.toLocaleString()}</div>
+                      )}
+                      <div style={{ fontSize: '14px', fontWeight: 700, color: '#8b6f47', marginTop: hasDiscount ? '2px' : 0 }}>NT$ {itemSubtotal.toLocaleString()}</div>
+                    </td>
                   </tr>
                 );
               })}
