@@ -1,9 +1,9 @@
 // 滿額贈禮設定
 // 目前同時有多個活動檔期，彼此有「基礎活動只能擇一生效」與「可疊加活動」的規則：
 // - 活動一「新客滿額贈」：永久生效，但活動二檔期內會暫停（同一時間只會有一個「基礎活動」生效）
-// - 活動二「盛夏不鬧肌」：僅 2026/7/21～2026/8/20 生效，生效時活動一暫停
-// - 活動三「點點成金，PV換好禮！」：永久生效，可與基礎活動（活動一或活動二）疊加
-// - 活動四「門店限定！訂製化妝包滿額贈」：永久生效，可與其他所有活動疊加
+// - 活動二「【2026 夏季限定】盛夏不鬧肌」：僅 2026/7/21～2026/8/20 生效，生效時活動一暫停
+// - 活動三「【2026 年集點贈】點點成金，PV換好禮！」：永久生效，可與基礎活動（活動一或活動二）疊加
+// - 活動四「【2026 門市限定】UIS訂製化妝包滿額贈」：永久生效，可與其他所有活動疊加
 //
 // basis: 'pv' 代表門檻用訂單 PV 判斷；'amount' 代表門檻用實際結算金額（總付款金額）判斷
 // chooseFrom: 'ampoule' | 'spray' | 'salonSeries' | 'pv2250' | null（null 代表固定贈品，不需選擇）
@@ -98,7 +98,7 @@ export const GIFT_CAMPAIGNS: GiftCampaign[] = [
   },
   {
     id: 'summerSkin',
-    name: '盛夏不鬧肌',
+    name: '【2026 夏季限定】盛夏不鬧肌',
     periodLabel: '2026/7/21～2026/8/20',
     group: 'base',
     isActive: (date) => date >= SUMMER_SKIN_START && date <= SUMMER_SKIN_END,
@@ -148,7 +148,7 @@ export const GIFT_CAMPAIGNS: GiftCampaign[] = [
   },
   {
     id: 'pvExchange',
-    name: '點點成金，PV換好禮！',
+    name: '【2026 年集點贈】點點成金，PV換好禮！',
     periodLabel: '',
     group: 'addon',
     isActive: () => true,
@@ -181,7 +181,7 @@ export const GIFT_CAMPAIGNS: GiftCampaign[] = [
   },
   {
     id: 'makeupBag',
-    name: '門店限定！訂製化妝包滿額贈',
+    name: '【2026 門市限定】UIS訂製化妝包滿額贈',
     periodLabel: '',
     group: 'addon',
     isActive: () => true,
