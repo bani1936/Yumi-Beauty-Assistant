@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 import { PRODUCTS } from "@/lib/products";
+import { getAssetUrl } from "@/lib/utils";
 
 // 動態載入外部腳本（避免重複載入）
 function loadScript(src: string): Promise<void> {
@@ -106,10 +107,24 @@ export default function OrderDetail() {
       const html2canvas = (window as any).html2canvas;
       const { jsPDF } = (window as any).jspdf;
 
+      // 確保圖片都載入完成再截圖，避免產品縮圖沒畫進去
+      const imgs = Array.from(printRef.current.querySelectorAll("img"));
+      await Promise.all(
+        imgs.map((img) =>
+          img.complete
+            ? Promise.resolve()
+            : new Promise((res) => {
+                img.onload = res;
+                img.onerror = res;
+              })
+        )
+      );
+
       const canvas = await html2canvas(printRef.current, {
         scale: 2,
         backgroundColor: "#ffffff",
         useCORS: true,
+        allowTaint: true,
       });
 
       const imgData = canvas.toDataURL("image/png");
@@ -327,7 +342,7 @@ export default function OrderDetail() {
         <div
           ref={printRef}
           style={{
-            width: '780px',
+            width: '840px',
             background: '#ffffff',
             padding: '48px 44px',
             fontFamily: "'Noto Sans TC', sans-serif",
@@ -341,28 +356,25 @@ export default function OrderDetail() {
 
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
               fontSize: '13px',
               color: '#5a4632',
-              borderTop: '0.5px solid #E8E4E0',
-              borderBottom: '0.5px solid #E8E4E0',
-              padding: '12px 0',
-              marginBottom: '20px',
+              borderTop: '2px solid #5a4632',
+              borderBottom: '2px solid #5a4632',
+              padding: '16px 4px',
+              marginBottom: '24px',
+              lineHeight: 2,
             }}
           >
             <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
             <div>訂購人：{order.customer.name}</div>
             <div>電話：{order.customer.phone}</div>
-          </div>
-
-          <div style={{ fontSize: '13px', color: '#8a7960', marginBottom: '16px' }}>
-            收件地址：{order.customer.address}
+            <div>地址：{order.customer.address}</div>
           </div>
 
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid #5a4632' }}>
+                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632' }}>圖片</th>
                 <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632' }}>品名</th>
                 <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632' }}>規格</th>
                 <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632' }}>數量</th>
@@ -378,6 +390,18 @@ export default function OrderDetail() {
                 const itemSubtotal = unitPrice * item.quantity;
                 return (
                   <tr key={item.productId} style={{ borderBottom: '0.5px solid #E8E4E0' }}>
+                    <td style={{ padding: '8px 4px' }}>
+                      {product.image ? (
+                        <img
+                          src={getAssetUrl(product.image)}
+                          alt={product.name}
+                          crossOrigin="anonymous"
+                          style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '6px', background: '#F5F1ED', display: 'block' }}
+                        />
+                      ) : (
+                        <div style={{ width: '44px', height: '44px', borderRadius: '6px', background: '#F5F1ED' }} />
+                      )}
+                    </td>
                     <td style={{ padding: '8px 4px', color: '#3a2f24' }}>{product.name}</td>
                     <td style={{ textAlign: 'center', padding: '8px 4px', color: '#8a7960' }}>{product.volume}</td>
                     <td style={{ textAlign: 'center', padding: '8px 4px', color: '#8a7960' }}>{item.quantity}</td>
