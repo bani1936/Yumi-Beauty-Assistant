@@ -50,13 +50,15 @@ interface PrintPage {
 const PDF_PAGE_WIDTH = 794;
 const PDF_PAGE_HEIGHT = 1123;
 const PDF_PAGE_PADDING = 40;
-const PDF_CONTENT_HEIGHT = PDF_PAGE_HEIGHT - PDF_PAGE_PADDING * 2;
-const PDF_HEADER_HEIGHT = 70;
-const PDF_CUSTOMER_INFO_HEIGHT = 132;
-const PDF_TABLE_HEADER_HEIGHT = 46;
-const PDF_ROW_HEIGHT = 88;
-const PDF_TOTALS_HEIGHT = 150;
-const PDF_FOOTER_HEIGHT = 40;
+// 額外預留在頁面最下方，讓內容永遠不會靠近頁碼文字，避免重疊
+const PDF_FOOTER_RESERVE = 28;
+const PDF_CONTENT_HEIGHT = PDF_PAGE_HEIGHT - PDF_PAGE_PADDING * 2 - PDF_FOOTER_RESERVE;
+const PDF_HEADER_HEIGHT = 78;
+const PDF_CUSTOMER_INFO_HEIGHT = 140;
+const PDF_TABLE_HEADER_HEIGHT = 52;
+const PDF_ROW_HEIGHT = 96;
+const PDF_TOTALS_HEIGHT = 160;
+const PDF_FOOTER_HEIGHT = 44;
 
 function buildPrintPages(items: CartItem[]): PrintPage[] {
   if (items.length === 0) {
@@ -194,7 +196,13 @@ export default function OrderDetail() {
 
       // 逐頁截圖，每一頁對應 PDF 的一個實體頁面（A4），表頭會在每頁重複
       for (let i = 0; i < pageEls.length; i++) {
+        // 明確指定擷取尺寸為 A4 像素大小，避免內容溢出時被 html2canvas
+        // 以 scrollHeight 抓成更高的畫布，擠壓進 PDF 頁面後跟頁碼重疊
         const canvas = await html2canvas(pageEls[i], {
+          width: PDF_PAGE_WIDTH,
+          height: PDF_PAGE_HEIGHT,
+          windowWidth: PDF_PAGE_WIDTH,
+          windowHeight: PDF_PAGE_HEIGHT,
           scale: 2,
           backgroundColor: "#ffffff",
           useCORS: true,
@@ -432,8 +440,10 @@ export default function OrderDetail() {
               width: `${PDF_PAGE_WIDTH}px`,
               height: `${PDF_PAGE_HEIGHT}px`,
               boxSizing: 'border-box',
+              overflow: 'hidden',
               background: '#ffffff',
               padding: `${PDF_PAGE_PADDING}px`,
+              paddingBottom: `${PDF_PAGE_PADDING + PDF_FOOTER_RESERVE}px`,
               fontFamily: "'Noto Sans TC', sans-serif",
               color: '#3a2f24',
             }}
