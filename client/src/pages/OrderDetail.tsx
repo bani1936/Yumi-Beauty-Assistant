@@ -358,11 +358,13 @@ export default function OrderDetail() {
             style={{
               fontSize: '13px',
               color: '#5a4632',
-              borderTop: '2px solid #5a4632',
-              borderBottom: '2px solid #5a4632',
-              padding: '16px 4px',
+              borderTop: '1px solid #5a4632',
+              borderBottom: '1px solid #5a4632',
+              padding: '14px 4px',
               marginBottom: '24px',
-              lineHeight: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              rowGap: '10px',
             }}
           >
             <div>訂購日期：{new Date().toLocaleString('zh-TW', { hour12: false })}</div>
@@ -374,12 +376,12 @@ export default function OrderDetail() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid #5a4632' }}>
-                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632' }}>圖片</th>
-                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632' }}>品名</th>
-                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632' }}>規格</th>
-                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632' }}>數量</th>
-                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632' }}>單價</th>
-                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632' }}>小計</th>
+                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>圖片</th>
+                <th style={{ textAlign: 'left', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>品名</th>
+                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>規格</th>
+                <th style={{ textAlign: 'center', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>數量</th>
+                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>單價</th>
+                <th style={{ textAlign: 'right', padding: '8px 4px', color: '#5a4632', verticalAlign: 'middle' }}>小計</th>
               </tr>
             </thead>
             <tbody>
@@ -390,7 +392,7 @@ export default function OrderDetail() {
                 const itemSubtotal = unitPrice * item.quantity;
                 return (
                   <tr key={item.productId} style={{ borderBottom: '0.5px solid #E8E4E0' }}>
-                    <td style={{ padding: '8px 4px' }}>
+                    <td style={{ padding: '10px 4px', verticalAlign: 'middle' }}>
                       {product.image ? (
                         <img
                           src={getAssetUrl(product.image)}
@@ -402,11 +404,11 @@ export default function OrderDetail() {
                         <div style={{ width: '44px', height: '44px', borderRadius: '6px', background: '#F5F1ED' }} />
                       )}
                     </td>
-                    <td style={{ padding: '8px 4px', color: '#3a2f24' }}>{product.name}</td>
-                    <td style={{ textAlign: 'center', padding: '8px 4px', color: '#8a7960' }}>{product.volume}</td>
-                    <td style={{ textAlign: 'center', padding: '8px 4px', color: '#8a7960' }}>{item.quantity}</td>
-                    <td style={{ textAlign: 'right', padding: '8px 4px', color: '#8a7960' }}>{unitPrice.toLocaleString()}</td>
-                    <td style={{ textAlign: 'right', padding: '8px 4px', color: '#3a2f24' }}>{itemSubtotal.toLocaleString()}</td>
+                    <td style={{ padding: '10px 4px', color: '#3a2f24', verticalAlign: 'middle' }}>{product.name}</td>
+                    <td style={{ textAlign: 'center', padding: '10px 4px', color: '#8a7960', verticalAlign: 'middle' }}>{product.volume}</td>
+                    <td style={{ textAlign: 'center', padding: '10px 4px', color: '#8a7960', verticalAlign: 'middle' }}>{item.quantity}</td>
+                    <td style={{ textAlign: 'right', padding: '10px 4px', color: '#8a7960', verticalAlign: 'middle' }}>{unitPrice.toLocaleString()}</td>
+                    <td style={{ textAlign: 'right', padding: '10px 4px', color: '#3a2f24', verticalAlign: 'middle' }}>{itemSubtotal.toLocaleString()}</td>
                   </tr>
                 );
               })}
