@@ -1,6 +1,14 @@
 // 滿額贈禮設定
+// 目前同時有多個活動檔期，彼此有「基礎活動只能擇一生效」與「可疊加活動」的規則：
+// - 活動一「新客滿額贈」：永久生效，但活動二檔期內會暫停（同一時間只會有一個「基礎活動」生效）
+// - 活動二「盛夏不鬧肌」：僅 2026/7/21～2026/8/20 生效，生效時活動一暫停
+// - 活動三「點點成金，PV換好禮！」：永久生效，可與基礎活動（活動一或活動二）疊加
+// - 活動四「門店限定！訂製化妝包滿額贈」：永久生效，可與其他所有活動疊加
+//
 // basis: 'pv' 代表門檻用訂單 PV 判斷；'amount' 代表門檻用實際結算金額（總付款金額）判斷
 // chooseFrom: 'ampoule' | 'spray' | 'salonSeries' | 'pv2250' | null（null 代表固定贈品，不需選擇）
+// note: 額外備註（例如「達成任務再加贈 X 組」），僅供顯示提醒，不會自動計算加贈數量，
+//       需要店家另行確認客人是否達成任務後人工加贈
 
 export type GiftChooseFrom = 'ampoule' | 'spray' | 'salonSeries' | 'pv2250' | null;
 
@@ -9,13 +17,24 @@ export interface GiftItem {
   qty: number;
   unit: string;
   chooseFrom: GiftChooseFrom;
+  note?: string;
 }
 
 export interface GiftTier {
-  id: string;
   thresholdValue: number;
   basis: 'pv' | 'amount';
   items: GiftItem[];
+}
+
+export interface GiftCampaign {
+  id: string;
+  name: string;
+  periodLabel: string;
+  // 'base'：同一時間只會有一個 base 活動生效（依日期判斷是活動一還是活動二）
+  // 'addon'：只要在活動期間內，一律疊加顯示，不受 base 活動影響
+  group: 'base' | 'addon';
+  isActive: (date: Date) => boolean;
+  tiers: GiftTier[];
 }
 
 // 安瓶保養組可任選的系列（對應商品庫中實際的 4 款安瓶保養組商品）
@@ -42,54 +61,150 @@ export const SALON_SET_SERIES_OPTIONS = [
   '晶亮系列',
 ];
 
-export const GIFT_TIERS: GiftTier[] = [
+// 盛夏不鬧肌活動期間
+const SUMMER_SKIN_START = new Date('2026-07-21T00:00:00');
+const SUMMER_SKIN_END = new Date('2026-08-20T23:59:59');
+
+export const GIFT_CAMPAIGNS: GiftCampaign[] = [
   {
-    id: 'tier1',
-    thresholdValue: 19000,
-    basis: 'pv',
-    items: [
-      { label: '安瓶保養組', qty: 1, unit: '組', chooseFrom: 'ampoule' },
+    id: 'newCustomer',
+    name: '新客滿額贈',
+    periodLabel: '',
+    group: 'base',
+    isActive: () => true,
+    tiers: [
+      {
+        thresholdValue: 30000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 2, unit: '組', chooseFrom: 'ampoule' },
+        ],
+      },
+      {
+        thresholdValue: 120000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 10, unit: '組', chooseFrom: 'ampoule', note: '達成任務再加贈10組' },
+        ],
+      },
+      {
+        thresholdValue: 298000,
+        basis: 'amount',
+        items: [
+          { label: '安瓶保養組', qty: 20, unit: '組', chooseFrom: 'ampoule', note: '達成任務再加贈20組' },
+        ],
+      },
     ],
   },
   {
-    id: 'tier2',
-    thresholdValue: 30000,
-    basis: 'pv',
-    items: [
-      { label: '安瓶保養組', qty: 2, unit: '組', chooseFrom: 'ampoule' },
+    id: 'summerSkin',
+    name: '盛夏不鬧肌',
+    periodLabel: '2026/7/21～2026/8/20',
+    group: 'base',
+    isActive: (date) => date >= SUMMER_SKIN_START && date <= SUMMER_SKIN_END,
+    tiers: [
+      {
+        thresholdValue: 19000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 1, unit: '組', chooseFrom: 'ampoule' },
+        ],
+      },
+      {
+        thresholdValue: 30000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 2, unit: '組', chooseFrom: 'ampoule' },
+        ],
+      },
+      {
+        thresholdValue: 88000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 4, unit: '組', chooseFrom: 'ampoule' },
+          { label: '120ml噴液任選', qty: 1, unit: '瓶', chooseFrom: 'spray' },
+        ],
+      },
+      {
+        thresholdValue: 120000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 10, unit: '組', chooseFrom: 'ampoule', note: '達成任務再加贈10組' },
+          { label: '120ml噴液任選', qty: 1, unit: '瓶', chooseFrom: 'spray' },
+          { label: '38修護柔敏膠原凝露', qty: 1, unit: '瓶', chooseFrom: null },
+        ],
+      },
+      {
+        thresholdValue: 298000,
+        basis: 'amount',
+        items: [
+          { label: '安瓶保養組', qty: 20, unit: '組', chooseFrom: 'ampoule', note: '達成任務再加贈20組' },
+          { label: '無痕塑形筋膜儀', qty: 1, unit: '台', chooseFrom: null },
+          { label: '38修護柔敏膠原凝露', qty: 1, unit: '瓶', chooseFrom: null },
+          { label: '系列保養沙龍組', qty: 1, unit: '套', chooseFrom: 'salonSeries' },
+        ],
+      },
     ],
   },
   {
-    id: 'tier3',
-    thresholdValue: 88000,
-    basis: 'pv',
-    items: [
-      { label: '安瓶保養組', qty: 5, unit: '組', chooseFrom: 'ampoule' },
-      { label: '120ml噴液任選', qty: 1, unit: '瓶', chooseFrom: 'spray' },
-      { label: '2250PV產品任選', qty: 1, unit: '瓶', chooseFrom: 'pv2250' },
+    id: 'pvExchange',
+    name: '點點成金，PV換好禮！',
+    periodLabel: '',
+    group: 'addon',
+    isActive: () => true,
+    tiers: [
+      {
+        thresholdValue: 40000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 1, unit: '組', chooseFrom: 'ampoule' },
+        ],
+      },
+      {
+        thresholdValue: 80000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 1, unit: '組', chooseFrom: 'ampoule' },
+          { label: '2250PV產品任選', qty: 1, unit: '瓶', chooseFrom: 'pv2250' },
+        ],
+      },
+      {
+        thresholdValue: 200000,
+        basis: 'pv',
+        items: [
+          { label: '安瓶保養組', qty: 3, unit: '組', chooseFrom: 'ampoule' },
+          { label: '2250PV產品任選', qty: 1, unit: '瓶', chooseFrom: 'pv2250' },
+          { label: '38修護柔敏膠原凝露', qty: 1, unit: '瓶', chooseFrom: null },
+        ],
+      },
     ],
   },
   {
-    id: 'tier4',
-    thresholdValue: 120000,
-    basis: 'pv',
-    items: [
-      { label: '安瓶保養組', qty: 11, unit: '組', chooseFrom: 'ampoule' },
-      { label: '120ml噴液任選', qty: 1, unit: '瓶', chooseFrom: 'spray' },
-      { label: '38修護柔敏膠原凝露', qty: 1, unit: '瓶', chooseFrom: null },
-      { label: '2250PV產品任選', qty: 1, unit: '瓶', chooseFrom: 'pv2250' },
-    ],
-  },
-  {
-    id: 'tier5',
-    thresholdValue: 298000,
-    basis: 'amount',
-    items: [
-      { label: '無痕塑形筋膜儀', qty: 1, unit: '台', chooseFrom: null },
-      { label: '安瓶保養組', qty: 23, unit: '組', chooseFrom: 'ampoule' },
-      { label: '38修護柔敏膠原凝露', qty: 2, unit: '瓶', chooseFrom: null },
-      { label: '系列保養沙龍組', qty: 1, unit: '套', chooseFrom: 'salonSeries' },
-      { label: '2250PV產品任選', qty: 1, unit: '瓶', chooseFrom: 'pv2250' },
+    id: 'makeupBag',
+    name: '門店限定！訂製化妝包滿額贈',
+    periodLabel: '',
+    group: 'addon',
+    isActive: () => true,
+    tiers: [
+      {
+        thresholdValue: 30000,
+        basis: 'pv',
+        items: [
+          { label: 'UIS訂製旅行化妝包', qty: 1, unit: '個', chooseFrom: null },
+        ],
+      },
     ],
   },
 ];
+
+// 依日期判斷目前生效的活動組合：基礎活動（新客滿額贈 或 盛夏不鬧肌，擇一）+ 所有生效中的疊加活動
+export function getActiveGiftCampaigns(date: Date = new Date()): GiftCampaign[] {
+  const baseCampaigns = GIFT_CAMPAIGNS.filter((c) => c.group === 'base');
+  const addonCampaigns = GIFT_CAMPAIGNS.filter((c) => c.group === 'addon' && c.isActive(date));
+
+  const summerSkin = baseCampaigns.find((c) => c.id === 'summerSkin');
+  const newCustomer = baseCampaigns.find((c) => c.id === 'newCustomer');
+  const activeBase = summerSkin && summerSkin.isActive(date) ? summerSkin : newCustomer;
+
+  return [activeBase, ...addonCampaigns].filter((c): c is GiftCampaign => !!c);
+}
