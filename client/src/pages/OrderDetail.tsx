@@ -173,7 +173,7 @@ export default function OrderDetail() {
     <div className="min-h-screen bg-background pb-32">
       {/* 導航欄 */}
       <nav
-        className="sticky top-24 z-40 bg-white border-b border-border isolate"
+        className="sticky top-16 z-40 bg-white border-b border-border isolate"
         style={{ transform: 'translateZ(0)', WebkitTransform: 'translate3d(0,0,0)' }}
       >
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
@@ -183,12 +183,6 @@ export default function OrderDetail() {
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <ImageWithFallback
-            src="/pasted_file_RWyk1P_image_34c8cc43.png"
-            fallbackSrc="/favicon.png"
-            alt="Yumí Logo"
-            className="w-6 h-6 rounded-full object-cover"
-          />
           <h1 className="text-lg font-semibold">訂單明細</h1>
         </div>
       </nav>
