@@ -55,6 +55,8 @@ interface PrintPage {
   items: CartItem[];
   isFirstPage: boolean;
   showTotals: boolean;
+  showGifts: boolean;
+  showFooter: boolean;
 }
 
 const PDF_PAGE_WIDTH = 794;
@@ -70,9 +72,12 @@ const PDF_ROW_HEIGHT = 96;
 const PDF_TOTALS_HEIGHT = 160;
 const PDF_FOOTER_HEIGHT = 44;
 
-function buildPrintPages(items: CartItem[], extraLastPageHeight = 0): PrintPage[] {
+// 結算金額（訂單總額）跟滿額贈禮，各自獨立判斷放不放得下，不再綁成同一塊：
+// 商品明細最後一頁如果還有空間，優先把「結算金額」接在下面；
+// 滿額贈禮再看結算金額後面還剩不剩空間，放得下就接續同一頁，放不下才另開一頁單獨放滿額贈禮。
+function buildPrintPages(items: CartItem[], giftsHeight = 0, hasGifts = false): PrintPage[] {
   if (items.length === 0) {
-    return [{ items: [], isFirstPage: true, showTotals: true }];
+    return [{ items: [], isFirstPage: true, showTotals: true, showGifts: hasGifts, showFooter: true }];
   }
 
   const firstPageCapacity = PDF_CONTENT_HEIGHT - PDF_HEADER_HEIGHT - PDF_CUSTOMER_INFO_HEIGHT - PDF_TABLE_HEADER_HEIGHT;
@@ -86,19 +91,39 @@ function buildPrintPages(items: CartItem[], extraLastPageHeight = 0): PrintPage[
 
   while (remaining.length > 0) {
     const capacity = isFirst ? rowsFirstPage : rowsOtherPage;
-    pages.push({ items: remaining.slice(0, capacity), isFirstPage: isFirst, showTotals: false });
+    pages.push({ items: remaining.slice(0, capacity), isFirstPage: isFirst, showTotals: false, showGifts: false, showFooter: false });
     remaining = remaining.slice(capacity);
     isFirst = false;
   }
 
-  const lastPage = pages[pages.length - 1];
-  const lastPageCapacity = lastPage.isFirstPage ? firstPageCapacity : otherPageCapacity;
-  const spaceLeft = lastPageCapacity - lastPage.items.length * PDF_ROW_HEIGHT;
+  const lastItemsPage = pages[pages.length - 1];
+  const lastItemsPageCapacity = lastItemsPage.isFirstPage ? firstPageCapacity : otherPageCapacity;
+  const spaceAfterItems = lastItemsPageCapacity - lastItemsPage.items.length * PDF_ROW_HEIGHT;
 
-  if (spaceLeft >= PDF_TOTALS_HEIGHT + PDF_FOOTER_HEIGHT + extraLastPageHeight) {
-    lastPage.showTotals = true;
+  // 結算金額：商品明細最後一頁放得下就接在後面，放不下才開新的一頁
+  let totalsPage: PrintPage;
+  let spaceAfterTotals: number;
+
+  if (spaceAfterItems >= PDF_TOTALS_HEIGHT) {
+    totalsPage = lastItemsPage;
+    totalsPage.showTotals = true;
+    spaceAfterTotals = spaceAfterItems - PDF_TOTALS_HEIGHT;
   } else {
-    pages.push({ items: [], isFirstPage: false, showTotals: true });
+    totalsPage = { items: [], isFirstPage: false, showTotals: true, showGifts: false, showFooter: false };
+    pages.push(totalsPage);
+    spaceAfterTotals = otherPageCapacity - PDF_TOTALS_HEIGHT;
+  }
+
+  // 滿額贈禮：結算金額那頁如果還放得下就接續顯示；放不下才另外開一頁單獨放
+  if (hasGifts) {
+    if (spaceAfterTotals >= giftsHeight + PDF_FOOTER_HEIGHT) {
+      totalsPage.showGifts = true;
+      totalsPage.showFooter = true;
+    } else {
+      pages.push({ items: [], isFirstPage: false, showTotals: false, showGifts: true, showFooter: true });
+    }
+  } else {
+    totalsPage.showFooter = true;
   }
 
   return pages;
@@ -284,7 +309,7 @@ export default function OrderDetail() {
   const giftsPdfHeight = hasGifts
     ? gifts.reduce((sum, gift) => sum + 34 + gift.items.reduce((s, item) => s + 18 + item.qty * 16, 0), 0)
     : 0;
-  const printPages = buildPrintPages(order.items, giftsPdfHeight);
+  const printPages = buildPrintPages(order.items, giftsPdfHeight, hasGifts);
 
   return (
     <div className="min-h-screen bg-background pb-32">
@@ -601,56 +626,62 @@ export default function OrderDetail() {
             )}
 
             {page.showTotals && (
-              <>
-                <div style={{ marginTop: page.items.length > 0 ? '20px' : '40px', paddingTop: '16px', borderTop: '2px solid #5a4632' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
-                    <span>原價合計</span><span>NT$ {order.originalSubtotal.toLocaleString()}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
-                    <span>折扣金額(PV)</span><span>-NT$ {order.discount.toLocaleString()}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 700, color: '#b3714a' }}>
-                    <span>訂單總額</span><span>NT$ {order.finalPrice.toLocaleString()}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#8a7960', marginTop: '8px' }}>
-                    <span>獲得 PV</span><span>{order.totalPV.toLocaleString()}</span>
-                  </div>
+              <div style={{ marginTop: page.items.length > 0 ? '20px' : '40px', paddingTop: '16px', borderTop: '2px solid #5a4632' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
+                  <span>原價合計</span><span>NT$ {order.originalSubtotal.toLocaleString()}</span>
                 </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#8a7960', marginBottom: '6px' }}>
+                  <span>折扣金額(PV)</span><span>-NT$ {order.discount.toLocaleString()}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 700, color: '#b3714a' }}>
+                  <span>訂單總額</span><span>NT$ {order.finalPrice.toLocaleString()}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#8a7960', marginTop: '8px' }}>
+                  <span>獲得 PV</span><span>{order.totalPV.toLocaleString()}</span>
+                </div>
+              </div>
+            )}
 
-                {hasGifts && (
-                  <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '0.5px solid #E8E4E0' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-                      <Gift style={{ width: '15px', height: '15px', color: '#5a4632' }} />
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: '#5a4632' }}>滿額贈禮</div>
+            {page.showGifts && (
+              <div
+                style={
+                  page.showTotals
+                    ? { marginTop: '16px', paddingTop: '12px', borderTop: '0.5px solid #E8E4E0' }
+                    : { marginTop: page.items.length > 0 ? '20px' : '40px', paddingTop: '16px', borderTop: '2px solid #5a4632' }
+                }
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                  <Gift style={{ width: '15px', height: '15px', color: '#5a4632' }} />
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: '#5a4632' }}>滿額贈禮</div>
+                </div>
+                {gifts.map((gift) => (
+                  <div key={gift.campaignId} style={{ marginBottom: '10px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, color: '#8b6f47', marginBottom: '4px' }}>
+                      {gift.campaignName}（{giftThresholdLabel(gift)}）
                     </div>
-                    {gifts.map((gift) => (
-                      <div key={gift.campaignId} style={{ marginBottom: '10px' }}>
-                        <div style={{ fontSize: '12px', fontWeight: 600, color: '#8b6f47', marginBottom: '4px' }}>
-                          {gift.campaignName}（{giftThresholdLabel(gift)}）
+                    {gift.items.map((item, idx) => {
+                      const summarized = summarizeGiftSelections(item.selections, item.unit);
+                      return (
+                        <div key={idx} style={{ marginBottom: '6px' }}>
+                          <div style={{ fontSize: '12px', color: '#3a2f24', fontWeight: 600 }}>
+                            {item.label}×{item.qty}{item.unit}
+                            {item.note && <span style={{ fontWeight: 400, color: '#b3714a' }}>　（{item.note}，需另行確認）</span>}
+                          </div>
+                          {summarized.map((line, i) => (
+                            <div key={i} style={{ fontSize: '12px', color: '#8a7960', marginTop: '2px' }}>・{line}</div>
+                          ))}
                         </div>
-                        {gift.items.map((item, idx) => {
-                          const summarized = summarizeGiftSelections(item.selections, item.unit);
-                          return (
-                            <div key={idx} style={{ marginBottom: '6px' }}>
-                              <div style={{ fontSize: '12px', color: '#3a2f24', fontWeight: 600 }}>
-                                {item.label}×{item.qty}{item.unit}
-                                {item.note && <span style={{ fontWeight: 400, color: '#b3714a' }}>　（{item.note}，需另行確認）</span>}
-                              </div>
-                              {summarized.map((line, i) => (
-                                <div key={i} style={{ fontSize: '12px', color: '#8a7960', marginTop: '2px' }}>・{line}</div>
-                              ))}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
-                )}
+                ))}
+              </div>
+            )}
 
-                <div style={{ marginTop: '28px', textAlign: 'center', fontSize: '11px', color: '#c9bfae' }}>
-                  感謝您的訂購 · Yumí 米米美學
-                </div>
-              </>
+            {page.showFooter && (
+              <div style={{ marginTop: '28px', textAlign: 'center', fontSize: '11px', color: '#c9bfae' }}>
+                感謝您的訂購 · Yumí 米米美學
+              </div>
             )}
           </div>
         ))}
