@@ -44,24 +44,26 @@ export default function Home() {
     }
   ];
 
+  const HEADING_FONT = "'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif";
+
   return (
-    <div className="min-h-screen" style={{ background: '#FAFAF8' }}>
+    <div className="min-h-screen" style={{ background: '#F7F2E9' }}>
 
       {/* Hero 標題區 */}
       <section
         className="py-14 md:py-16 text-center px-4"
-        style={{ background: 'linear-gradient(135deg, #F0EAE2, #F5F1ED)' }}
+        style={{ background: '#F7F2E9', borderBottom: '1px solid #EDE3D0' }}
       >
-        <div className="text-[11px] tracking-[2px] font-semibold mb-3" style={{ color: '#B59A8A' }}>
+        <div className="text-[11px] tracking-[3px] font-semibold mb-3" style={{ color: '#B8935B' }}>
           PROFESSIONAL SKIN MANAGEMENT
         </div>
         <h1
           className="text-2xl md:text-3xl font-bold mb-3"
-          style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+          style={{ color: '#2B211B', fontFamily: HEADING_FONT }}
         >
           Yumí 米米美學｜高端皮膚管理
         </h1>
-        <p className="text-sm md:text-base" style={{ color: '#8a8a8a' }}>
+        <p className="text-sm md:text-base" style={{ color: '#8A7960' }}>
           專屬您的產品導覽與會員服務中心
         </p>
       </section>
@@ -72,17 +74,17 @@ export default function Home() {
             {TOOL_CARDS.map((tool) => (
               <Card
                 key={tool.id}
-                className="h-full p-8 cursor-pointer group overflow-hidden transition-all hover:-translate-y-1"
+                className="h-full p-8 cursor-pointer group overflow-hidden transition-all hover:-translate-y-1 rounded-sm"
                 style={
                   tool.highlight
                     ? {
-                        background: 'linear-gradient(160deg, #FBF6EE, #F3E8D8)',
-                        border: '1.5px solid #C9A876',
-                        boxShadow: '0 8px 24px rgba(139, 111, 71, 0.14)',
+                        background: '#fff',
+                        border: '1px solid #B8935B',
+                        boxShadow: 'none',
                       }
                     : {
                         background: '#fff',
-                        border: '1px solid #E8E4E0',
+                        border: '1px solid #EDE3D0',
                         boxShadow: 'none',
                       }
                 }
@@ -93,34 +95,29 @@ export default function Home() {
                     className="mb-6 flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300"
                     style={
                       tool.highlight
-                        ? { background: 'rgba(255,255,255,0.6)', color: '#8B6F47' }
-                        : { background: '#F5F1ED', color: '#8B6F47' }
+                        ? { background: '#F7F2E9', color: '#B8935B' }
+                        : { background: '#F7F2E9', color: '#2B211B' }
                     }
                   >
                     {tool.icon}
                   </div>
 
                   {tool.highlight && (
-                    <div className="text-[11px] tracking-[1.5px] font-semibold mb-2" style={{ color: '#9c7a3f' }}>
+                    <div className="text-[11px] tracking-[2px] font-semibold mb-2" style={{ color: '#B8935B' }}>
                       LATEST PROMOTION
                     </div>
                   )}
 
                   <h3
                     className="text-xl md:text-2xl font-semibold mb-3"
-                    style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    style={{ color: '#2B211B', fontFamily: HEADING_FONT }}
                   >
                     {tool.title}
                   </h3>
 
-                  <p className="mb-6 leading-relaxed text-sm md:text-base whitespace-pre-line" style={{ color: '#8a8a8a' }}>
+                  <p className="leading-relaxed text-sm md:text-base whitespace-pre-line" style={{ color: '#8A7960' }}>
                     {tool.description}
                   </p>
-
-                  <div className="flex items-center gap-2 font-medium text-sm" style={{ color: '#8B6F47' }}>
-                    {tool.buttonText}
-                    <span className="text-lg">→</span>
-                  </div>
                 </div>
               </Card>
             ))}
@@ -128,9 +125,9 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-foreground text-white py-12">
+      <footer className="py-12" style={{ background: '#2B211B' }}>
         <div className="container max-w-6xl mx-auto px-4">
-          <div className="text-center text-sm text-white/50">
+          <div className="text-center text-sm" style={{ color: '#B8935B' }}>
             <p>Copyright © 2026 Yumí 米米美學｜高端皮膚管理</p>
           </div>
         </div>
