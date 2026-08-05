@@ -283,7 +283,7 @@ export default function ProductCalculator() {
                                     原價 NT${product.price}
                                   </span>
                                 )}
-                                <span className="text-base md:text-lg font-bold text-primary">
+                                <span className="text-base md:text-lg font-bold" style={{ color: '#5a4632' }}>
                                   NT${product.memberPrice || product.price}
                                 </span>
                               </div>
@@ -387,7 +387,7 @@ export default function ProductCalculator() {
             {/* 加總金額 */}
             <div className="text-left">
               <p className="text-sm text-muted-foreground mb-1">加總金額</p>
-              <p className="text-2xl font-bold text-primary">
+              <p className="text-2xl font-bold" style={{ color: '#5a4632' }}>
                 NT$ {finalPrice.toLocaleString()}
               </p>
             </div>
@@ -423,7 +423,7 @@ export default function ProductCalculator() {
               </span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: '#EDE3D0' }}>
-              <p className="text-lg font-bold text-primary">
+              <p className="text-lg font-bold" style={{ color: '#5a4632' }}>
                 會員價 NT$ {finalPrice.toLocaleString()}
               </p>
               {cart.length > 0 && (
