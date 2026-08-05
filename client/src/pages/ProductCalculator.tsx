@@ -224,7 +224,7 @@ export default function ProductCalculator() {
                           return product?.series === series;
                         }).reduce((sum, item) => sum + item.quantity, 0);
                         return seriesCount > 0 && (
-                          <div className="flex items-center justify-center w-5 h-5 text-white rounded-full text-xs font-bold" style={{ backgroundColor: '#2B211B' }}>
+                          <div className="flex items-center justify-center w-5 h-5 text-white rounded-full text-xs font-bold" style={{ backgroundColor: '#B8935B' }}>
                             {seriesCount}
                           </div>
                         );
@@ -245,7 +245,7 @@ export default function ProductCalculator() {
                         return (
                           <div
                             key={product.id}
-                            className="px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between hover:bg-[#F7F2E9] transition-colors gap-3 md:gap-0"
+                            className="px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between bg-white hover:bg-[#FBF8F2] transition-colors gap-3 md:gap-0"
                           >
                             {/* 產品資訊 */}
                             <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -288,21 +288,21 @@ export default function ProductCalculator() {
                                 </span>
                               </div>
                               <div className="w-24">
-                                <div className="flex items-center justify-end gap-1 bg-background border border-border rounded-lg p-1">
+                                <div className="flex items-center justify-end gap-1 rounded-md p-1" style={{ background: '#F0E8D8' }}>
                                   <button
                                     onClick={() => updateQuantity(product.id, (cartItem?.quantity ?? 0) - 1)}
-                                    className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
+                                    className="p-1 hover:bg-white rounded transition-colors flex-shrink-0"
                                   >
-                                    <Minus className="w-4 h-4" />
+                                    <Minus className="w-4 h-4" style={{ color: '#2B211B' }} />
                                   </button>
-                                  <span className="w-6 text-center font-semibold text-sm flex-shrink-0">
+                                  <span className="w-6 text-center font-semibold text-sm flex-shrink-0" style={{ color: '#2B211B' }}>
                                     {cartItem?.quantity ?? 0}
                                   </span>
                                   <button
                                     onClick={() => updateQuantity(product.id, (cartItem?.quantity ?? 0) + 1)}
-                                    className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
+                                    className="p-1 hover:bg-white rounded transition-colors flex-shrink-0"
                                   >
-                                    <Plus className="w-4 h-4" />
+                                    <Plus className="w-4 h-4" style={{ color: '#2B211B' }} />
                                   </button>
                                 </div>
                               </div>
