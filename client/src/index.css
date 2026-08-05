@@ -46,58 +46,58 @@
 }
 
 :root {
-  /* 格柏蕾蒂品牌色系 - 現代優雅極簡風格 */
-  --primary: #8B6F47; /* 深棕金 - 專業、高級 */
+  /* Yumi 米米美學 品牌色系 v2 - 高端深色 + 古銅金點綴 */
+  --primary: #2B211B; /* 極深咖啡黑 - 標題、Logo、主要按鈕 */
   --primary-foreground: #FFFFFF;
-  --sidebar-primary: #8B6F47;
+  --sidebar-primary: #2B211B;
   --sidebar-primary-foreground: #FFFFFF;
 
   /* 輔助色 */
-  --accent: #D4A5A5; /* 柔和玫瑰 - 溫暖、親切 */
+  --accent: #B8935B; /* 古銅金 - 點綴、CTA、互動元素 */
   --accent-foreground: #FFFFFF;
 
   /* 圖表色系 */
-  --chart-1: #8B6F47;
-  --chart-2: #A0826D;
-  --chart-3: #B59A8A;
-  --chart-4: #D4A5A5;
-  --chart-5: #E8C4C4;
+  --chart-1: #2B211B;
+  --chart-2: #4A3D30;
+  --chart-3: #6B5B48;
+  --chart-4: #8A7960;
+  --chart-5: #B8935B;
 
   /* 圓角半徑 */
-  --radius: 0.5rem; /* 8px */
+  --radius: 0.25rem; /* 4px，較銳利的直角線條 */
 
   /* 背景與前景 */
-  --background: #FAFAF8; /* 極淡米色 */
-  --foreground: #2C2C2C; /* 深灰 */
+  --background: #F7F2E9; /* 骨白 */
+  --foreground: #2B211B; /* 極深咖啡黑 */
   --card: #FFFFFF;
-  --card-foreground: #2C2C2C;
+  --card-foreground: #2B211B;
   --popover: #FFFFFF;
-  --popover-foreground: #2C2C2C;
+  --popover-foreground: #2B211B;
 
   /* 次要色 */
-  --secondary: #F5F1ED; /* 淡米色 */
-  --secondary-foreground: #2C2C2C;
+  --secondary: #F0E8D8; /* 深一階的骨白，作為 hover/次要底色 */
+  --secondary-foreground: #2B211B;
 
   /* 柔和色 */
-  --muted: #E8E4E0;
-  --muted-foreground: #6B6B6B;
+  --muted: #F0E8D8;
+  --muted-foreground: #8A7960; /* 灰褐 - 次要文字 */
 
   /* 邊框與輸入 */
-  --border: #E8E4E0;
-  --input: #F5F1ED;
-  --ring: #8B6F47;
+  --border: #EDE3D0;
+  --input: #F0E8D8;
+  --ring: #B8935B;
 
   /* 危險色 */
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
 
   /* 側邊欄 */
-  --sidebar: #FAFAF8;
-  --sidebar-foreground: #2C2C2C;
-  --sidebar-accent: #8B6F47;
+  --sidebar: #F7F2E9;
+  --sidebar-foreground: #2B211B;
+  --sidebar-accent: #2B211B;
   --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #E8E4E0;
-  --sidebar-ring: #8B6F47;
+  --sidebar-border: #EDE3D0;
+  --sidebar-ring: #B8935B;
 }
 
 .dark {
@@ -164,22 +164,22 @@ html {
     overscroll-behavior-x: none;
   }
 
-  /* 標題排版系統 */
+  /* 標題排版系統：中文走襯線體，英文/數字自動 fallback 到 Playfair Display */
   h1 {
     @apply font-bold text-4xl md:text-5xl;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif;
     letter-spacing: -0.02em;
   }
 
   h2 {
     @apply font-bold text-3xl md:text-4xl;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif;
     letter-spacing: -0.01em;
   }
 
   h3 {
     @apply font-semibold text-xl md:text-2xl;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif;
   }
 
   h4 {
