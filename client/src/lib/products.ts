@@ -1777,7 +1777,7 @@ export const PRODUCTS: Product[] = [
     name: '熨斗系列安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 3000,
+    price: 2500,
     memberPrice: 2500,
     description: '微整形安瓶，集中修護',
     benefits: ['微整形', '安瓶', '修護'],
@@ -1792,7 +1792,7 @@ export const PRODUCTS: Product[] = [
     name: '38都都好安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 3000,
+    price: 2500,
     memberPrice: 2500,
     description: '都都好安瓶，美顏修護',
     benefits: ['都都好', '安瓶', '美顏'],
@@ -1807,7 +1807,7 @@ export const PRODUCTS: Product[] = [
     name: '58淨膚安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 3000,
+    price: 2500,
     memberPrice: 2500,
     description: '淨膚安瓶，清潔修護',
     benefits: ['淨膚', '安瓶', '清潔'],
@@ -1822,7 +1822,7 @@ export const PRODUCTS: Product[] = [
     name: '晶亮安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 3000,
+    price: 2500,
     memberPrice: 2500,
     description: '晶亮安瓶，提亮修護',
     benefits: ['晶亮', '安瓶', '提亮'],
@@ -1831,3 +1831,110 @@ export const PRODUCTS: Product[] = [
     pv: 2125
   }
 ];
+
+// 肌膚檢測問卷
+export interface SkinQuizQuestion {
+  id: string;
+  question: string;
+  options: {
+    text: string;
+    value: string;
+  }[];
+}
+
+export const SKIN_QUIZ_QUESTIONS: SkinQuizQuestion[] = [
+  {
+    id: 'skin-type',
+    question: '您的膚質類型是？',
+    options: [
+      { text: '油性肌膚', value: 'oily' },
+      { text: '乾性肌膚', value: 'dry' },
+      { text: '混合肌膚', value: 'combination' },
+      { text: '中性肌膚', value: 'normal' }
+    ]
+  },
+  {
+    id: 'main-concern',
+    question: '主要肌膚困擾是？',
+    options: [
+      { text: '痘痘/粉刺', value: 'acne' },
+      { text: '暗沉/無光澤', value: 'dull' },
+      { text: '乾燥/脫皮', value: 'dry' },
+      { text: '敏感/泛紅', value: 'sensitive' },
+      { text: '細紋/鬆弛', value: 'aging' },
+      { text: '毛孔粗大', value: 'pores' }
+    ]
+  },
+  {
+    id: 'sensitivity',
+    question: '肌膚是否敏感？',
+    options: [
+      { text: '非常敏感', value: 'very-sensitive' },
+      { text: '有點敏感', value: 'somewhat-sensitive' },
+      { text: '不敏感', value: 'not-sensitive' }
+    ]
+  },
+  {
+    id: 'age-group',
+    question: '年齡區間？',
+    options: [
+      { text: '20-25歲', value: '20-25' },
+      { text: '25-30歲', value: '25-30' },
+      { text: '30-35歲', value: '30-35' },
+      { text: '35-40歲', value: '35-40' },
+      { text: '40歲以上', value: '40+' }
+    ]
+  },
+  {
+    id: 'goal',
+    question: '護膚目標是？',
+    options: [
+      { text: '控油抗痘', value: 'acne-control' },
+      { text: '保濕修護', value: 'moisturize' },
+      { text: '抗衰老', value: 'anti-aging' },
+      { text: '美白亮膚', value: 'brightening' },
+      { text: '全面護理', value: 'comprehensive' }
+    ]
+  }
+];
+
+// 根據檢測結果推薦產品
+export function getRecommendedProducts(answers: Record<string, string>): Product[] {
+  const recommended: Product[] = [];
+
+  const skinType = answers['skin-type'];
+  const mainConcern = answers['main-concern'];
+  const goal = answers['goal'];
+
+  // 根據主要困擾推薦
+  if (mainConcern === 'acne') {
+    recommended.push(
+      ...PRODUCTS.filter(p => p.series === '都都好系列').slice(0, 3)
+    );
+  } else if (mainConcern === 'dull') {
+    recommended.push(
+      ...PRODUCTS.filter(p => p.series === '晶亮系列').slice(0, 3)
+    );
+  } else if (mainConcern === 'dry') {
+    recommended.push(
+      ...PRODUCTS.filter(p => p.series === '淨膚系列').slice(0, 3)
+    );
+  } else if (mainConcern === 'sensitive') {
+    recommended.push(
+      ...PRODUCTS.filter(p => p.series === '淨膚系列' || p.series === '都都好系列').slice(0, 3)
+    );
+  } else if (mainConcern === 'aging') {
+    recommended.push(
+      ...PRODUCTS.filter(p => p.series === '晶亮系列' || p.series === 'Q彈精緻系列').slice(0, 3)
+    );
+  }
+
+  // 如果推薦不足，補充基礎產品
+  if (recommended.length < 3) {
+    recommended.push(
+      ...PRODUCTS.filter(p => !recommended.includes(p)).slice(0, 3 - recommended.length)
+    );
+  }
+
+  return recommended.slice(0, 3);
+}
