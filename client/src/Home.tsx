@@ -36,7 +36,7 @@ export default function Home() {
     {
       id: 'product-calculator',
       icon: <Calculator className="w-7 h-7" />,
-      title: '首購／團購金額試算',
+      title: '首購金額試算',
       description: '團購及首購會員顧客使用',
       buttonText: '快速計算',
       path: '/product-calculator',
