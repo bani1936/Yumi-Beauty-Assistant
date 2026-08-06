@@ -627,7 +627,9 @@ export default function OrderDetail() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>地址：{customerInfo.address}</span>
-                  <span>載具號碼：{customerInfo.mobileBarcode}</span>
+                  {customerInfo.invoiceType === '手機載具' && (
+                    <span>載具號碼：{customerInfo.mobileBarcode}</span>
+                  )}
                 </div>
               </div>
             )}
