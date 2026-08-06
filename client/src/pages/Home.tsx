@@ -19,7 +19,7 @@ export default function Home() {
       id: 'products',
       icon: <Sparkles className="w-7 h-7" />,
       title: '全系列產品',
-      description: '介紹系列產品效果及用法',
+      description: '',
       buttonText: '點我瀏覽',
       path: '/products',
       highlight: false,
@@ -28,7 +28,7 @@ export default function Home() {
       id: 'membership',
       icon: <Users className="w-7 h-7" />,
       title: '會員制度',
-      description: '會員權益、位階升級條件、回饋金比例',
+      description: '',
       buttonText: '快速了解',
       path: '/membership',
       highlight: false,
@@ -36,8 +36,8 @@ export default function Home() {
     {
       id: 'product-calculator',
       icon: <Calculator className="w-7 h-7" />,
-      title: '首購／團購金額試算',
-      description: '團購及首購會員顧客使用',
+      title: '首購金額試算',
+      description: '',
       buttonText: '快速計算',
       path: '/product-calculator',
       highlight: false,
@@ -90,7 +90,7 @@ export default function Home() {
                 }
                 onClick={() => navigate(tool.path)}
               >
-                <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="relative z-10 flex flex-col items-center justify-center text-center h-full">
                   <div
                     className="mb-6 flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300"
                     style={
@@ -109,15 +109,17 @@ export default function Home() {
                   )}
 
                   <h3
-                    className="text-xl md:text-2xl font-semibold mb-3"
+                    className={`text-xl md:text-2xl font-semibold ${tool.description ? 'mb-3' : ''}`}
                     style={{ color: '#5a4632', fontFamily: HEADING_FONT }}
                   >
                     {tool.title}
                   </h3>
 
-                  <p className="leading-relaxed text-sm md:text-base whitespace-pre-line" style={{ color: '#8a8a8a' }}>
-                    {tool.description}
-                  </p>
+                  {tool.description && (
+                    <p className="leading-relaxed text-sm md:text-base whitespace-pre-line" style={{ color: '#8a8a8a' }}>
+                      {tool.description}
+                    </p>
+                  )}
                 </div>
               </Card>
             ))}
