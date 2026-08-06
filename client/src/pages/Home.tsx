@@ -9,6 +9,7 @@ export default function Home() {
     {
       id: 'promotion',
       icon: <Gift className="w-7 h-7" />,
+      subtitle: 'LATEST PROMOTION',
       title: '最新活動',
       description: '新會員限定好禮，滿額即享升級禮遇',
       buttonText: '了解詳情',
@@ -18,8 +19,9 @@ export default function Home() {
     {
       id: 'products',
       icon: <Sparkles className="w-7 h-7" />,
+      subtitle: 'PRODUCTS',
       title: '全系列產品',
-      description: '',
+      description: '探索專屬保養，煥發肌膚自然光澤',
       buttonText: '點我瀏覽',
       path: '/products',
       highlight: false,
@@ -27,8 +29,9 @@ export default function Home() {
     {
       id: 'membership',
       icon: <Users className="w-7 h-7" />,
+      subtitle: 'VIP BENEFITS',
       title: '會員制度',
-      description: '',
+      description: '專屬尊榮禮遇，解鎖更多會員權益',
       buttonText: '快速了解',
       path: '/membership',
       highlight: false,
@@ -36,8 +39,9 @@ export default function Home() {
     {
       id: 'product-calculator',
       icon: <Calculator className="w-7 h-7" />,
+      subtitle: 'PRICE ESTIMATE',
       title: '首購金額試算',
-      description: '',
+      description: '快速試算優惠，即刻展開專屬保養',
       buttonText: '快速計算',
       path: '/product-calculator',
       highlight: false,
@@ -74,7 +78,7 @@ export default function Home() {
             {TOOL_CARDS.map((tool) => (
               <Card
                 key={tool.id}
-                className="h-full p-8 cursor-pointer group overflow-hidden transition-all hover:-translate-y-1 rounded-sm"
+                className="h-full min-h-[260px] p-8 cursor-pointer group overflow-hidden transition-all hover:-translate-y-1 rounded-sm"
                 style={
                   tool.highlight
                     ? {
@@ -102,11 +106,12 @@ export default function Home() {
                     {tool.icon}
                   </div>
 
-                  {tool.highlight && (
-                    <div className="text-[11px] tracking-[1.5px] font-semibold mb-2" style={{ color: '#9c7a3f' }}>
-                      LATEST PROMOTION
-                    </div>
-                  )}
+                  <div
+                    className="text-[11px] tracking-[1.5px] font-semibold mb-2"
+                    style={{ color: tool.highlight ? '#9c7a3f' : '#B59A8A' }}
+                  >
+                    {tool.subtitle}
+                  </div>
 
                   <h3
                     className={`text-xl md:text-2xl font-semibold ${tool.description ? 'mb-3' : ''}`}
