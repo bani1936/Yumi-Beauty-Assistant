@@ -11,6 +11,10 @@ interface CartItem {
   quantity: number;
 }
 
+// 首次體驗加購限定：每個品項每次限購 1 組
+const TRIAL_SERIES_NAME = '首次體驗加購';
+const TRIAL_SERIES_MAX_QTY = 1;
+
 export default function ProductCalculator() {
   const [, navigate] = useLocation();
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -64,20 +68,31 @@ export default function ProductCalculator() {
     }
   };
 
+  const getProductById = (id: string) => PRODUCTS.find(p => p.id === id);
+
+  // 首次體驗加購系列每個品項限購 1 組，其餘系列不限制
+  const getMaxQuantity = (productId: string): number | null => {
+    const product = getProductById(productId);
+    return product?.series === TRIAL_SERIES_NAME ? TRIAL_SERIES_MAX_QTY : null;
+  };
+
   const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
+    const maxQty = getMaxQuantity(productId);
+    const clampedQuantity = maxQty !== null ? Math.min(quantity, maxQty) : quantity;
+
+    if (clampedQuantity <= 0) {
       removeFromCart(productId);
     } else {
       const existing = cart.find(item => item.productId === productId);
       if (existing) {
         setCart(cart.map(item =>
           item.productId === productId
-            ? { ...item, quantity }
+            ? { ...item, quantity: clampedQuantity }
             : item
         ));
       } else {
         // 如果購物車中不存在此產品，新增它
-        setCart([...cart, { productId, quantity }]);
+        setCart([...cart, { productId, quantity: clampedQuantity }]);
       }
     }
   };
@@ -85,8 +100,6 @@ export default function ProductCalculator() {
   const removeFromCart = (productId: string) => {
     setCart(cart.filter(item => item.productId !== productId));
   };
-
-  const getProductById = (id: string) => PRODUCTS.find(p => p.id === id);
 
   // 原價總金額（未套用會員價）
   const originalSubtotal = cart.reduce((sum, item) => {
@@ -208,7 +221,7 @@ export default function ProductCalculator() {
           <div className="space-y-2 md:space-y-4">
             {Object.entries(productsByCategory).map(([series, products]) => {
               const isExpanded = expandedSeries.has(series);
-              const isTrialSeries = series === '首次體驗加購';
+              const isTrialSeries = series === TRIAL_SERIES_NAME;
               return (
                 <div
                   key={series}
@@ -244,19 +257,23 @@ export default function ProductCalculator() {
                     />
                   </button>
 
+                  {/* 首次體驗加購提示banner */}
+                  {isExpanded && isTrialSeries && (
+                    <div className="px-4 md:px-6 py-2" style={{ background: '#FFFDF8', borderBottom: '1px solid #EEE9E3' }}>
+                      <p className="text-[11px]" style={{ color: '#9c7a3f' }}>
+                        限量體驗優惠・每次限購1組・PV 不列入累計計算
+                      </p>
+                    </div>
+                  )}
+
                   {/* 產品列表 */}
                   {isExpanded && (
                     <div className="divide-y" style={{ borderColor: '#EEE9E3' }}>
-                      {isTrialSeries && (
-                        <div className="px-4 md:px-6 py-2" style={{ background: '#FFFDF8', borderBottom: '1px solid #EEE9E3' }}>
-                          <p className="text-[10px]" style={{ color: '#9c7a3f' }}>
-                            首次體驗限定加購價・PV 不列入累計計算
-                          </p>
-                        </div>
-                      )}
                       {products.map(product => {
                         const cartItem = cart.find(item => item.productId === product.id);
                         const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
+                        const maxQty = getMaxQuantity(product.id);
+                        const isAtMaxQty = maxQty !== null && (cartItem?.quantity ?? 0) >= maxQty;
                         return (
                           <div
                             key={product.id}
@@ -323,7 +340,8 @@ export default function ProductCalculator() {
                                   </span>
                                   <button
                                     onClick={() => updateQuantity(product.id, (cartItem?.quantity ?? 0) + 1)}
-                                    className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
+                                    disabled={isAtMaxQty}
+                                    className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
                                   >
                                     <Plus className="w-4 h-4" />
                                   </button>
