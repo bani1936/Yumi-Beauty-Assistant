@@ -48,7 +48,7 @@ function GlobalNav() {
           <button onClick={() => handleNavigate('/promotion')} className="text-sm hover:text-[#d4a574] transition-colors">最新活動</button>
           <button onClick={() => handleNavigate('/products')} className="text-sm hover:text-[#d4a574] transition-colors">全系列產品</button>
           <button onClick={() => handleNavigate('/membership')} className="text-sm hover:text-[#d4a574] transition-colors">會員制度</button>
-          <button onClick={() => handleNavigate('/product-calculator')} className="text-sm hover:text-[#d4a574] transition-colors">首購／團購金額試算</button>
+          <button onClick={() => handleNavigate('/product-calculator')} className="text-sm hover:text-[#d4a574] transition-colors">首購金額試算</button>
         </div>
         {/* 手機版菜單按鈕 */}
         <div className="md:hidden">
@@ -70,7 +70,7 @@ function GlobalNav() {
             會員制度
           </button>
           <button onClick={() => { handleNavigate('/product-calculator'); setIsMenuOpen(false); }} className="block w-full text-left text-sm text-white hover:text-[#d4a574] transition-colors py-2">
-            首購／團購金額試算
+            首購金額試算
           </button>
         </div>
       )}
