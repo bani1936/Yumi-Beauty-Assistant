@@ -208,7 +208,7 @@ export default function ProductCalculator() {
               className="text-2xl md:text-3xl font-bold mb-2"
               style={{ color: "#5a4632", fontFamily: "'Playfair Display', serif" }}
             >
-              首購／團購金額試算
+              首購金額試算
             </h2>
             <p className="mb-4" style={{ color: "#8a8a8a" }}>
               專為團購及首次購買顧客計算金額
