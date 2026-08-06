@@ -1236,8 +1236,8 @@ export const PRODUCTS: Product[] = [
   // Q彈精緻系列 (68系列)
   {
     id: '68膠原滋養再生露-q彈精緻-m',
-    productNumber: '68 膠原滋養再生露',
-    productTitle: '',
+    productNumber: '68',
+    productTitle: '膠原滋養再生露',
     name: '68 膠原滋養再生露',
     category: 'elasticity',
     series: 'Q彈精緻系列',
@@ -1449,8 +1449,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'special-1',
-    productNumber: '極致水潤解渴霜',
-    productTitle: '',
+    productTitle: '極致水潤解渴霜',
     name: '極致水潤解渴霜',
     category: 'special',
     series: '特殊系列',
@@ -1465,8 +1464,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'special-2',
-    productNumber: '舒緩乖乖修護乳',
-    productTitle: '',
+    productTitle: '舒緩乖乖修護乳',
     name: '舒緩乖乖修護乳',
     category: 'special',
     series: '特殊系列',
@@ -1481,8 +1479,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'special-4',
-    productNumber: '金頭腦皮膚調理液',
-    productTitle: '',
+    productTitle: '金頭腦皮膚調理液',
     name: '金頭腦皮膚調理液',
     category: 'special',
     series: '特殊系列',
@@ -1497,8 +1494,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'special-5',
-    productNumber: '好皮敷修護液',
-    productTitle: '',
+    productTitle: '好皮敷修護液',
     name: '好皮敷修護液',
     category: 'special',
     series: '特殊系列',
@@ -1513,8 +1509,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'special-6',
-    productNumber: '好皮敷凝露',
-    productTitle: '',
+    productTitle: '好皮敷凝露',
     name: '好皮敷凝露',
     category: 'special',
     series: '特殊系列',
@@ -1787,8 +1782,8 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'ampoule-2',
-    productNumber: '38都都好安瓶保養組',
-    productTitle: '',
+    productNumber: '38',
+    productTitle: '都都好安瓶保養組',
     name: '38都都好安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
@@ -1802,8 +1797,8 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'ampoule-3',
-    productNumber: '58淨膚安瓶保養組',
-    productTitle: '',
+    productNumber: '58',
+    productTitle: '淨膚安瓶保養組',
     name: '58淨膚安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
@@ -1817,8 +1812,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'ampoule-4',
-    productNumber: '晶亮安瓶保養組',
-    productTitle: '',
+    productTitle: '晶亮安瓶保養組',
     name: '晶亮安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
