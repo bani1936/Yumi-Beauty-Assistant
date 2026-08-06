@@ -46,7 +46,7 @@
 }
 
 :root {
-  /* Yumi 米米美學 品牌色系 - 還原原本暖褐色調，保留直角方塊 */
+  /* 格柏蕾蒂品牌色系 - 現代優雅極簡風格 */
   --primary: #8B6F47; /* 深棕金 - 專業、高級 */
   --primary-foreground: #FFFFFF;
   --sidebar-primary: #8B6F47;
@@ -63,8 +63,8 @@
   --chart-4: #D4A5A5;
   --chart-5: #E8C4C4;
 
-  /* 圓角半徑：維持直角化，不還原成原本的大圓角 */
-  --radius: 0.25rem; /* 4px */
+  /* 圓角半徑 */
+  --radius: 0.5rem; /* 8px */
 
   /* 背景與前景 */
   --background: #FAFAF8; /* 極淡米色 */
@@ -164,22 +164,22 @@ html {
     overscroll-behavior-x: none;
   }
 
-  /* 標題排版系統：中文走襯線體，英文/數字自動 fallback 到 Playfair Display */
+  /* 標題排版系統 */
   h1 {
     @apply font-bold text-4xl md:text-5xl;
-    font-family: 'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif;
+    font-family: 'Playfair Display', serif;
     letter-spacing: -0.02em;
   }
 
   h2 {
     @apply font-bold text-3xl md:text-4xl;
-    font-family: 'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif;
+    font-family: 'Playfair Display', serif;
     letter-spacing: -0.01em;
   }
 
   h3 {
     @apply font-semibold text-xl md:text-2xl;
-    font-family: 'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif;
+    font-family: 'Playfair Display', serif;
   }
 
   h4 {
