@@ -46,58 +46,58 @@
 }
 
 :root {
-  /* Yumi 米米美學 品牌色系 v2 - 高端深色 + 古銅金點綴 */
-  --primary: #2B211B; /* 極深咖啡黑 - 標題、Logo、主要按鈕 */
+  /* Yumi 米米美學 品牌色系 - 還原原本暖褐色調，保留直角方塊 */
+  --primary: #8B6F47; /* 深棕金 - 專業、高級 */
   --primary-foreground: #FFFFFF;
-  --sidebar-primary: #2B211B;
+  --sidebar-primary: #8B6F47;
   --sidebar-primary-foreground: #FFFFFF;
 
   /* 輔助色 */
-  --accent: #B8935B; /* 古銅金 - 點綴、CTA、互動元素 */
+  --accent: #D4A5A5; /* 柔和玫瑰 - 溫暖、親切 */
   --accent-foreground: #FFFFFF;
 
   /* 圖表色系 */
-  --chart-1: #2B211B;
-  --chart-2: #4A3D30;
-  --chart-3: #6B5B48;
-  --chart-4: #8A7960;
-  --chart-5: #B8935B;
+  --chart-1: #8B6F47;
+  --chart-2: #A0826D;
+  --chart-3: #B59A8A;
+  --chart-4: #D4A5A5;
+  --chart-5: #E8C4C4;
 
-  /* 圓角半徑 */
-  --radius: 0.25rem; /* 4px，較銳利的直角線條 */
+  /* 圓角半徑：維持直角化，不還原成原本的大圓角 */
+  --radius: 0.25rem; /* 4px */
 
   /* 背景與前景 */
-  --background: #F7F2E9; /* 骨白 */
-  --foreground: #2B211B; /* 極深咖啡黑 */
+  --background: #FAFAF8; /* 極淡米色 */
+  --foreground: #2C2C2C; /* 深灰 */
   --card: #FFFFFF;
-  --card-foreground: #2B211B;
+  --card-foreground: #2C2C2C;
   --popover: #FFFFFF;
-  --popover-foreground: #2B211B;
+  --popover-foreground: #2C2C2C;
 
   /* 次要色 */
-  --secondary: #F0E8D8; /* 深一階的骨白，作為 hover/次要底色 */
-  --secondary-foreground: #2B211B;
+  --secondary: #F5F1ED; /* 淡米色 */
+  --secondary-foreground: #2C2C2C;
 
   /* 柔和色 */
-  --muted: #F0E8D8;
-  --muted-foreground: #8A7960; /* 灰褐 - 次要文字 */
+  --muted: #E8E4E0;
+  --muted-foreground: #6B6B6B;
 
   /* 邊框與輸入 */
-  --border: #EDE3D0;
-  --input: #F0E8D8;
-  --ring: #B8935B;
+  --border: #E8E4E0;
+  --input: #F5F1ED;
+  --ring: #8B6F47;
 
   /* 危險色 */
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
 
   /* 側邊欄 */
-  --sidebar: #F7F2E9;
-  --sidebar-foreground: #2B211B;
-  --sidebar-accent: #2B211B;
+  --sidebar: #FAFAF8;
+  --sidebar-foreground: #2C2C2C;
+  --sidebar-accent: #8B6F47;
   --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #EDE3D0;
-  --sidebar-ring: #B8935B;
+  --sidebar-border: #E8E4E0;
+  --sidebar-ring: #8B6F47;
 }
 
 .dark {
