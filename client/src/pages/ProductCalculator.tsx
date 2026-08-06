@@ -179,16 +179,16 @@ export default function ProductCalculator() {
       <section className="py-8 md:py-12">
         <div className="container max-w-4xl mx-auto px-4">
           <div className="text-center mb-8">
-            <div className="text-[11px] tracking-[3px] font-semibold mb-2" style={{ color: "#B8935B" }}>
+            <div className="text-[11px] tracking-[2px] font-semibold mb-2" style={{ color: "#B59A8A" }}>
               PURCHASE ESTIMATOR
             </div>
             <h2
               className="text-2xl md:text-3xl font-bold mb-2"
-              style={{ color: "#2B211B", fontFamily: "'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif" }}
+              style={{ color: "#5a4632", fontFamily: "'Songti TC', 'Noto Serif TC', 'PMingLiU', 'Playfair Display', serif" }}
             >
               首購／團購金額試算
             </h2>
-            <p className="mb-4" style={{ color: "#8A7960" }}>
+            <p className="mb-4" style={{ color: "#8a8a8a" }}>
               專為團購及首次購買顧客計算金額
             </p>
             {cart.length > 0 && (
@@ -207,15 +207,15 @@ export default function ProductCalculator() {
             {Object.entries(productsByCategory).map(([series, products]) => {
               const isExpanded = expandedSeries.has(series);
               return (
-                <div key={series} className="rounded-sm overflow-hidden" style={{ border: "1px solid #EDE3D0" }}>
+                <div key={series} className="rounded-sm overflow-hidden" style={{ border: "1px solid #E8E4E0" }}>
                   {/* 系列標題 */}
                   <button
                     onClick={() => toggleSeries(series)}
                     className="w-full px-4 md:px-6 py-3 md:py-4 flex items-center justify-between transition-colors"
-                    style={{ backgroundColor: isExpanded ? '#F7F2E9' : '#fff' }}
+                    style={{ backgroundColor: isExpanded ? '#FBF6EE' : '#fff' }}
                   >
                     <div className="flex items-center gap-3">
-                      <h3 className="text-base md:text-lg font-semibold" style={{ color: '#2B211B' }}>
+                      <h3 className="text-base md:text-lg font-semibold" style={{ color: '#5a4632' }}>
                         {series}
                       </h3>
                       {(() => {
@@ -224,7 +224,7 @@ export default function ProductCalculator() {
                           return product?.series === series;
                         }).reduce((sum, item) => sum + item.quantity, 0);
                         return seriesCount > 0 && (
-                          <div className="flex items-center justify-center w-5 h-5 text-white rounded-full text-xs font-bold" style={{ backgroundColor: '#B8935B' }}>
+                          <div className="flex items-center justify-center w-5 h-5 text-white rounded-full text-xs font-bold" style={{ backgroundColor: '#8B6F47' }}>
                             {seriesCount}
                           </div>
                         );
@@ -232,20 +232,20 @@ export default function ProductCalculator() {
                     </div>
                     <ChevronDown
                       className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                      style={{ color: '#B8935B' }}
+                      style={{ color: '#B59A8A' }}
                     />
                   </button>
 
                   {/* 產品列表 */}
                   {isExpanded && (
-                    <div className="divide-y" style={{ borderColor: '#EDE3D0' }}>
+                    <div className="divide-y" style={{ borderColor: '#EEE9E3' }}>
                       {products.map(product => {
                         const cartItem = cart.find(item => item.productId === product.id);
                         const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
                         return (
                           <div
                             key={product.id}
-                            className="px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between bg-white hover:bg-[#FBF8F2] transition-colors gap-3 md:gap-0"
+                            className="px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between bg-white hover:bg-[#FAFAF8] transition-colors gap-3 md:gap-0"
                           >
                             {/* 產品資訊 */}
                             <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -254,7 +254,7 @@ export default function ProductCalculator() {
                                 fallbackSrc="/favicon.png"
                                 alt={product.name}
                                 className="w-12 h-12 rounded-sm object-cover flex-shrink-0"
-                                style={{ background: '#F7F2E9' }}
+                                style={{ background: '#F5F1ED' }}
                               />
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-baseline gap-2 mb-1 flex-wrap">
@@ -279,7 +279,7 @@ export default function ProductCalculator() {
                             <div className="flex items-center justify-between md:justify-end gap-3 md:gap-4 w-full md:w-auto">
                               <div className="flex flex-col items-end min-w-fit">
                                 {hasDiscount && (
-                                  <span className="text-xs line-through" style={{ color: '#C4B8A4' }}>
+                                  <span className="text-xs line-through" style={{ color: '#B0A797' }}>
                                     原價 NT${product.price}
                                   </span>
                                 )}
@@ -288,21 +288,21 @@ export default function ProductCalculator() {
                                 </span>
                               </div>
                               <div className="w-24">
-                                <div className="flex items-center justify-end gap-1 rounded-md p-1" style={{ background: '#F0E8D8' }}>
+                                <div className="flex items-center justify-end gap-1 rounded-md p-1" style={{ background: '#F5F1ED' }}>
                                   <button
                                     onClick={() => updateQuantity(product.id, (cartItem?.quantity ?? 0) - 1)}
                                     className="p-1 hover:bg-white rounded transition-colors flex-shrink-0"
                                   >
-                                    <Minus className="w-4 h-4" style={{ color: '#2B211B' }} />
+                                    <Minus className="w-4 h-4" style={{ color: '#5a4632' }} />
                                   </button>
-                                  <span className="w-6 text-center font-semibold text-sm flex-shrink-0" style={{ color: '#2B211B' }}>
+                                  <span className="w-6 text-center font-semibold text-sm flex-shrink-0" style={{ color: '#5a4632' }}>
                                     {cartItem?.quantity ?? 0}
                                   </span>
                                   <button
                                     onClick={() => updateQuantity(product.id, (cartItem?.quantity ?? 0) + 1)}
                                     className="p-1 hover:bg-white rounded transition-colors flex-shrink-0"
                                   >
-                                    <Plus className="w-4 h-4" style={{ color: '#2B211B' }} />
+                                    <Plus className="w-4 h-4" style={{ color: '#5a4632' }} />
                                   </button>
                                 </div>
                               </div>
@@ -337,10 +337,10 @@ export default function ProductCalculator() {
                 {progressInfo.progress}%
               </p>
             </div>
-            <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
+            <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
               <div
                 className="h-full transition-all duration-300"
-                style={{ width: `${progressInfo.progress}%`, background: '#B8935B' }}
+                style={{ width: `${progressInfo.progress}%`, background: '#8B6F47' }}
               />
             </div>
           </div>
@@ -363,7 +363,7 @@ export default function ProductCalculator() {
             {/* 原價 */}
             <div className="text-left">
               <p className="text-sm text-muted-foreground mb-1">原價</p>
-              <p className="text-sm line-through" style={{ color: '#C4B8A4' }}>
+              <p className="text-sm line-through" style={{ color: '#B0A797' }}>
                 NT$ {originalSubtotal.toLocaleString()}
               </p>
             </div>
@@ -410,11 +410,11 @@ export default function ProductCalculator() {
 
           {/* 手機版本 */}
           <div className="md:hidden space-y-2">
-            <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8A7960' }}>
+            <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8a8a8a' }}>
               <span>已選 {cart.length} 項</span>
               <span className="text-right">獲得 {points.toLocaleString()} PV</span>
             </div>
-            <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8A7960' }}>
+            <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8a8a8a' }}>
               <span>
                 原價 <span className="line-through">NT$ {originalSubtotal.toLocaleString()}</span>
               </span>
@@ -422,7 +422,7 @@ export default function ProductCalculator() {
                 折扣金額(PV) <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
               </span>
             </div>
-            <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: '#EDE3D0' }}>
+            <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: '#EEE9E3' }}>
               <p className="text-lg font-bold" style={{ color: '#5a4632' }}>
                 會員價 NT$ {finalPrice.toLocaleString()}
               </p>
