@@ -1540,6 +1540,64 @@ export const PRODUCTS: Product[] = [
     size: '組合',
     volume: '7件組',
     pv: 2125
+  },
+
+  // 首次體驗加購（原價 NT$3,000，加購價 NT$1,000，每次限購1組，PV 不列入累計計算）
+  {
+    id: 'trial-ampoule-1',
+    productNumber: '',
+    productTitle: '熨斗系列安瓶保養組',
+    name: '熨斗系列安瓶保養組（首次體驗加購）',
+    category: 'ampoule-trial',
+    series: '首次體驗加購',
+    price: 3000,
+    memberPrice: 1000,
+    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
+    benefits: ['首次體驗', '加購價'],
+    size: '組合',
+    pv: 0
+  },
+  {
+    id: 'trial-ampoule-2',
+    productNumber: '',
+    productTitle: '38都都好安瓶保養組',
+    name: '38都都好安瓶保養組（首次體驗加購）',
+    category: 'ampoule-trial',
+    series: '首次體驗加購',
+    price: 3000,
+    memberPrice: 1000,
+    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
+    benefits: ['首次體驗', '加購價'],
+    size: '組合',
+    pv: 0
+  },
+  {
+    id: 'trial-ampoule-3',
+    productNumber: '',
+    productTitle: '58淨膚安瓶保養組',
+    name: '58淨膚安瓶保養組（首次體驗加購）',
+    category: 'ampoule-trial',
+    series: '首次體驗加購',
+    price: 3000,
+    memberPrice: 1000,
+    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
+    benefits: ['首次體驗', '加購價'],
+    size: '組合',
+    pv: 0
+  },
+  {
+    id: 'trial-ampoule-4',
+    productNumber: '',
+    productTitle: '晶亮安瓶保養組',
+    name: '晶亮安瓶保養組（首次體驗加購）',
+    category: 'ampoule-trial',
+    series: '首次體驗加購',
+    price: 3000,
+    memberPrice: 1000,
+    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
+    benefits: ['首次體驗', '加購價'],
+    size: '組合',
+    pv: 0
   }
 ];
 
