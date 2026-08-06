@@ -11,10 +11,6 @@ interface CartItem {
   quantity: number;
 }
 
-// 首次體驗加購限定：每個品項每次限購 1 組
-const TRIAL_SERIES_NAME = '首次體驗加購';
-const TRIAL_SERIES_MAX_QTY = 1;
-
 export default function ProductCalculator() {
   const [, navigate] = useLocation();
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -68,31 +64,20 @@ export default function ProductCalculator() {
     }
   };
 
-  const getProductById = (id: string) => PRODUCTS.find(p => p.id === id);
-
-  // 首次體驗加購系列每個品項限購 1 組，其餘系列不限制
-  const getMaxQuantity = (productId: string): number | null => {
-    const product = getProductById(productId);
-    return product?.series === TRIAL_SERIES_NAME ? TRIAL_SERIES_MAX_QTY : null;
-  };
-
   const updateQuantity = (productId: string, quantity: number) => {
-    const maxQty = getMaxQuantity(productId);
-    const clampedQuantity = maxQty !== null ? Math.min(quantity, maxQty) : quantity;
-
-    if (clampedQuantity <= 0) {
+    if (quantity <= 0) {
       removeFromCart(productId);
     } else {
       const existing = cart.find(item => item.productId === productId);
       if (existing) {
         setCart(cart.map(item =>
           item.productId === productId
-            ? { ...item, quantity: clampedQuantity }
+            ? { ...item, quantity }
             : item
         ));
       } else {
         // 如果購物車中不存在此產品，新增它
-        setCart([...cart, { productId, quantity: clampedQuantity }]);
+        setCart([...cart, { productId, quantity }]);
       }
     }
   };
@@ -100,6 +85,8 @@ export default function ProductCalculator() {
   const removeFromCart = (productId: string) => {
     setCart(cart.filter(item => item.productId !== productId));
   };
+
+  const getProductById = (id: string) => PRODUCTS.find(p => p.id === id);
 
   // 原價總金額（未套用會員價）
   const originalSubtotal = cart.reduce((sum, item) => {
@@ -132,7 +119,6 @@ export default function ProductCalculator() {
     }
   };
 
-
   const discount = calculateDiscount(points);
   const finalPrice = subtotal - discount;
 
@@ -164,7 +150,6 @@ export default function ProductCalculator() {
     const progress = totalPoints < nextThreshold
       ? Math.round(((totalPoints - currentThreshold) / (nextThreshold - currentThreshold)) * 100)
       : 100;
-
     const remaining = Math.max(0, nextThreshold - totalPoints);
 
     return { currentLevel, nextThreshold, progress, remaining };
@@ -221,13 +206,8 @@ export default function ProductCalculator() {
           <div className="space-y-2 md:space-y-4">
             {Object.entries(productsByCategory).map(([series, products]) => {
               const isExpanded = expandedSeries.has(series);
-              const isTrialSeries = series === TRIAL_SERIES_NAME;
               return (
-                <div
-                  key={series}
-                  className="rounded-xl overflow-hidden"
-                  style={{ border: isTrialSeries ? '1.5px dashed #C9A876' : '1px solid #E8E4E0' }}
-                >
+                <div key={series} className="rounded-xl overflow-hidden" style={{ border: "1px solid #E8E4E0" }}>
                   {/* 系列標題 */}
                   <button
                     onClick={() => toggleSeries(series)}
@@ -236,14 +216,13 @@ export default function ProductCalculator() {
                   >
                     <div className="flex items-center gap-3">
                       <h3 className="text-base md:text-lg font-semibold" style={{ color: '#5a4632' }}>
-                        {isTrialSeries ? `✦ ${series}` : series}
+                        {series}
                       </h3>
                       {(() => {
                         const seriesCount = cart.filter(item => {
                           const product = getProductById(item.productId);
                           return product?.series === series;
                         }).reduce((sum, item) => sum + item.quantity, 0);
-
                         return seriesCount > 0 && (
                           <div className="flex items-center justify-center w-5 h-5 text-white rounded-full text-xs font-bold" style={{ backgroundColor: '#8B6F47' }}>
                             {seriesCount}
@@ -257,23 +236,12 @@ export default function ProductCalculator() {
                     />
                   </button>
 
-                  {/* 首次體驗加購提示banner */}
-                  {isExpanded && isTrialSeries && (
-                    <div className="px-4 md:px-6 py-2" style={{ background: '#FFFDF8', borderBottom: '1px solid #EEE9E3' }}>
-                      <p className="text-[11px]" style={{ color: '#9c7a3f' }}>
-                        限量體驗優惠・每次限購1組・PV 不列入累計計算
-                      </p>
-                    </div>
-                  )}
-
                   {/* 產品列表 */}
                   {isExpanded && (
                     <div className="divide-y" style={{ borderColor: '#EEE9E3' }}>
                       {products.map(product => {
                         const cartItem = cart.find(item => item.productId === product.id);
                         const hasDiscount = !!product.memberPrice && product.memberPrice < product.price;
-                        const maxQty = getMaxQuantity(product.id);
-                        const isAtMaxQty = maxQty !== null && (cartItem?.quantity ?? 0) >= maxQty;
                         return (
                           <div
                             key={product.id}
@@ -293,18 +261,11 @@ export default function ProductCalculator() {
                                   <h4 className="text-sm font-semibold text-foreground">
                                     {product.name}
                                   </h4>
-                                  {product.pv === 0 ? (
-                                    <span
-                                      className="text-[10px] font-normal px-1.5 py-0.5 rounded-full"
-                                      style={{ color: '#9c7a3f', background: '#F3E8D8' }}
-                                    >
-                                      PV 0・不累計
-                                    </span>
-                                  ) : product.pv ? (
+                                  {product.pv && (
                                     <span className="text-xs text-muted-foreground font-normal">
                                       PV {product.pv}
                                     </span>
-                                  ) : null}
+                                  )}
                                 </div>
                                 {product.volume && (
                                   <p className="text-xs text-muted-foreground">
@@ -318,15 +279,14 @@ export default function ProductCalculator() {
                             <div className="flex items-center justify-between md:justify-end gap-3 md:gap-4 w-full md:w-auto">
                               <div className="flex flex-col items-end min-w-fit">
                                 {hasDiscount && (
-                                  <span className="text-xs line-through" style={{ color: '#B0A797' }}>
-                                    NT${product.price}
+                                  <span className="text-xs" style={{ color: '#B0A797' }}>
+                                    原價 NT${product.price}
                                   </span>
                                 )}
                                 <span className="text-base md:text-lg font-bold text-primary">
                                   NT${product.memberPrice || product.price}
                                 </span>
                               </div>
-
                               <div className="w-24">
                                 <div className="flex items-center justify-end gap-1 bg-background border border-border rounded-lg p-1">
                                   <button
@@ -340,8 +300,7 @@ export default function ProductCalculator() {
                                   </span>
                                   <button
                                     onClick={() => updateQuantity(product.id, (cartItem?.quantity ?? 0) + 1)}
-                                    disabled={isAtMaxQty}
-                                    className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+                                    className="p-1 hover:bg-secondary rounded transition-colors flex-shrink-0"
                                   >
                                     <Plus className="w-4 h-4" />
                                   </button>
@@ -404,7 +363,7 @@ export default function ProductCalculator() {
             {/* 原價 */}
             <div className="text-left">
               <p className="text-sm text-muted-foreground mb-1">原價</p>
-              <p className="text-sm line-through" style={{ color: '#B0A797' }}>
+              <p className="text-sm" style={{ color: '#B0A797' }}>
                 NT$ {originalSubtotal.toLocaleString()}
               </p>
             </div>
@@ -457,7 +416,7 @@ export default function ProductCalculator() {
             </div>
             <div className="grid grid-cols-2 gap-x-3 text-xs" style={{ color: '#8a8a8a' }}>
               <span>
-                原價 <span className="line-through">NT$ {originalSubtotal.toLocaleString()}</span>
+                原價 <span>NT$ {originalSubtotal.toLocaleString()}</span>
               </span>
               <span className="text-right">
                 折扣金額(PV) <span className="font-semibold text-accent">-NT$ {discount.toLocaleString()}</span>
