@@ -86,7 +86,7 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* 左側：產品圖片 */}
           <div className="flex flex-col items-center justify-center">
-            <div className="w-full aspect-square bg-secondary rounded-lg overflow-hidden mb-4 flex items-center justify-center">
+            <div className={`w-full aspect-square bg-secondary rounded-lg overflow-hidden mb-4 flex items-center justify-center ${product.storySections ? 'max-w-[260px] md:max-w-none' : ''}`}>
               {product.image ? (
                 <ImageWithFallback
                   src={product.image}
@@ -283,6 +283,30 @@ export default function ProductDetail() {
                     );
                   })}
                 </div>
+                {product.instructions && (
+                  <p className="text-sm text-center leading-relaxed mt-8" style={{ color: '#6B6B6B' }}>
+                    {product.instructions}
+                  </p>
+                )}
+              </section>
+            )}
+
+            {product.storySections.howToUse && product.usageTips && product.usageTips.length > 0 && (
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  使用小提醒
+                </h2>
+                <div className="space-y-3">
+                  {product.usageTips.map((tip, idx) => (
+                    <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                      <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                      <span>{tip}</span>
+                    </div>
+                  ))}
+                </div>
               </section>
             )}
 
@@ -393,7 +417,7 @@ export default function ProductDetail() {
             )}
 
             {product.storySections.specs && product.storySections.specs.length > 0 && (
-              <section className="max-w-2xl mx-auto px-2">
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
                 <h2
                   className="text-2xl md:text-3xl font-bold text-center mb-8"
                   style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
@@ -414,6 +438,61 @@ export default function ProductDetail() {
                     ))}
                   </tbody>
                 </table>
+              </section>
+            )}
+
+            {product.storySections.fullIngredients && product.storySections.fullIngredients.length > 0 && (
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  全成分
+                </h2>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {product.storySections.fullIngredients.map((ing, idx) => (
+                    <span
+                      key={idx}
+                      className="text-xs px-3 py-1.5 rounded-full font-medium"
+                      style={{ background: '#FBF6EE', color: '#8B6F47', border: '1px solid #E8DCC8' }}
+                    >
+                      {ing}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {product.precautions && product.precautions.length > 0 && (
+              <section className="mb-12 md:mb-16 max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  注意事項
+                </h2>
+                <div className="space-y-3">
+                  {product.precautions.map((note, idx) => (
+                    <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                      <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                      <span>{note}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {product.storage && (
+              <section className="max-w-2xl mx-auto px-2">
+                <h2
+                  className="text-2xl md:text-3xl font-bold text-center mb-8"
+                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                >
+                  保存方式
+                </h2>
+                <p className="text-sm text-center leading-relaxed" style={{ color: '#6B6B6B' }}>
+                  {product.storage}
+                </p>
               </section>
             )}
           </div>
@@ -657,8 +736,8 @@ export default function ProductDetail() {
             )
           )}
 
-          {/* 使用小提醒 */}
-          {product.usageTips && product.usageTips.length > 0 && (
+          {/* 使用小提醒（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
+          {!product.storySections && product.usageTips && product.usageTips.length > 0 && (
             <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
               <div className="flex items-center gap-2.5 mb-4">
                 <div
@@ -682,23 +761,25 @@ export default function ProductDetail() {
             </Card>
           )}
 
-          {/* 保存方式 */}
-          <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
-            <div className="flex items-center gap-2.5 mb-4">
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: '#F5F1ED', color: '#8B6F47' }}
-              >
-                <Package className="w-4 h-4" />
+          {/* 保存方式（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
+          {!product.storySections && (
+            <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
+              <div className="flex items-center gap-2.5 mb-4">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: '#F5F1ED', color: '#8B6F47' }}
+                >
+                  <Package className="w-4 h-4" />
+                </div>
+                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
+                  保存方式
+                </h3>
               </div>
-              <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                保存方式
-              </h3>
-            </div>
-            <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
-              {product.storage || '存放於陰涼乾燥處。避免陽光直射及潮濕環境。'}
-            </p>
-          </Card>
+              <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
+                {product.storage || '存放於陰涼乾燥處。避免陽光直射及潮濕環境。'}
+              </p>
+            </Card>
+          )}
         </div>
       </div>
     </div>

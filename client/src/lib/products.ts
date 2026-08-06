@@ -60,6 +60,8 @@ export interface Product {
     faqs?: { q: string; a: string }[];
     // 產品規格（如：風味／包裝／產地）
     specs?: { label: string; value: string }[];
+    // 全成分（法規標示用完整成分清單）
+    fullIngredients?: string[];
   };
 }
 
@@ -1555,21 +1557,18 @@ export const PRODUCTS: Product[] = [
     pv: 1260,
     ingredients: '白藜蘆醇（Resveratrol）、輔酶Q10（Coenzyme Q10）、牛磺酸（Taurine）、MSM（甲基硫醯基甲烷）、透明質酸鈉（Sodium Hyaluronate）、銀耳萃取物（Tremella Fuciformis Extract）、維生素C、鋅',
     usage: '慢性發炎會破壞膠原蛋白、促使細胞機能下降與受損，形成「發炎反應→修復力下降→顯著老化跡象」的惡性循環。露加綻美飲透過三大機轉由內而外調理：源頭阻斷預防發炎、深層修復重啟細胞活力、表層改善實現水潤透亮。',
-    instructions: '使用100-150毫升溫涼開水沖泡，攪拌均勻後立即飲用，以確保成分活性。每日建議1包，多食無益。建議餐後30分鐘內飲用，早上或下午皆可，避免睡前食用。沖泡後請於30分鐘至1小時內喝完。',
-    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。',
+    instructions: '每日限1包，請使用100-150毫升水沖泡，攪拌均勻後飲用，多食無益。',
+    storage: '存放陰涼乾燥處，避免陽光照射、高溫潮濕處。',
     precautions: [
-      '本產品為全素配方，素食者可安心食用',
-      '15歲以下兒童、孕婦與哺乳期婦女、正在服用抗凝血藥物者應避免食用',
-      '含輔酶Q10成分，依衛福部規定不宜上述族群食用，使用前請諮詢醫師',
-      '配方含洛神花性偏寒涼，經期體質虛寒者建議酌量或暫停',
-      '不建議搭配豆漿、牛奶或咖啡沖泡，請務必使用溫涼開水；與其他保健品或藥品建議間隔30分鐘至1小時，避免影響吸收'
+      '全素食可食用。',
+      '本品添加植物萃取，如有沉澱係屬正常。',
+      '避免睡前食用，孕婦及哺乳期婦女使用前應先諮詢醫師。',
+      '十五歲以下小孩、懷孕或哺乳期間婦女及服用抗凝血藥品(warfarin)之病患，不宜食用。'
     ],
     usageTips: [
-      '約2週開始感受到變化，為達最佳效果建議連續使用12-16週',
-      '臨床實證：發炎指標CRP下降20-25%，面部含水量提升11%，經皮水分流失減少15.6%，16週後皺紋減少15.6%，有效挽救約40%膠原蛋白流失'
+      '約2週開始感受到變化，為達最佳效果建議連續使用12-16週'
     ],
     storySections: {
-      heroImage: '/luga-beauty-drink.jpg',
       intro: {
         title: '慢性發炎如何引發老化惡性循環',
         gridImage: '/luga-story-cycle.jpg',
@@ -1602,6 +1601,13 @@ export const PRODUCTS: Product[] = [
         { label: '風味', value: '玫瑰洛神' },
         { label: '包裝', value: '每包6g，每盒15份' },
         { label: '產地', value: '台灣製造' },
+      ],
+      fullIngredients: [
+        'Taurine', 'Methylsulfonylmethane', 'Maltodextrin',
+        '4-O-α-glucopyranosyl-D-sorbitol', 'Hibiscus Sabdariffa Extract',
+        'Resistant maltodextrin', 'Coenzyme Q10', 'Zn-Gluconate', 'Vitamin C',
+        'Streptococcus Zooepidemicus Fermentation (containing Sodium Hyaluronate)',
+        'Tremella Fuciformis Extract', 'Grape Extract', 'Parfum', 'Silica', 'Sucralose',
       ],
     },
   },
