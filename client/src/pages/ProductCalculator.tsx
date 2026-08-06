@@ -69,10 +69,21 @@ export default function ProductCalculator() {
 
   const getProductById = (id: string) => PRODUCTS.find(p => p.id === id);
 
-  // 首次體驗加購系列每次限購1組
+  // 計算某系列在購物車中的總數量（可排除指定產品，用來算「其他品項」的數量）
+  const getSeriesQuantity = (series: string, excludeProductId?: string) => {
+    return cart.reduce((sum, item) => {
+      if (excludeProductId && item.productId === excludeProductId) return sum;
+      const product = getProductById(item.productId);
+      return product?.series === series ? sum + item.quantity : sum;
+    }, 0);
+  };
+
+  // 首次體驗加購：全系列（4款任選）合計限購1組，不是每款各限購1組
   const getMaxQuantity = (productId: string): number | null => {
     const product = getProductById(productId);
-    return product?.series === TRIAL_SERIES_NAME ? TRIAL_SERIES_MAX_QTY : null;
+    if (product?.series !== TRIAL_SERIES_NAME) return null;
+    const otherQty = getSeriesQuantity(TRIAL_SERIES_NAME, productId);
+    return Math.max(0, TRIAL_SERIES_MAX_QTY - otherQty);
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -258,7 +269,7 @@ export default function ProductCalculator() {
                       {isTrialSeries && (
                         <div className="px-4 md:px-6 py-2.5" style={{ background: '#FBF6EE' }}>
                           <p className="text-[11px]" style={{ color: '#9c7a3f' }}>
-                            限量體驗優惠・每次限購1組・PV 不列入累計計算
+                            限量體驗優惠・4款任選其中1組・PV 不列入累計計算
                           </p>
                         </div>
                       )}
