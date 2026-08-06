@@ -31,6 +31,36 @@ export interface Product {
   usageTags?: string[];   // 適用情境標籤（薄塗舒緩用法等）
   usageTips?: string[];   // 使用小提醒
   usageModes?: { label: string; title: string; description: string; tags?: string[]; note?: string }[]; // 大區塊式用法（HOW TO USE 風格）
+  // 旗艦商品故事頁（選填，用於明星商品的敘事式導覽頁）
+  storySections?: {
+    heroImage?: string;
+    intro?: {
+      title: string;
+      gridImage: string;
+      warning?: string;
+    };
+    ingredientsSection?: {
+      items: { image: string; name: string; description: string }[];
+    };
+    benefits?: {
+      image: string;
+      title: string;
+      points: string[];
+    }[];
+    // 三大關鍵配方（如：源頭阻斷／深層修復／表層改善）
+    keyFormulas?: {
+      image?: string;
+      items: { label: string; title: string; tags: string }[];
+    };
+    // 科學實證數據（如：CRP下降20-25%）
+    clinicalStats?: { value: string; label: string }[];
+    // 使用方法（icon + 短文字，如：100-150ml溫涼水／餐後30分鐘內／每日1包）
+    howToUse?: { icon: 'cup' | 'clock' | 'calendar'; text: string }[];
+    // 常見問題
+    faqs?: { q: string; a: string }[];
+    // 產品規格（如：風味／包裝／產地）
+    specs?: { label: string; value: string }[];
+  };
 }
 
 export interface ProductCategory {
@@ -110,6 +140,84 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   }
 ];
 
+// 系列介紹（顯示於系列頁最上方，介紹該系列的主打功效與特色）
+export interface SeriesIntro {
+  title: string;
+  description: string;
+  features: { title: string; description: string; icon: 'sparkles' | 'shield' | 'droplet' | 'leaf' | 'target' | 'heart' }[];
+  closing?: string;
+}
+
+export const SERIES_INTROS: Record<string, SeriesIntro> = {
+  '熨斗系列(小)': {
+    title: '微整型系列 重啟肌膚年輕密碼',
+    description: '專為追求緊緻、修復與逆齡效果設計的高效保養品系列，結合尖端生物科技與高濃度活性成分，能夠深入肌底修復受損細胞，立即感受拉提緊緻效果。持續使用，讓肌膚宛如微整般年輕飽滿、輪廓更加立體明亮。',
+    features: [
+      { title: '即刻有感拉提', icon: 'sparkles', description: '使用後快速緊緻肌膚，明顯改善鬆弛與細紋。' },
+      { title: '細胞級修復', icon: 'shield', description: '強化肌膚防禦力，活化老化細胞，恢復彈性與光澤。' },
+      { title: '越用越年輕', icon: 'heart', description: '每一次保養都是深層修護，長效打造緊緻澎潤的年輕肌。' },
+      { title: '無藥性添加', icon: 'leaf', description: '溫和無負擔，敏弱肌也能安心使用。' },
+    ],
+    closing: '不只是保養，是一場逆轉肌齡的科技革命。',
+  },
+  '熨斗系列(大)': {
+    title: '微整型系列 重啟肌膚年輕密碼',
+    description: '專為追求緊緻、修復與逆齡效果設計的高效保養品系列，結合尖端生物科技與高濃度活性成分，能夠深入肌底修復受損細胞，立即感受拉提緊緻效果。持續使用，讓肌膚宛如微整般年輕飽滿、輪廓更加立體明亮。',
+    features: [
+      { title: '即刻有感拉提', icon: 'sparkles', description: '使用後快速緊緻肌膚，明顯改善鬆弛與細紋。' },
+      { title: '細胞級修復', icon: 'shield', description: '強化肌膚防禦力，活化老化細胞，恢復彈性與光澤。' },
+      { title: '越用越年輕', icon: 'heart', description: '每一次保養都是深層修護，長效打造緊緻澎潤的年輕肌。' },
+      { title: '無藥性添加', icon: 'leaf', description: '溫和無負擔，敏弱肌也能安心使用。' },
+    ],
+    closing: '不只是保養，是一場逆轉肌齡的科技革命。',
+  },
+  '淨膚系列': {
+    title: '淨膚系列 穩膚修護 全面舒緩',
+    description: '專為極敏感性肌膚打造的高效修護保養系列，結合溫和安撫與深層修復科技，有效改善肌膚斑點、泛紅、乾癢等不適問題。淨膚系列幫助肌膚重建健康屏障，從根本穩定膚況，找回細緻透亮的自然光采。',
+    features: [
+      { title: '舒緩泛紅乾癢', icon: 'droplet', description: '高效植萃舒敏配方，第一時間安撫敏弱膚況。' },
+      { title: '淡化斑點瑕疵', icon: 'sparkles', description: '改善因發炎或日曬所引起的色素沉澱，還原淨白膚色。' },
+      { title: '強化肌膚屏障', icon: 'shield', description: '強韌肌底，降低外界刺激對肌膚的傷害。' },
+      { title: '無藥性、低敏無負擔', icon: 'leaf', description: '不含刺激性成分，敏感肌、孕婦皆可安心使用。' },
+    ],
+    closing: '淨膚系列，深層補水兼具驅黃淡斑，打造水潤透亮的奶油淨白肌。',
+  },
+  '都都好系列': {
+    title: '都都好系列 淨痘煥膚 毛孔細緻專家',
+    description: '為問題性肌膚量身打造的都都好系列，專注改善痘痘、痘疤、粉刺與毛孔粗大問題，溫和調理肌膚油水平衡，同時強化代謝與修復機能。從淨化到修護，一瓶接著一瓶，循序漸進幫助你重拾平滑無瑕的健康肌。',
+    features: [
+      { title: '控油抗痘', icon: 'target', description: '深入毛孔清除多餘皮脂與髒污，預防痘痘生成。' },
+      { title: '淡化痘疤與粉刺', icon: 'sparkles', description: '加速肌膚代謝，修復痘痘留下的色素與凹凸不平。' },
+      { title: '收斂毛孔、細緻肌膚', icon: 'droplet', description: '有效改善毛孔粗大，還原滑嫩膚觸。' },
+      { title: '溫和不刺激、無藥性添加', icon: 'leaf', description: '敏感肌也能安心使用，長效穩定膚況。' },
+    ],
+    closing: '都都好系列，深層淨痘淡化痘疤，打造平滑細緻的水煮蛋肌。',
+  },
+  '晶亮系列': {
+    title: '晶亮系列 專研肌因修護，重建健康肌本',
+    description: '為高度問題肌膚設計，專注於修護酒糟肌、敏感肌、脂漏性皮膚炎與粉刺困擾。透過精準調理與肌因級修復科技，深入肌膚核心，幫助調節油脂、舒緩炎症、修護屏障，全面穩定膚況，從根本改善反覆發作的肌膚問題。',
+    features: [
+      { title: '舒緩泛紅與刺激', icon: 'droplet', description: '針對酒糟與敏感反應，快速降低肌膚發炎不適。' },
+      { title: '調理皮脂、改善脂漏', icon: 'target', description: '平衡油脂分泌，有效減緩脂漏性皮膚炎引起的脫屑與搔癢。' },
+      { title: '深層淨化粉刺源頭', icon: 'sparkles', description: '溫和代謝角質，預防毛孔堵塞與粉刺生成。' },
+      { title: '強化肌膚防禦屏障', icon: 'shield', description: '重建肌膚自我修護力，降低外界刺激傷害。' },
+      { title: '無藥性、低敏高效配方', icon: 'leaf', description: '安心溫和，敏弱肌也能長期使用。' },
+    ],
+    closing: '晶亮系列，專攻敏弱修護與屏障修護，打造穩定健康的晶透無瑕肌。',
+  },
+  'Q彈精緻系列': {
+    title: 'Q彈精緻系列 平滑肌因 重塑膚觸',
+    description: '專為凹洞型痘疤與月球表面般的肌膚打造，結合修復、撫平與重建三大關鍵機制，深入肌底啟動膠原蛋白再生，強化肌膚組織結構，從源頭改善痘疤凹陷與肌膚不平整問題。持續使用，肌膚逐漸細緻平滑，重現緊緻光采。',
+    features: [
+      { title: '撫平凹洞痘疤', icon: 'sparkles', description: '促進膠原增生，修補肌膚凹陷組織，改善肌膚凹凸不平。' },
+      { title: '修復肌底結構', icon: 'shield', description: '加強肌膚更新與修復力，重建受損肌膚屏障。' },
+      { title: '細緻毛孔、改善膚觸', icon: 'droplet', description: '使粗糙、顆粒感肌膚逐步光滑、平整。' },
+      { title: '無藥性、低敏溫和', icon: 'leaf', description: '適合長期使用，敏弱肌也能安心改善深層肌膚問題。' },
+    ],
+    closing: 'Q彈精緻系列，是專屬凹洞型肌膚的「重建型保養」，讓過去無解的痘疤肌，也能迎來平滑新生。',
+  },
+};
+
 // 完整產品清單
 export const PRODUCTS: Product[] = [
   // 熨斗系列(小)
@@ -164,15 +272,15 @@ export const PRODUCTS: Product[] = [
   {
     id: '2號-熨斗小-s',
     productNumber: '2號',
-    productTitle: '回春精華液(小)',
-    name: '(2號)回春精華液(小)',
+    productTitle: '青春光采精華液(小)',
+    name: '(2號)青春光采精華液(小)',
     category: 'micro-lifting-small',
     series: '熨斗系列(小)',
     price: 3100,
     memberPrice: 2780,
     description: '淡化(撒平)筲紋、細紋、紋路，使肉沂緊致、水嫩',
     image: '/01.jpg',
-    benefits: ['回春', '逆齢', '精華'],
+    benefits: ['青春光采', '逆齢', '精華'],
     size: '小',
     volume: '30ml',
     pv: 2250,
@@ -404,15 +512,15 @@ export const PRODUCTS: Product[] = [
   {
     id: '2-2',
     productNumber: '2號',
-    productTitle: '回春精華液(大)',
-    name: '(2號)回春精華液(大)',
+    productTitle: '青春光采精華液(大)',
+    name: '(2號)青春光采精華液(大)',
     category: 'micro-lifting-large',
     series: '熨斗系列(大)',
     price: 9300,
     memberPrice: 8380,
     description: '淡化(撫平)皺紋、細紋、紋路，使肌膚緊緻、水嫩',
     image: '/03.jpg',
-    benefits: ['回春', '逆齡', '精華'],
+    benefits: ['青春光采', '逆齡', '精華'],
     size: '大',
     volume: '120ml',
     pv: 7038,
@@ -456,7 +564,7 @@ export const PRODUCTS: Product[] = [
     name: '(4號)亮采B精華霜(大)',
     category: 'micro-lifting-large',
     series: '熨斗系列(大)',
-    price: 3100,
+    price: 9080,
     memberPrice: 8180,
     description: '滋潤肌膚，預防皮膚乾燥，使肌膚回復柔順平和的線條及嫩白',
     image: '/03.jpg',
@@ -606,10 +714,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '控油抵痘，淡化痘疤與粉刷，收斂毛孔',
     image: '/06.jpg',
-    benefits: ['控油', '抵痘', '亮顏'],
+    benefits: ['茶樹葉', '抑菌'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '幫助減少毛孔內細菌滋生，減輕痘痘部位發炎、紅腫現象。',
+    ingredients: '茶樹萃取、蘆薈汁葉萃取液、玻尿酸',
+    instructions: '早晚潔膚後，取適量38-1塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-2-都都好-m',
@@ -622,10 +734,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '深層清潔，改善膚質',
     image: '/06.jpg',
-    benefits: ['清潔', '美顔', '修護'],
+    benefits: ['羽衣草', '抗氧化'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '促進皮膚細胞修復，中和自由基，幫助油水平衡，改善暗沉。',
+    ingredients: '羽衣草萃取物、玻尿酸、綜合維生素',
+    instructions: '擦完38-1後取適量38-2塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-3-都都好-m',
@@ -638,10 +754,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '舅緩肌膚，增進吸收',
     image: '/07.jpg',
-    benefits: ['舅緩', '保濕', '吸收'],
+    benefits: ['洋甘菊', '舒緩'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '減緩肌膚紅腫、刺激、發癢，有很強的抗發炎作用，加速微損傷皮膚癒合。',
+    ingredients: '德國洋甘菊萃取、去離子水、天然褐藻萃取液',
+    instructions: '擦完38-2後取適量38-3塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-4-都都好-m',
@@ -654,10 +774,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '修護受損肌膚，強化屏障',
     image: '/08.jpg',
-    benefits: ['修護', '保護', '強化'],
+    benefits: ['海藻醣', '防護'],
     size: '標準',
     volume: '60ml',
-    pv: 2250
+    pv: 2250,
+    usage: '天然生物防護因子，穩定肌膚屏障，減少自由基引起的皮膚微炎症。',
+    ingredients: '蘆薈萃取液、銀杏萃取液、海藻醣',
+    instructions: '早晚使用，擦完38-3後每天晚上將38-4倒在化妝棉上濕敷痘痘處10分鐘，嚴重者早中晚各一次。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-5-都都好-m',
@@ -670,10 +794,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '凝聘精華，深層滋養',
     image: '/09.jpg',
-    benefits: ['凝露', '滋養', '精華'],
+    benefits: ['金縷梅', '收斂'],
     size: '標準',
     volume: '50ml',
-    pv: 2250
+    pv: 2250,
+    usage: '收斂皮脂腺開口，毛孔緊緻，降低肌膚表面細菌量。',
+    ingredients: '蘆薈汁葉萃取液、維他命E、金縷梅萃取液、德國洋甘菊萃取液',
+    instructions: '擦完38-4後取適量38-5塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-6-都都好-m',
@@ -688,10 +816,14 @@ export const PRODUCTS: Product[] = [
     featured: true,
     featuredOrder: 3,
     image: '/07.jpg',
-    benefits: ['痘痘肌', '痘疤', '美白'],
+    benefits: ['痘痘肌', '人蔘', '美白'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '深入肌底激活細胞，提升肌膚代謝力，塗抹在肌膚上快速形成「隱形防護層」，有效隔離外界刺激。',
+    ingredients: '人蔘萃取液、蘆薈萃取液、維他命E',
+    instructions: '擦完38-5後取適量38-6塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-7-都都好-m',
@@ -704,10 +836,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '高濃度精華，深層修護',
     image: '/03.jpg',
-    benefits: ['精華', '修護', '高效'],
+    benefits: ['維他命C', '補水'],
     size: '標準',
     volume: '120ml',
-    pv: 2250
+    pv: 2250,
+    usage: '針對油性痘痘肌膚補水，調理油水平衡，使肌膚光滑水嫩，白天防曬後仍可進行補水保濕。',
+    ingredients: '維他命C、透明質酸、甘草根萃取液',
+    instructions: '於所有保養品、彩妝品後使用，每3~4小時補充一次，距離臉部約15~20公分，讓噴霧散射出的幅度更廣，較能均勻吸收。請勿拍打肌膚，讓噴液自然吸收。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-8-10',
@@ -716,13 +852,18 @@ export const PRODUCTS: Product[] = [
     name: '38-8 都都好精華粉與原液',
     category: 'skin-care',
     series: '都都好系列',
-    price: 4400,
+    price: 4900,
+    memberPrice: 4400,
     description: '粉液結合，雙重功效',
     image: '/10.jpg',
-    benefits: ['精華', '粉體', '高效'],
+    benefits: ['課程專用', '重建'],
     size: '標準',
     volume: '10件組',
-    pv: 3740
+    pv: 3740,
+    usage: '幫助減輕發炎反應，有助受損肌膚修復，平衡肌膚油脂分泌。',
+    ingredients: '七葉樹提取物、褐藻萃取、沒藥醇',
+    instructions: '淨痘課程專用，需受過專業培訓之美容師於店內操作課程使用。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: '38-8-1',
@@ -731,13 +872,18 @@ export const PRODUCTS: Product[] = [
     name: '38-8 都都好精華粉與原液',
     category: 'skin-care',
     series: '都都好系列',
-    price: 580,
+    price: 680,
+    memberPrice: 580,
     description: '粉液結合，雙重功效',
     image: '/10.jpg',
-    benefits: ['精華', '粉體', '高效'],
+    benefits: ['課程專用', '重建'],
     size: '標準',
     volume: '1件組',
-    pv: 464
+    pv: 464,
+    usage: '幫助減輕發炎反應，有助受損肌膚修復，平衡肌膚油脂分泌。',
+    ingredients: '七葉樹提取物、褐藻萃取、沒藥醇',
+    instructions: '淨痘課程專用，需受過專業培訓之美容師於店內操作課程使用。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   // 淨膚系列 (58系列)
   {
@@ -747,7 +893,7 @@ export const PRODUCTS: Product[] = [
     name: '58-1 淨膚凝露',
     category: 'cleansing',
     series: '淨膚系列',
-    price: 2980,
+    price: 3320,
     memberPrice: 2980,
     description: '溫和清潔，穩定膚況',
     image: '/11.jpg',
@@ -861,7 +1007,7 @@ export const PRODUCTS: Product[] = [
     name: '58-8 隱痕定格液',
     category: 'cleansing',
     series: '淨膚系列',
-    price: 2780,
+    price: 3100,
     memberPrice: 2780,
     description: '淨膚精華，深層修護',
     image: '/03.jpg',
@@ -877,7 +1023,8 @@ export const PRODUCTS: Product[] = [
     name: '58-9 淨膚精華粉與原液',
     category: 'cleansing',
     series: '淨膚系列',
-    price: 1320,
+    price: 1480,
+    memberPrice: 1320,
     description: '粉液結合，經濟實惠',
     image: '/10.jpg',
     benefits: ['精華', '粉體', '經濟'],
@@ -892,7 +1039,8 @@ export const PRODUCTS: Product[] = [
     name: '58-9 淨膚精華粉與原液',
     category: 'cleansing',
     series: '淨膚系列',
-    price: 580,
+    price: 680,
+    memberPrice: 580,
     description: '粉液結合，經濟實惠',
     image: '/10.jpg',
     benefits: ['精華', '粉體', '經濟'],
@@ -913,10 +1061,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '晶亮膚色，恢復光澤',
     image: '/14.jpg',
-    benefits: ['晶亮', '光澤', '恢復'],
+    benefits: ['金盞花', '鎮靜'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '舒緩敏感，鎮靜紅腫，非常適合敏感肌，有助於小傷口癒合、屏障功能受損肌膚的恢復。',
+    ingredients: '保濕因子、金盞花萃取',
+    instructions: '早晚潔膚後，取適量D1塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd2-晶亮-m',
@@ -929,10 +1081,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '柔敏配方，溫和有效',
     image: '/15.jpg',
-    benefits: ['柔敏', '溫和', '有效'],
+    benefits: ['B5', '強效保濕'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '強效保濕、修護、抗敏、舒緩等多重功效，增加皮膚彈性與柔軟度，幫助修復受損角質層，減少刺激、泛紅、乾癢敏感現象。',
+    ingredients: '保濕因子、維他命B5、蘋果萃取液',
+    instructions: '早晚潔膚後，擦完D1後取適量D2塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'D3',
@@ -941,14 +1097,18 @@ export const PRODUCTS: Product[] = [
     name: 'D3-絲光蛋白精華液',
     category: 'brightening',
     series: '晶亮系列',
-    price: 2980,
+    price: 3320,
     memberPrice: 2980,
     description: '蛋白精華，絲光質感',
     image: '/15.jpg',
-    benefits: ['蛋白', '絲光', '精華'],
+    benefits: ['玻尿酸', '修護'],
     size: '標準',
     volume: '30ml',
-    pv: 2533
+    pv: 2533,
+    usage: '提升肌膚耐受力，減少外界刺激影響。玻尿酸能讓肌膚表面平滑細緻，幫助皮膚細胞維持良好環境，促進受損肌膚修護。',
+    ingredients: '維他命E、水解米蛋白、玻尿酸',
+    instructions: '早晚潔膚後，擦完D2後取適量D3塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd4-晶亮-m',
@@ -961,10 +1121,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '精華濃縮，深層修護',
     image: '/14.jpg',
-    benefits: ['精華', '修護', '濃縮'],
+    benefits: ['堅果籽油', '抗敏'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '天然抗炎成分能夠快速滲透入皮膚，對敏感肌、微發炎肌膚有很好的舒緩效果。',
+    ingredients: '全緣葉澳洲堅果籽油、去離子水、玻尿酸、維他命B3',
+    instructions: '早晚潔膚後，擦完D3後取適量D4塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd5-晶亮-m',
@@ -977,10 +1141,14 @@ export const PRODUCTS: Product[] = [
     memberPrice: 2780,
     description: '剔透質地，透亮膚色',
     image: '/14.jpg',
-    benefits: ['剔透', '透亮', '質地'],
+    benefits: ['桑白皮', '舒緩'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '幫助降低皮膚發炎反應，桑白皮的致敏性低，適用於敏感性肌膚、酒糟肌膚，有助肌膚補水、鎖水。',
+    ingredients: '桑白皮萃取、去離子水、維他命E',
+    instructions: '早晚潔膚後，擦完D4後取適量D5塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd6-晶亮-m',
@@ -995,10 +1163,14 @@ export const PRODUCTS: Product[] = [
     featured: true,
     featuredOrder: 5,
     image: '/14.jpg',
-    benefits: ['敏感肌', '酒糟肌', '美白'],
+    benefits: ['敏感酒糟', '黑桑果', '美白'],
     size: '標準',
     volume: '30ml',
-    pv: 2250
+    pv: 2250,
+    usage: '肌膚美白，減少黑色素形成，減緩肌膚老化，對抗暗沉蠟黃膚色。',
+    ingredients: '水解黑桑果、去離子水、玻尿酸、人蔘萃取液',
+    instructions: '早晚潔膚後，擦完D5後取適量D6塗抹全臉，快速均勻勿拍打按摩。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'd7-晶亮-m',
@@ -1007,44 +1179,58 @@ export const PRODUCTS: Product[] = [
     name: 'D7-晶亮修護精華液',
     category: 'brightening',
     series: '晶亮系列',
-    price: 2780,
+    price: 3100,
     memberPrice: 2780,
     description: '噴霧方便，隨時修護',
     image: '/03.jpg',
-    benefits: ['噴霧', '修護', '便利'],
+    benefits: ['燕麥', '屏障'],
     size: '標準',
     volume: '120ml',
-    pv: 2250
+    pv: 2250,
+    usage: '有助肌膚補水，隨時保濕、維持肌膚水嫩光滑，白天防曬後仍可進行補水保濕。',
+    ingredients: '燕麥萃取、去離子水、玻尿酸',
+    instructions: '於所有保養品、彩妝品後使用，每3~4小時補充一次，距離臉部約15~20公分，讓噴霧散射出的幅度更廣，較能均勻吸收。請勿拍打肌膚，讓噴液自然吸收。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'D8-10',
     productNumber: 'D8',
-    productTitle: '精華粉與原液',
-    name: 'D8-精華粉與原液',
+    productTitle: '晶亮精華粉與原液',
+    name: 'D8-晶亮精華粉與原液',
     category: 'brightening',
     series: '晶亮系列',
-    price: 4400,
+    price: 4900,
+    memberPrice: 4400,
     description: '粉液結合，雙重功效',
-    image: '/10.jpg',
-    benefits: ['精華', '粉體', '高效'],
+    image: '/d8-set10.jpg',
+    benefits: ['課程專用', '細胞重建'],
     size: '標準',
     volume: '10件組',
-    pv: 3740
+    pv: 3740,
+    usage: '幫助強化肌膚屏障，對炎症、敏感有穩定膚況的作用。使肌膚回復柔順平和的線條並恢復彈性有光澤',
+    ingredients: '野葛根、蘆薈萃取液、褐藻萃取',
+    instructions: '晶亮課程專用，需受過專業培訓之美容師於店內操作課程使用。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
   {
     id: 'D8-1',
     productNumber: 'D8',
-    productTitle: '精華粉與原液',
-    name: 'D8-精華粉與原液',
+    productTitle: '晶亮精華粉與原液',
+    name: 'D8-晶亮精華粉與原液',
     category: 'brightening',
     series: '晶亮系列',
-    price: 580,
+    price: 680,
+    memberPrice: 580,
     description: '粉液結合，雙重功效',
-    image: '/10.jpg',
-    benefits: ['精華', '粉體', '高效'],
+    image: '/d8-set1.jpg',
+    benefits: ['課程專用', '細胞重建'],
     size: '標準',
     volume: '1件組',
-    pv: 464
+    pv: 464,
+    usage: '幫助強化肌膚屏障，對炎症、敏感有穩定膚況的作用。使肌膚回復柔順平和的線條並恢復彈性有光澤',
+    ingredients: '野葛根、蘆薈萃取液、褐藻萃取',
+    instructions: '晶亮課程專用，需受過專業培訓之美容師於店內操作課程使用。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。'
   },
 
   // Q彈精緻系列 (68系列)
@@ -1087,7 +1273,8 @@ export const PRODUCTS: Product[] = [
     name: '68-2 Q彈滋養凝露',
     category: 'elasticity',
     series: 'Q彈精緻系列',
-    price: 3980,
+    price: 4430,
+    memberPrice: 3980,
     description: 'Q彈滋養，凝聚修護',
     image: '/09.jpg',
     benefits: ['Q彈', '滋養', '凝露'],
@@ -1118,7 +1305,8 @@ export const PRODUCTS: Product[] = [
     name: '68-4 Q彈精緻霜',
     category: 'elasticity',
     series: 'Q彈精緻系列',
-    price: 2980,
+    price: 3320,
+    memberPrice: 2980,
     description: 'Q彈精緻，提升活力',
     image: '/17.jpg',
     benefits: ['Q彈', '精緻', '活力'],
@@ -1149,7 +1337,8 @@ export const PRODUCTS: Product[] = [
     name: '68-6 Q彈精緻精華粉與原液',
     category: 'elasticity',
     series: 'Q彈精緻系列',
-    price: 4400,
+    price: 4900,
+    memberPrice: 4400,
     description: '粉液結合，雙重功效',
     image: '/10.jpg',
     benefits: ['精華', '粉體', '高效'],
@@ -1164,7 +1353,8 @@ export const PRODUCTS: Product[] = [
     name: '68-6 Q彈精緻精華粉與原液',
     category: 'elasticity',
     series: 'Q彈精緻系列',
-    price: 580,
+    price: 680,
+    memberPrice: 580,
     description: '粉液結合，雙重功效',
     image: '/10.jpg',
     benefits: ['精華', '粉體', '高效'],
@@ -1219,7 +1409,26 @@ export const PRODUCTS: Product[] = [
       '若有異常請停止使用：若出現持續不適、明顯紅腫或其他異常狀況，請立即停止使用並與我們聯繫'
     ],
     ingredients: '蘆薈葉汁萃取、透明質酸、甘露醇萃取。',
-    storage: '存放於陰涼乾燥處。避免陽光直射及潮濕環境。\n在家建議冰冷凍敷效果最佳!'
+    storage: '存放於陰涼乾燥處。避免陽光直射及潮濕環境。\n在家建議冰冷凍敷效果最佳!',
+    storySections: {
+      heroImage: '/collagen-story-hero.jpg',
+      intro: {
+        title: '純天然植萃，任何受損膚況適用',
+        gridImage: '/collagen-story-concerns-grid.jpg',
+        warning: '⚠️ 溫和純淨無添加：全身上下、寶寶尿布疹、私密處皆可安心使用。',
+      },
+      ingredientsSection: {
+        items: [
+          { image: '/collagen-story-ingredient-1.jpg', name: '蘆薈葉汁萃取液', description: '有「肌膚天然急救箱」之稱，富含天然多醣體與胺基酸，能迅速為肌膚補水，舒緩泛紅與乾燥不適，加速修復力。' },
+          { image: '/collagen-story-ingredient-2.jpg', name: '透明質酸', description: '俗稱玻尿酸，具備優異的鎖水能力，能大量吸附並鎖留水分，維持肌膚澎潤與彈性，減緩乾燥引起的細紋。' },
+          { image: '/collagen-story-ingredient-3.jpg', name: '甘露醇萃取', description: '天然抗氧化多醣醇成分，具舒緩鎮定特性，能降低肌膚敏感反應，幫助維持肌膚水潤與穩定狀態。' },
+        ],
+      },
+      benefits: [
+        { image: '/collagen-story-benefit-1.jpg', title: '厚敷修護｜深層舒緩鎮定', points: ['全臉厚敷 0.2 公分，停留 15-20 分鐘', '醫美沙龍級 300ml，用量無負擔', '敏弱肌、術後修復皆適用'] },
+        { image: '/collagen-story-benefit-2.jpg', title: '薄塗急救｜隨時隨地舒緩', points: ['暗沉、雷射術後、敏感泛紅皆可用', '每天使用，膚況感受得到的變化', '質地清爽好吸收，不黏膩'] },
+      ],
+    },
   },
 
   {
@@ -1229,7 +1438,8 @@ export const PRODUCTS: Product[] = [
     name: '21號玫瑰角質乳液',
     category: 'special',
     series: '特殊系列',
-    price: 850,
+    price: 950,
+    memberPrice: 850,
     description: '玉瑰爡角質，清潔修護',
     image: '/22.jpg',
     benefits: ['玉瑰爡', '角質', '清潔'],
@@ -1244,7 +1454,8 @@ export const PRODUCTS: Product[] = [
     name: '極致水潤解渴霜',
     category: 'special',
     series: '特殊系列',
-    price: 2780,
+    price: 3100,
+    memberPrice: 2780,
     description: '極致保濕，深層滋養',
     image: '/14.jpg',
     benefits: ['保濕', '滋養', '解渴'],
@@ -1259,7 +1470,8 @@ export const PRODUCTS: Product[] = [
     name: '舒緩乖乖修護乳',
     category: 'special',
     series: '特殊系列',
-    price: 2780,
+    price: 3100,
+    memberPrice: 2780,
     description: '舒緩敏感，溫和修護',
     image: '/14.jpg',
     benefits: ['舒緩', '敏感', '修護'],
@@ -1274,7 +1486,8 @@ export const PRODUCTS: Product[] = [
     name: '金頭腦皮膚調理液',
     category: 'special',
     series: '特殊系列',
-    price: 2780,
+    price: 3100,
+    memberPrice: 2780,
     description: '調理肌膚，平衡油水',
     image: '/24.jpg',
     benefits: ['調理', '平衡', '油水'],
@@ -1289,7 +1502,8 @@ export const PRODUCTS: Product[] = [
     name: '好皮敷修護液',
     category: 'special',
     series: '特殊系列',
-    price: 2780,
+    price: 3100,
+    memberPrice: 2780,
     description: '好皮敷修護，深層保護',
     image: '/24.jpg',
     benefits: ['好皮敷', '修護', '保護'],
@@ -1304,7 +1518,8 @@ export const PRODUCTS: Product[] = [
     name: '好皮敷凝露',
     category: 'special',
     series: '特殊系列',
-    price: 2780,
+    price: 3100,
+    memberPrice: 2780,
     description: '好皮敷凝聚，滋養修護',
     image: '/09.jpg',
     benefits: ['好皮敷', '凝露', '滋養'],
@@ -1319,7 +1534,7 @@ export const PRODUCTS: Product[] = [
     name: '精緻美瞳眼霜',
     category: 'special',
     series: '特殊系列',
-    price: 2780,
+    price: 3100,
     memberPrice: 2780,
     description: '精緻美瞳，修護眼周',
     image: '/01.jpg',
@@ -1327,6 +1542,73 @@ export const PRODUCTS: Product[] = [
     size: '標準',
     volume: '30ml',
     pv: 2250
+  },
+  {
+    id: 'special-8',
+    productNumber: '',
+    productTitle: '露加綻美飲',
+    name: '露加綻美飲',
+    category: 'special',
+    series: '特殊系列',
+    price: 2535,
+    memberPrice: 2280,
+    description: '由內而外，阻斷慢性發炎老化循環',
+    image: '/luga-beauty-drink.jpg',
+    benefits: ['美妍', '飲品', '由內而外'],
+    size: '標準',
+    volume: '15入',
+    pv: 1260,
+    ingredients: '白藜蘆醇（Resveratrol）、輔酶Q10（Coenzyme Q10）、牛磺酸（Taurine）、MSM（甲基硫醯基甲烷）、透明質酸鈉（Sodium Hyaluronate）、銀耳萃取物（Tremella Fuciformis Extract）、維生素C、鋅',
+    usage: '慢性發炎會破壞膠原蛋白、促使細胞機能下降與受損，形成「發炎反應→修復力下降→顯著老化跡象」的惡性循環。露加綻美飲透過三大機轉由內而外調理：源頭阻斷預防發炎、深層修復重啟細胞活力、表層改善實現水潤透亮。',
+    instructions: '使用100-150毫升溫涼開水沖泡，攪拌均勻後立即飲用，以確保成分活性。每日建議1包，多食無益。建議餐後30分鐘內飲用，早上或下午皆可，避免睡前食用。沖泡後請於30分鐘至1小時內喝完。',
+    storage: '存放於陰涼乾燥處，避免陽光直射及潮濕環境。',
+    precautions: [
+      '本產品為全素配方，素食者可安心食用',
+      '15歲以下兒童、孕婦與哺乳期婦女、正在服用抗凝血藥物者應避免食用',
+      '含輔酶Q10成分，依衛福部規定不宜上述族群食用，使用前請諮詢醫師',
+      '配方含洛神花性偏寒涼，經期體質虛寒者建議酌量或暫停',
+      '不建議搭配豆漿、牛奶或咖啡沖泡，請務必使用溫涼開水；與其他保健品或藥品建議間隔30分鐘至1小時，避免影響吸收'
+    ],
+    usageTips: [
+      '約2週開始感受到變化，為達最佳效果建議連續使用12-16週',
+      '臨床實證：發炎指標CRP下降20-25%，面部含水量提升11%，經皮水分流失減少15.6%，16週後皺紋減少15.6%，有效挽救約40%膠原蛋白流失'
+    ],
+    storySections: {
+      heroImage: '/luga-beauty-drink.jpg',
+      intro: {
+        title: '慢性發炎如何引發老化惡性循環',
+        gridImage: '/luga-story-cycle.jpg',
+      },
+      keyFormulas: {
+        image: '/luga-story-icons.jpg',
+        items: [
+          { label: '01', title: '源頭阻斷．預防發炎', tags: 'MSM．牛磺酸' },
+          { label: '02', title: '深層修復．重啟細胞活力', tags: '白藜蘆醇．輔酶Q10．牛磺酸' },
+          { label: '03', title: '表層改善．實現水潤透亮', tags: '玻尿酸．銀耳萃取．維生素C＆鋅' },
+        ],
+      },
+      clinicalStats: [
+        { value: '-20~25%', label: '發炎指標CRP' },
+        { value: '+11%', label: '面部含水量' },
+        { value: '-15.6%', label: '皺紋改善' },
+        { value: '40%', label: '挽救膠原流失' },
+      ],
+      howToUse: [
+        { icon: 'cup', text: '100-150ml溫涼水' },
+        { icon: 'clock', text: '餐後30分鐘內' },
+        { icon: 'calendar', text: '每日1包' },
+      ],
+      faqs: [
+        { q: '素食者可以食用嗎？', a: '可以，本產品為全素配方。' },
+        { q: '哪些人應避免使用？', a: '15歲以下兒童、孕婦與哺乳期婦女、服用抗凝血藥物者。' },
+        { q: '生理期是否可以食用？', a: '主要成分無禁忌，但配方含洛神花性偏寒涼，經期體質虛寒者建議酌量或暫停。' },
+      ],
+      specs: [
+        { label: '風味', value: '玫瑰洛神' },
+        { label: '包裝', value: '每包6g，每盒15份' },
+        { label: '產地', value: '台灣製造' },
+      ],
+    },
   },
 
   // 美胸系列
@@ -1337,7 +1619,8 @@ export const PRODUCTS: Product[] = [
     name: 'UP活絡喚醒乳',
     category: 'bust',
     series: '美胸系列',
-    price: 3980,
+    price: 4430,
+    memberPrice: 3980,
     description: '活絡喚醒，提升紋理',
     image: '/03.jpg',
     benefits: ['活絡', '喚醒', '提升'],
@@ -1352,7 +1635,8 @@ export const PRODUCTS: Product[] = [
     name: 'UP定點精華液',
     category: 'bust',
     series: '美胸系列',
-    price: 2980,
+    price: 3320,
+    memberPrice: 2980,
     description: '定點精華，集中修護',
     image: '/01.jpg',
     benefits: ['定點', '精華', '集中'],
@@ -1367,7 +1651,8 @@ export const PRODUCTS: Product[] = [
     name: 'UP緊實精華液',
     category: 'bust',
     series: '美胸系列',
-    price: 2980,
+    price: 3320,
+    memberPrice: 2980,
     description: '緊實提升，修護保護',
     image: '/01.jpg',
     benefits: ['緊實', '提升', '修護'],
@@ -1426,7 +1711,8 @@ export const PRODUCTS: Product[] = [
     name: '22號亮采99金卸妝乳',
     category: 'cleaning',
     series: '清潔系列',
-    price: 1380,
+    price: 1540,
+    memberPrice: 1380,
     description: '亮采99金卸妝，溫和清潔',
     image: '/03.jpg',
     benefits: ['卸妝', '清潔', '溫和'],
@@ -1441,7 +1727,8 @@ export const PRODUCTS: Product[] = [
     name: '22號亮采99金卸妝乳',
     category: 'cleaning',
     series: '清潔系列',
-    price: 2980,
+    price: 3200,
+    memberPrice: 2980,
     description: '亮采99金卸妝，溫和清潔',
     image: '/05.jpg',
     benefits: ['卸妝', '清潔', '溫和'],
@@ -1456,7 +1743,8 @@ export const PRODUCTS: Product[] = [
     name: '23號亮采99金潔顏蜜',
     category: 'cleaning',
     series: '清潔系列',
-    price: 1380,
+    price: 1540,
+    memberPrice: 1380,
     description: '亮采99金潔顏，深層清潔',
     image: '/03.jpg',
     benefits: ['潔顏', '清潔', '深層'],
@@ -1471,7 +1759,8 @@ export const PRODUCTS: Product[] = [
     name: '23號亮采99金潔顏蜜',
     category: 'cleaning',
     series: '清潔系列',
-    price: 2980,
+    price: 3200,
+    memberPrice: 2980,
     description: '亮采99金潔顏，深層清潔',
     image: '/05.jpg',
     benefits: ['潔顏', '清潔', '深層'],
@@ -1488,7 +1777,7 @@ export const PRODUCTS: Product[] = [
     name: '熨斗系列安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 2500,
+    price: 3000,
     memberPrice: 2500,
     description: '微整形安瓶，集中修護',
     benefits: ['微整形', '安瓶', '修護'],
@@ -1503,7 +1792,7 @@ export const PRODUCTS: Product[] = [
     name: '38都都好安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 2500,
+    price: 3000,
     memberPrice: 2500,
     description: '都都好安瓶，美顏修護',
     benefits: ['都都好', '安瓶', '美顏'],
@@ -1518,7 +1807,7 @@ export const PRODUCTS: Product[] = [
     name: '58淨膚安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 2500,
+    price: 3000,
     memberPrice: 2500,
     description: '淨膚安瓶，清潔修護',
     benefits: ['淨膚', '安瓶', '清潔'],
@@ -1533,177 +1822,12 @@ export const PRODUCTS: Product[] = [
     name: '晶亮安瓶保養組',
     category: 'ampoule',
     series: '安瓶保養組',
-    price: 2500,
+    price: 3000,
     memberPrice: 2500,
     description: '晶亮安瓶，提亮修護',
     benefits: ['晶亮', '安瓶', '提亮'],
     size: '組合',
     volume: '7件組',
     pv: 2125
-  },
-
-  // 首次體驗加購（原價 NT$3,000，加購價 NT$1,000，每次限購1組，PV 不列入累計計算）
-  {
-    id: 'trial-ampoule-1',
-    productNumber: '',
-    productTitle: '熨斗系列安瓶保養組',
-    name: '熨斗系列安瓶保養組（首次體驗加購）',
-    category: 'ampoule-trial',
-    series: '首次體驗加購',
-    price: 3000,
-    memberPrice: 1000,
-    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
-    benefits: ['首次體驗', '加購價'],
-    size: '組合',
-    pv: 0
-  },
-  {
-    id: 'trial-ampoule-2',
-    productNumber: '',
-    productTitle: '38都都好安瓶保養組',
-    name: '38都都好安瓶保養組（首次體驗加購）',
-    category: 'ampoule-trial',
-    series: '首次體驗加購',
-    price: 3000,
-    memberPrice: 1000,
-    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
-    benefits: ['首次體驗', '加購價'],
-    size: '組合',
-    pv: 0
-  },
-  {
-    id: 'trial-ampoule-3',
-    productNumber: '',
-    productTitle: '58淨膚安瓶保養組',
-    name: '58淨膚安瓶保養組（首次體驗加購）',
-    category: 'ampoule-trial',
-    series: '首次體驗加購',
-    price: 3000,
-    memberPrice: 1000,
-    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
-    benefits: ['首次體驗', '加購價'],
-    size: '組合',
-    pv: 0
-  },
-  {
-    id: 'trial-ampoule-4',
-    productNumber: '',
-    productTitle: '晶亮安瓶保養組',
-    name: '晶亮安瓶保養組（首次體驗加購）',
-    category: 'ampoule-trial',
-    series: '首次體驗加購',
-    price: 3000,
-    memberPrice: 1000,
-    description: '首次體驗限定加購價，每次限購1組，PV 不列入累計計算',
-    benefits: ['首次體驗', '加購價'],
-    size: '組合',
-    pv: 0
   }
 ];
-
-// 肌膚檢測問卷
-export interface SkinQuizQuestion {
-  id: string;
-  question: string;
-  options: {
-    text: string;
-    value: string;
-  }[];
-}
-
-export const SKIN_QUIZ_QUESTIONS: SkinQuizQuestion[] = [
-  {
-    id: 'skin-type',
-    question: '您的膚質類型是？',
-    options: [
-      { text: '油性肌膚', value: 'oily' },
-      { text: '乾性肌膚', value: 'dry' },
-      { text: '混合肌膚', value: 'combination' },
-      { text: '中性肌膚', value: 'normal' }
-    ]
-  },
-  {
-    id: 'main-concern',
-    question: '主要肌膚困擾是？',
-    options: [
-      { text: '痘痘/粉刺', value: 'acne' },
-      { text: '暗沉/無光澤', value: 'dull' },
-      { text: '乾燥/脫皮', value: 'dry' },
-      { text: '敏感/泛紅', value: 'sensitive' },
-      { text: '細紋/鬆弛', value: 'aging' },
-      { text: '毛孔粗大', value: 'pores' }
-    ]
-  },
-  {
-    id: 'sensitivity',
-    question: '肌膚是否敏感？',
-    options: [
-      { text: '非常敏感', value: 'very-sensitive' },
-      { text: '有點敏感', value: 'somewhat-sensitive' },
-      { text: '不敏感', value: 'not-sensitive' }
-    ]
-  },
-  {
-    id: 'age-group',
-    question: '年齡區間？',
-    options: [
-      { text: '20-25歲', value: '20-25' },
-      { text: '25-30歲', value: '25-30' },
-      { text: '30-35歲', value: '30-35' },
-      { text: '35-40歲', value: '35-40' },
-      { text: '40歲以上', value: '40+' }
-    ]
-  },
-  {
-    id: 'goal',
-    question: '護膚目標是？',
-    options: [
-      { text: '控油抗痘', value: 'acne-control' },
-      { text: '保濕修護', value: 'moisturize' },
-      { text: '抗衰老', value: 'anti-aging' },
-      { text: '美白亮膚', value: 'brightening' },
-      { text: '全面護理', value: 'comprehensive' }
-    ]
-  }
-];
-
-// 根據檢測結果推薦產品
-export function getRecommendedProducts(answers: Record<string, string>): Product[] {
-  const recommended: Product[] = [];
-
-  const skinType = answers['skin-type'];
-  const mainConcern = answers['main-concern'];
-  const goal = answers['goal'];
-
-  // 根據主要困擾推薦
-  if (mainConcern === 'acne') {
-    recommended.push(
-      ...PRODUCTS.filter(p => p.series === '都都好系列').slice(0, 3)
-    );
-  } else if (mainConcern === 'dull') {
-    recommended.push(
-      ...PRODUCTS.filter(p => p.series === '晶亮系列').slice(0, 3)
-    );
-  } else if (mainConcern === 'dry') {
-    recommended.push(
-      ...PRODUCTS.filter(p => p.series === '淨膚系列').slice(0, 3)
-    );
-  } else if (mainConcern === 'sensitive') {
-    recommended.push(
-      ...PRODUCTS.filter(p => p.series === '淨膚系列' || p.series === '都都好系列').slice(0, 3)
-    );
-  } else if (mainConcern === 'aging') {
-    recommended.push(
-      ...PRODUCTS.filter(p => p.series === '晶亮系列' || p.series === 'Q彈精緻系列').slice(0, 3)
-    );
-  }
-
-  // 如果推薦不足，補充基礎產品
-  if (recommended.length < 3) {
-    recommended.push(
-      ...PRODUCTS.filter(p => !recommended.includes(p)).slice(0, 3 - recommended.length)
-    );
-  }
-
-  return recommended.slice(0, 3);
-}
