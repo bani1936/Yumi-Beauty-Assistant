@@ -21,7 +21,7 @@ export default function Home() {
       icon: <Sparkles className="w-7 h-7" />,
       subtitle: 'PRODUCTS',
       title: '全系列產品',
-      description: '探索專屬保養，煥發肌膚自然光澤',
+      description: '探索專屬保養，養出素顏雪白奶油肌',
       buttonText: '點我瀏覽',
       path: '/products',
       highlight: false,
