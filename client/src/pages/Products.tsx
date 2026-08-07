@@ -339,14 +339,14 @@ export default function Products() {
                   </h2>
                   <p className="text-xs mt-2" style={{ color: "#B0A797" }}>熨斗系列真實使用心得，左右滑動看更多</p>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollSnapType: 'x mandatory' }}>
+                <div className="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible pb-2 md:pb-0" style={{ scrollSnapType: 'x mandatory' }}>
                   {currentTestimonials.map((item, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setTestimonialPreviewIndex(idx)}
-                      className="flex-shrink-0 text-left rounded-xl overflow-hidden transition-transform hover:-translate-y-0.5"
-                      style={{ width: '220px', border: '1px solid #E8E4E0', background: '#fff', scrollSnapAlign: 'start' }}
+                      className="w-[220px] md:w-full flex-shrink-0 md:flex-shrink text-left rounded-xl overflow-hidden transition-transform hover:-translate-y-0.5"
+                      style={{ border: '1px solid #E8E4E0', background: '#fff', scrollSnapAlign: 'start' }}
                     >
                       <div className="aspect-[3/4] overflow-hidden" style={{ background: '#F5F1ED' }}>
                         <ImageWithFallback
