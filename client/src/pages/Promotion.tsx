@@ -1,19 +1,22 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
-// 實品照片 — 之後把照片放進 client/public/，把檔名加進這個陣列即可自動顯示在下方相簿。
+// 活動海報輪播（可左右滑動／點箭頭切換）— 之後有新活動海報，把圖放進 client/public/ 並在這裡增減即可。
+const HERO_POSTERS: { src: string; alt: string }[] = [
+  { src: "/promo-poster-newcustomer.png", alt: "新會員消費滿額贈：訂製旅行化妝包及安瓶保養組2組" },
+  { src: "/promo-poster-summer.png", alt: "盛夏不鬧肌活動：2026/7/21～8/20 滿額贈安瓶保養組" },
+  { src: "/promo-poster-pvexchange.jpg", alt: "點點成金，PV換好禮：年度集點活動" },
+];
+
+// UIS訂製化妝包實拍 — 之後把照片放進 client/public/，把檔名加進這個陣列即可自動顯示在下方相簿。
 const GALLERY_IMAGES: string[] = [
   "/promo-gift-1.jpg",
   "/promo-gift-2.jpg",
   "/promo-gift-3.jpg",
-  "/promo-gift-4.jpg",
-  "/promo-gift-5.jpg",
   "/promo-gift-6.jpg",
-  "/promo-gift-7.jpg",
-  "/promo-gift-8.jpg",
 ];
 
 // 安瓶保養組 4 款總覽 — 不論目前生效中的是哪個活動（新客滿額贈／夏季限定／集點贈…），
@@ -29,8 +32,28 @@ const AMPOULE_SET_IMAGES: { src: string; label: string }[] = [
 
 export default function Promotion() {
   const [, navigate] = useLocation();
+  const [heroIndex, setHeroIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [ampoulePreviewIndex, setAmpoulePreviewIndex] = useState<number | null>(null);
+
+  const showHeroPrev = () => {
+    setHeroIndex((heroIndex - 1 + HERO_POSTERS.length) % HERO_POSTERS.length);
+  };
+  const showHeroNext = () => {
+    setHeroIndex((heroIndex + 1) % HERO_POSTERS.length);
+  };
+  const handleHeroTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleHeroTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    if (deltaX > 40) showHeroPrev();
+    else if (deltaX < -40) showHeroNext();
+    touchStartX.current = null;
+  };
 
   const showPrev = () => {
     if (previewIndex === null) return;
@@ -65,15 +88,61 @@ export default function Promotion() {
         </div>
       </nav>
 
-      {/* 主視覺圖 */}
+      {/* 活動海報輪播 */}
       <div className="container max-w-2xl mx-auto px-4 pt-8">
-        <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid #E8E4E0' }}>
+        <div
+          className="relative rounded-2xl overflow-hidden"
+          style={{ border: '1px solid #E8E4E0' }}
+          onTouchStart={handleHeroTouchStart}
+          onTouchEnd={handleHeroTouchEnd}
+        >
           <ImageWithFallback
-            src="/promotion-hero.jpg"
+            key={heroIndex}
+            src={HERO_POSTERS[heroIndex].src}
             fallbackSrc="/favicon.png"
-            alt="最新活動：新會員消費滿額晉升組長，贈送質感訂製旅行化妝包及居家安瓶保養組2組"
+            alt={HERO_POSTERS[heroIndex].alt}
             className="w-full h-auto block"
           />
+
+          {HERO_POSTERS.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={showHeroPrev}
+                aria-label="上一張活動海報"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
+                style={{ color: '#5a4632' }}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={showHeroNext}
+                aria-label="下一張活動海報"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
+                style={{ color: '#5a4632' }}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+                {HERO_POSTERS.map((poster, idx) => (
+                  <button
+                    key={poster.src}
+                    type="button"
+                    onClick={() => setHeroIndex(idx)}
+                    aria-label={`切換到第 ${idx + 1} 張活動海報`}
+                    className="rounded-full transition-all"
+                    style={{
+                      width: idx === heroIndex ? '18px' : '6px',
+                      height: '6px',
+                      background: idx === heroIndex ? '#8B6F47' : 'rgba(255,255,255,0.85)',
+                    }}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -117,18 +186,18 @@ export default function Promotion() {
         </div>
       </div>
 
-      {/* 實品照片相簿 */}
+      {/* UIS訂製化妝包實拍 */}
       {GALLERY_IMAGES.length > 0 && (
         <div className="container max-w-4xl mx-auto px-4 mt-10">
           <div className="text-center mb-6">
             <div className="text-[11px] tracking-[2px] font-semibold mb-2" style={{ color: '#B59A8A' }}>
-              GIFT PREVIEW
+              UIS POUCH PREVIEW
             </div>
             <h2
               className="text-xl md:text-2xl font-bold"
               style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
             >
-              贈品實拍
+              UIS訂製化妝包實拍
             </h2>
             <p className="text-xs mt-2" style={{ color: '#B0A797' }}>點擊照片可放大預覽</p>
           </div>
@@ -144,7 +213,7 @@ export default function Promotion() {
                 <ImageWithFallback
                   src={src}
                   fallbackSrc="/favicon.png"
-                  alt={`活動贈品實拍 ${idx + 1}`}
+                  alt={`UIS訂製化妝包實拍 ${idx + 1}`}
                   className="w-full h-full object-cover"
                 />
               </button>
@@ -153,7 +222,7 @@ export default function Promotion() {
         </div>
       )}
 
-      {/* 放大預覽燈箱：贈品實拍 */}
+      {/* 放大預覽燈箱：UIS訂製化妝包實拍 */}
       <Dialog open={previewIndex !== null} onOpenChange={(open) => { if (!open) setPreviewIndex(null); }}>
         <DialogContent
           className="max-w-3xl w-[95vw] p-0 border-0 bg-transparent shadow-none flex items-center justify-center"
@@ -165,7 +234,7 @@ export default function Promotion() {
                 key={previewIndex}
                 src={GALLERY_IMAGES[previewIndex]}
                 fallbackSrc="/favicon.png"
-                alt={`活動贈品實拍 ${previewIndex + 1}`}
+                alt={`UIS訂製化妝包實拍 ${previewIndex + 1}`}
                 className="max-h-[80vh] w-auto rounded-xl object-contain"
               />
 
