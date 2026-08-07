@@ -2,11 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { useLocation } from 'wouter';
-import { ChevronLeft, ShoppingCart, Grid3x3, List, Sparkles, ShieldCheck, Droplet, Leaf, Target, Heart, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ShoppingCart, Grid3x3, List, Sparkles, ShieldCheck, Droplet, Leaf, Target, Heart, ChevronDown, X } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import * as React from 'react';
 import { PRODUCTS, PRODUCT_CATEGORIES, SERIES_INTROS } from '@/lib/products';
 import { USAGE_SEQUENCES } from '@/lib/usage-sequences';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -54,6 +55,42 @@ const SERIES_FEATURE_ICONS = {
   heart: Heart,
 } as const;
 
+// 真實顧客回饋 — 熨斗系列(小)/(大) 為同一批保養品，共用同一組回饋內容。
+// 之後有新的顧客回饋照片，把圖放進 client/public/ 並在下面陣列增減即可。
+interface TestimonialItem {
+  src: string;
+  tags: string[];
+  caption: string;
+}
+
+const IRON_SERIES_TESTIMONIALS: TestimonialItem[] = [
+  {
+    src: '/iron-testimonial-1.jpg',
+    tags: ['黑眼圈', '法令紋', '亮白', '緊緻'],
+    caption: '左右對比：熨斗系列調理後，黑眼圈、淚溝、法令紋明顯改善',
+  },
+  {
+    src: '/iron-testimonial-2.jpg',
+    tags: ['膚色透亮', '細紋淡化'],
+    caption: '同角度追蹤對比，肌膚狀態越來越好',
+  },
+  {
+    src: '/iron-testimonial-3.png',
+    tags: ['素顏發光', '緊緻細緻'],
+    caption: '好皮膚養成計畫，養出零底妝素顏發光奶油肌',
+  },
+  {
+    src: '/iron-testimonial-4.jpg',
+    tags: ['黑眼圈不見', '斑點變淡', '毛孔緊緻'],
+    caption: '養膚一個月：素顏 0 上妝實拍對比',
+  },
+];
+
+const TESTIMONIAL_SETS: Record<string, TestimonialItem[]> = {
+  '熨斗系列(小)': IRON_SERIES_TESTIMONIALS,
+  '熨斗系列(大)': IRON_SERIES_TESTIMONIALS,
+};
+
 export default function Products() {
   const [, navigate] = useLocation();
 
@@ -64,11 +101,24 @@ export default function Products() {
   const [sortBy, setSortBy] = useState('newest');
   const [viewMode, setViewMode] = useState('grid');
   const [showFullIntro, setShowFullIntro] = useState(false);
+  const [testimonialPreviewIndex, setTestimonialPreviewIndex] = useState<number | null>(null);
 
   // 切換系列時，收合「了解更多」內容
   useEffect(() => {
     setShowFullIntro(false);
+    setTestimonialPreviewIndex(null);
   }, [selectedCategory]);
+
+  const currentTestimonials = TESTIMONIAL_SETS[selectedCategory];
+
+  const showTestimonialPrev = () => {
+    if (testimonialPreviewIndex === null || !currentTestimonials) return;
+    setTestimonialPreviewIndex((testimonialPreviewIndex - 1 + currentTestimonials.length) % currentTestimonials.length);
+  };
+  const showTestimonialNext = () => {
+    if (testimonialPreviewIndex === null || !currentTestimonials) return;
+    setTestimonialPreviewIndex((testimonialPreviewIndex + 1) % currentTestimonials.length);
+  };
 
   const filteredProducts = useMemo(() => {
     let filtered = [...PRODUCTS];
@@ -271,6 +321,58 @@ export default function Products() {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* 真實顧客回饋（熨斗系列(小)/(大) 專屬，橫向可滑動） */}
+            {currentTestimonials && (
+              <div className="mb-8">
+                <div className="text-center mb-5">
+                  <div className="text-[11px] tracking-[2px] font-semibold mb-1.5" style={{ color: "#B59A8A" }}>
+                    REAL RESULTS
+                  </div>
+                  <h2
+                    className="text-xl md:text-2xl font-bold"
+                    style={{ color: "#5a4632", fontFamily: "'Playfair Display', serif" }}
+                  >
+                    真實顧客回饋
+                  </h2>
+                  <p className="text-xs mt-2" style={{ color: "#B0A797" }}>熨斗系列真實使用心得，左右滑動看更多</p>
+                </div>
+                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollSnapType: 'x mandatory' }}>
+                  {currentTestimonials.map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setTestimonialPreviewIndex(idx)}
+                      className="flex-shrink-0 text-left rounded-xl overflow-hidden transition-transform hover:-translate-y-0.5"
+                      style={{ width: '220px', border: '1px solid #E8E4E0', background: '#fff', scrollSnapAlign: 'start' }}
+                    >
+                      <div className="aspect-[3/4] overflow-hidden" style={{ background: '#F5F1ED' }}>
+                        <ImageWithFallback
+                          src={item.src}
+                          fallbackSrc="/favicon.png"
+                          alt={item.caption}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="p-3">
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {item.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-[10px] px-2 py-0.5 rounded-full font-medium"
+                              style={{ background: '#F5F1ED', color: '#8B6F47' }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <p className="text-xs leading-relaxed" style={{ color: '#8a7a68' }}>{item.caption}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -480,12 +582,7 @@ export default function Products() {
                       </div>
                     </div>
 
-                    <div className="flex flex-col items-center mb-3">
-                      {product.memberPrice && product.memberPrice < product.price && (
-                        <span className="text-xs" style={{ color: "#B0A797" }}>
-                          原價 NT$ {product.price}
-                        </span>
-                      )}
+                    <div className="flex items-center justify-center mb-3">
                       <span
                         className="text-lg md:text-xl font-bold"
                         style={{ color: "#8B6F47", fontFamily: "'Playfair Display', serif" }}
@@ -532,6 +629,63 @@ export default function Products() {
           </div>
         </div>
       </div>
+
+      {/* 放大預覽燈箱：真實顧客回饋 */}
+      <Dialog open={testimonialPreviewIndex !== null} onOpenChange={(open) => { if (!open) setTestimonialPreviewIndex(null); }}>
+        <DialogContent
+          className="max-w-3xl w-[95vw] p-0 border-0 bg-transparent shadow-none flex items-center justify-center"
+          showCloseButton={false}
+        >
+          {testimonialPreviewIndex !== null && currentTestimonials && (
+            <div className="relative w-full flex items-center justify-center">
+              <ImageWithFallback
+                key={testimonialPreviewIndex}
+                src={currentTestimonials[testimonialPreviewIndex].src}
+                fallbackSrc="/favicon.png"
+                alt={currentTestimonials[testimonialPreviewIndex].caption}
+                className="max-h-[80vh] w-auto rounded-xl object-contain"
+              />
+
+              <button
+                type="button"
+                onClick={() => setTestimonialPreviewIndex(null)}
+                className="absolute -top-3 -right-3 md:top-2 md:right-2 w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md"
+                style={{ color: '#5a4632' }}
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {currentTestimonials.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={showTestimonialPrev}
+                    className="absolute left-1 md:-left-14 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
+                    style={{ color: '#5a4632' }}
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={showTestimonialNext}
+                    className="absolute right-1 md:-right-14 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
+                    style={{ color: '#5a4632' }}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+
+              <div
+                className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full bg-white/90"
+                style={{ color: '#8a8a8a' }}
+              >
+                {testimonialPreviewIndex + 1} / {currentTestimonials.length}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
