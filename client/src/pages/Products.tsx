@@ -75,7 +75,7 @@ const IRON_SERIES_TESTIMONIALS: TestimonialItem[] = [
     caption: '前後兩張照片四個月的時間，因為備孕胖了十公斤，擦我們家熨斗系列臉反而變小變尖，整個面部平整度都變高😍完全沒做醫美～單擦',
   },
   {
-    src: '/iron-testimonial-3.png',
+    src: '/iron-testimonial-3-sonic.jpg',
     tags: ['IG20萬粉絲網紅', 'UIS店闆娘', '打音波對比', '全店換用'],
     caption: '台中UIS店闆娘，IG20萬粉絲網紅，合作過多家醫美診所，自己去打音波的效果(上圖)。自己擦熨斗系列保養後，果斷整間肌膚管理門店的產品全部換我們家的😍用擦的音波保養，不用在診療床痛到流淚',
   },
