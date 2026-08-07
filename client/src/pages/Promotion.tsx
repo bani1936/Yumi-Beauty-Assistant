@@ -137,7 +137,7 @@ export default function Promotion() {
           >
             安瓶保養組 4 款總覽
           </h2>
-          <p className="text-xs mt-2" style={{ color: '#B0A797' }}>各活動滿額贈的安瓶保養組皆從此 4 款中任選，點擊照片可放大預覽</p>
+          <p className="text-xs mt-2" style={{ color: '#B0A797' }}>各活動滿額贈的安瓶保養組皆從 4 款任選</p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {AMPOULE_SET_IMAGES.map((item, idx) => (
