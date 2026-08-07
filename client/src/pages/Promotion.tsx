@@ -105,43 +105,22 @@ export default function Promotion() {
           />
 
           {HERO_POSTERS.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={showHeroPrev}
-                aria-label="上一張活動海報"
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
-                style={{ color: '#5a4632' }}
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={showHeroNext}
-                aria-label="下一張活動海報"
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-white/90 shadow-md"
-                style={{ color: '#5a4632' }}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-                {HERO_POSTERS.map((poster, idx) => (
-                  <button
-                    key={poster.src}
-                    type="button"
-                    onClick={() => setHeroIndex(idx)}
-                    aria-label={`切換到第 ${idx + 1} 張活動海報`}
-                    className="rounded-full transition-all"
-                    style={{
-                      width: idx === heroIndex ? '18px' : '6px',
-                      height: '6px',
-                      background: idx === heroIndex ? '#8B6F47' : 'rgba(255,255,255,0.85)',
-                    }}
-                  />
-                ))}
-              </div>
-            </>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+              {HERO_POSTERS.map((poster, idx) => (
+                <button
+                  key={poster.src}
+                  type="button"
+                  onClick={() => setHeroIndex(idx)}
+                  aria-label={`切換到第 ${idx + 1} 張活動海報`}
+                  className="rounded-full transition-all"
+                  style={{
+                    width: idx === heroIndex ? '18px' : '6px',
+                    height: '6px',
+                    background: idx === heroIndex ? '#8B6F47' : 'rgba(255,255,255,0.85)',
+                  }}
+                />
+              ))}
+            </div>
           )}
         </div>
       </div>
