@@ -722,32 +722,32 @@ export default function ProductDetail() {
               {/* 質地與使用感（旗艦故事頁不顯示） */}
               {!product.storySections && product.experience && product.experience.length > 0 && (
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
-                  <div className="max-w-lg mx-auto text-center">
+                  <div className="text-center mb-6">
                     <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       EXPERIENCE
                     </div>
                     <h3
-                      className="text-[22px] font-bold mb-6"
+                      className="text-[22px] font-bold"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       質地與使用感
                     </h3>
-                    <div className="flex flex-wrap justify-center gap-6">
-                      {product.experience.map((item, idx) => {
-                        const Icon = item.icon === 'flower' ? Flower2 : Feather;
-                        return (
-                          <div key={idx} className="flex-1 min-w-[140px] max-w-[200px]">
-                            <Icon className="w-5 h-5 mx-auto mb-2" style={{ color: '#8B6F47' }} />
-                            <div className="text-lg font-semibold mb-1" style={{ color: '#5a4632' }}>
-                              {item.title}
-                            </div>
-                            <div className="text-base leading-relaxed" style={{ color: '#6B6B6B' }}>
-                              {item.description}
-                            </div>
+                  </div>
+                  <div className="flex flex-wrap justify-center md:justify-between gap-6 md:gap-10 max-w-2xl mx-auto">
+                    {product.experience.map((item, idx) => {
+                      const Icon = item.icon === 'flower' ? Flower2 : Feather;
+                      return (
+                        <div key={idx} className="flex-1 min-w-[140px] text-center">
+                          <Icon className="w-5 h-5 mx-auto mb-2" style={{ color: '#8B6F47' }} />
+                          <div className="text-lg font-semibold mb-1" style={{ color: '#5a4632' }}>
+                            {item.title}
                           </div>
-                        );
-                      })}
-                    </div>
+                          <div className="text-base leading-relaxed md:whitespace-nowrap" style={{ color: '#6B6B6B' }}>
+                            {item.description}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -756,32 +756,34 @@ export default function ProductDetail() {
               {!product.storySections && (
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
-                  <div className="max-w-lg mx-auto text-center">
+                  <div className="text-center mb-5">
                     <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       INGREDIENTS
                     </div>
                     <h3
-                      className="text-[22px] font-bold mb-5"
+                      className="text-[22px] font-bold"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       主要成分
                     </h3>
+                  </div>
 
-                    {product.ingredients && (
-                      <div className="flex flex-wrap gap-2 justify-center mb-5">
-                        {product.ingredients.split('、').map((ing, idx) => (
-                          <span
-                            key={idx}
-                            className="text-base px-3 py-1.5 rounded-full font-medium"
-                            style={{ background: '#FFFFFF', color: '#8B6F47' }}
-                          >
-                            {ing.trim()}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                  {product.ingredients && (
+                    <div className="flex flex-wrap gap-2 md:gap-3 justify-center mb-5 max-w-3xl mx-auto">
+                      {product.ingredients.split('、').map((ing, idx) => (
+                        <span
+                          key={idx}
+                          className="text-base px-3 py-1.5 rounded-full font-medium whitespace-nowrap"
+                          style={{ background: '#FFFFFF', color: '#8B6F47' }}
+                        >
+                          {ing.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
-                    {product.precautions && product.precautions.length > 0 && (
+                  {product.precautions && product.precautions.length > 0 && (
+                    <div className="max-w-lg mx-auto text-center">
                       <div
                         className="inline-block text-left space-y-3 pt-4 mt-2"
                         style={{ borderTop: '1px solid #E8DCC8' }}
@@ -796,8 +798,8 @@ export default function ProductDetail() {
                           </div>
                         ))}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                   </div>
                 </div>
               )}
