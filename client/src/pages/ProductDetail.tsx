@@ -154,16 +154,16 @@ export default function ProductDetail() {
                   {product.productNumber}
                 </h2>
               )}
-              <h3 className="text-xl font-semibold mb-2">{product.productTitle}</h3>
-              <p className="text-sm text-muted-foreground">{product.description}</p>
+              <h3 className="text-2xl font-semibold mb-2">{product.productTitle}</h3>
+              <p className="text-base text-muted-foreground">{product.description}</p>
             </div>
 
             {product.intro && (
               <>
                 <div className="border-t border-border my-4" />
                 <div className="mb-4">
-                  <div className="text-sm font-medium mb-2" style={{ color: '#5a4632' }}>簡介</div>
-                  <p className="text-sm leading-loose text-muted-foreground whitespace-pre-line">
+                  <div className="text-base font-medium mb-2" style={{ color: '#5a4632' }}>簡介</div>
+                  <p className="text-base leading-loose text-muted-foreground whitespace-pre-line">
                     {product.intro}
                   </p>
                 </div>
@@ -175,8 +175,8 @@ export default function ProductDetail() {
               className="mb-4 px-4 py-2.5 rounded-none"
               style={{ background: '#FBF6EE', borderLeft: '3px solid #8B6F47' }}
             >
-              <div className="text-xs leading-loose" style={{ color: '#5a4632' }}>全館單筆訂單滿 $3,000 免運</div>
-              <div className="text-xs leading-loose" style={{ color: '#5a4632' }}>年度累積 PV 點數滿額送安瓶保養組</div>
+              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>全館單筆訂單滿 $3,000 免運</div>
+              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>年度累積 PV 點數滿額送安瓶保養組</div>
             </div>
 
             {/* 價格區塊 */}
@@ -184,13 +184,13 @@ export default function ProductDetail() {
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <div className="text-xs text-muted-foreground mb-1">原價</div>
-                  <div className="text-2xl font-bold line-through text-muted-foreground">
+                  <div className="text-xl font-bold line-through text-muted-foreground">
                     ${product.price}
                   </div>
                 </div>
                 <div>
                   <div className="text-xs text-muted-foreground mb-1">會員價</div>
-                  <div className="text-3xl font-bold" style={{ color: '#8b6f47' }}>
+                  <div className="text-2xl font-bold" style={{ color: '#8b6f47' }}>
                     ${Math.round(memberPrice)}
                   </div>
                   {discount > 0 && (
@@ -204,7 +204,7 @@ export default function ProductDetail() {
               <div className="pt-4 border-t border-border">
                 <div>
                   <div className="text-xs text-muted-foreground mb-1">PV 點數</div>
-                  <div className="text-2xl font-bold">{product.pv || 0}</div>
+                  <div className="text-xl font-bold">{product.pv || 0}</div>
                 </div>
               </div>
             </Card>
