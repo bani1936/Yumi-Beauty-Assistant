@@ -646,6 +646,7 @@ export default function ProductDetail() {
               {/* 產品用途（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
               {!product.storySections && (
                 <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       BENEFITS
@@ -669,12 +670,14 @@ export default function ProductDetail() {
                       {product.usage || product.description}
                     </p>
                   </div>
+                  </div>
                 </div>
               )}
 
               {/* 主要成分（旗艦故事頁不顯示，內容已在 INGREDIENTS 故事區塊中呈現） */}
               {!product.storySections && (
                 <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       INGREDIENTS
@@ -717,6 +720,7 @@ export default function ProductDetail() {
                       </div>
                     )}
                   </div>
+                  </div>
                 </div>
               )}
 
@@ -724,7 +728,7 @@ export default function ProductDetail() {
               {!product.storySections && (
                 product.usageModes && product.usageModes.length > 0 ? (
                   <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
-                    <div className="max-w-2xl mx-auto">
+                    <div className="max-w-4xl mx-auto">
                       <div className="text-center mb-8">
                         <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                           HOW TO USE
@@ -788,6 +792,7 @@ export default function ProductDetail() {
                   </div>
                 ) : (
                   <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                    <div className="max-w-4xl mx-auto">
                     <div className="max-w-lg mx-auto text-center">
                       <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                         HOW TO USE
@@ -802,6 +807,7 @@ export default function ProductDetail() {
                         {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
                       </p>
                     </div>
+                    </div>
                   </div>
                 )
               )}
@@ -809,6 +815,7 @@ export default function ProductDetail() {
               {/* 使用小提醒（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
               {!product.storySections && product.usageTips && product.usageTips.length > 0 && (
                 <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       TIPS
@@ -828,12 +835,14 @@ export default function ProductDetail() {
                       ))}
                     </div>
                   </div>
+                  </div>
                 </div>
               )}
 
               {/* 保存方式（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
               {!product.storySections && (
                 <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       STORAGE &amp; CAUTION
@@ -847,6 +856,7 @@ export default function ProductDetail() {
                     <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
                       {product.storage || '存放於陰涼乾燥處。避免陽光直射及潮濕環境。'}
                     </p>
+                  </div>
                   </div>
                 </div>
               )}
