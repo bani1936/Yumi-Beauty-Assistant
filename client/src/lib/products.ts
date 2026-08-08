@@ -14,6 +14,9 @@ export interface Product {
   memberPrice?: number;   // 會員價
   description: string;
   intro?: string;         // 簡介（產品詳情頁的長文案說明）
+  benefitCards?: { title: string; description: string }[]; // 產品用途：四格功效卡片（取代長文字段落）
+  forYou?: string[];       // 適用對象（FOR YOU）條列文字
+  experience?: { icon?: 'feather' | 'flower'; title: string; description: string }[]; // 質地與使用感（EXPERIENCE）
   image?: string;
   images?: string[];      // 多張商品圖（產品詳情頁輪播用，未填則退回單張 image）
   benefits?: string[];
@@ -1702,6 +1705,21 @@ export const PRODUCTS: Product[] = [
     size: '標準',
     volume: '100ml',
     pv: 918,
+    benefitCards: [
+      { title: '舒緩放鬆', description: '橙花、天竺葵與薰衣草的植物芳香，在按摩過程中幫助放鬆神經、舒緩壓力。' },
+      { title: '澎潤彈性', description: '玻尿酸高效保濕補水，修護肌膚，維持細緻年輕感。' },
+      { title: '滑嫩膚觸', description: '甜杏仁油能修復乾燥的身體肌膚，使觸感變得絲滑柔軟。' },
+      { title: '亮采煥白', description: '橙花精油能深層提亮膚色，改善沉悶暗沉，重現淨白通透的光采。' },
+    ],
+    forYou: [
+      '肌膚乾燥粗糙：渴望撫平乾紋、恢復絲滑觸感者',
+      '膚色暗沉無光：希望改善肢體暗沉、提升全身肌膚亮采者',
+      '日常壓力緊繃：喜愛居家芳療，想在睡前放鬆身心靈者',
+    ],
+    experience: [
+      { icon: 'feather', title: '輕盈好吸收', description: '質地清爽不黏衣物，推開即化為滋養水膜' },
+      { icon: 'flower', title: '天然植萃香氣', description: '無人工化學香精，散發自然優雅的花草療癒香' },
+    ],
     ingredients: '甘油、甜杏仁油、橙花精油、天竺葵精油、薰衣草萃取、玻尿酸。',
     usage: '✦ 情緒安撫與紓壓\n透過橙花、天竺葵與薰衣草的植物芳香，在按摩過程中幫助放鬆神經、舒緩壓力。\n\n✦ 深層滋養修復\n甜杏仁油能修復乾燥的身體肌膚，使觸感變得絲滑柔軟。\n\n✦ 平衡肌膚油水\n幫助維持肌膚健康狀態，適合各類膚質作為日常身體護理使用。',
     instructions: '清潔肌膚後，取適量塗抹於全身肌膚乾燥處。',
