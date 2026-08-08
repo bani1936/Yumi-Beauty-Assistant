@@ -640,12 +640,11 @@ export default function ProductDetail() {
         {(() => {
           let blockIdx = 0;
           const nextBg = () => (blockIdx++ % 2 === 0 ? '#FFFFFF' : '#FBF6EE');
-          const fullBleed = { marginLeft: 'calc(50% - 50vw)', marginRight: 'calc(50% - 50vw)' } as const;
           return (
             <>
               {/* 產品用途（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
               {!product.storySections && (
-                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
@@ -676,7 +675,7 @@ export default function ProductDetail() {
 
               {/* 主要成分（旗艦故事頁不顯示，內容已在 INGREDIENTS 故事區塊中呈現） */}
               {!product.storySections && (
-                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
@@ -727,7 +726,7 @@ export default function ProductDetail() {
               {/* 使用方法（旗艦故事頁不顯示，01/02/03 已在故事區塊中呈現） */}
               {!product.storySections && (
                 product.usageModes && product.usageModes.length > 0 ? (
-                  <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                     <div className="max-w-4xl mx-auto">
                       <div className="text-center mb-8">
                         <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
@@ -791,7 +790,7 @@ export default function ProductDetail() {
                     </div>
                   </div>
                 ) : (
-                  <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                     <div className="max-w-4xl mx-auto">
                     <div className="max-w-lg mx-auto text-center">
                       <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
@@ -814,7 +813,7 @@ export default function ProductDetail() {
 
               {/* 使用小提醒（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
               {!product.storySections && product.usageTips && product.usageTips.length > 0 && (
-                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
@@ -841,7 +840,7 @@ export default function ProductDetail() {
 
               {/* 保存方式（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
               {!product.storySections && (
-                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
