@@ -63,6 +63,14 @@ export default function ProductDetail() {
   const memberPrice = product.memberPrice || product.price * 0.85;
   const discount = Math.round(((product.price - memberPrice) / product.price) * 100);
 
+  const galleryImages = product.images && product.images.length > 0
+    ? product.images
+    : (product.image ? [product.image] : []);
+  const [activeImage, setActiveImage] = React.useState(0);
+  const showArrows = galleryImages.length > 1;
+  const goPrev = () => setActiveImage((i) => (i - 1 + galleryImages.length) % galleryImages.length);
+  const goNext = () => setActiveImage((i) => (i + 1) % galleryImages.length);
+
   return (
     <div className="min-h-screen bg-background pb-8">
       {/* 導航欄 */}
@@ -83,13 +91,13 @@ export default function ProductDetail() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          {/* 左側：產品圖片 */}
-          <div className="flex flex-col items-center justify-center">
-            <div className={`w-full aspect-square bg-secondary rounded-lg overflow-hidden mb-4 flex items-center justify-center ${product.storySections ? 'max-w-[260px] md:max-w-none' : ''}`}>
-              {product.image ? (
+        <div className="grid grid-cols-1 md:grid-cols-[0.9fr_1fr] gap-8 mb-8">
+          {/* 左側：產品圖片輪播 */}
+          <div className={product.storySections ? 'max-w-[260px] md:max-w-none mx-auto md:mx-0 w-full' : 'w-full'}>
+            <div className="relative w-full aspect-[4/5] bg-secondary rounded-lg overflow-hidden flex items-center justify-center">
+              {galleryImages.length > 0 ? (
                 <ImageWithFallback
-                  src={product.image}
+                  src={galleryImages[activeImage]}
                   fallbackSrc="/favicon.png"
                   alt={product.productTitle}
                   className="w-full h-full object-cover"
@@ -97,8 +105,45 @@ export default function ProductDetail() {
               ) : (
                 <div className="text-6xl">{product.benefits?.[0] || '✨'}</div>
               )}
+              {showArrows && (
+                <>
+                  <button
+                    onClick={goPrev}
+                    aria-label="上一張"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/85 flex items-center justify-center"
+                  >
+                    <ChevronLeft className="w-4 h-4" style={{ color: '#5a4632' }} />
+                  </button>
+                  <button
+                    onClick={goNext}
+                    aria-label="下一張"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/85 flex items-center justify-center rotate-180"
+                  >
+                    <ChevronLeft className="w-4 h-4" style={{ color: '#5a4632' }} />
+                  </button>
+                </>
+              )}
             </div>
-            <div className="flex gap-2 w-full">
+            {showArrows && (
+              <div className="grid grid-cols-4 gap-1.5 mt-2">
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImage(idx)}
+                    className="aspect-square rounded-md overflow-hidden bg-secondary"
+                    style={{ border: idx === activeImage ? '1.5px solid #8B6F47' : '1px solid #E3DCD0' }}
+                  >
+                    <ImageWithFallback
+                      src={img}
+                      fallbackSrc="/favicon.png"
+                      alt={`${product.productTitle} ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="flex gap-2 w-full mt-4">
               <span className="flex-1 px-3 py-2 bg-secondary rounded text-center text-sm font-medium">
                 {product.series}
               </span>
@@ -111,14 +156,35 @@ export default function ProductDetail() {
           {/* 右側：產品信息 */}
           <div className="flex flex-col">
             {/* 產品編號與名稱 */}
-            <div className="mb-6">
+            <div className="mb-4">
               {product.productNumber && (
                 <h2 className="text-3xl font-bold mb-2" style={{ color: '#8b6f47' }}>
                   {product.productNumber}
                 </h2>
               )}
-              <h3 className="text-xl font-semibold mb-4">{product.productTitle}</h3>
-              <p className="text-muted-foreground">{product.description}</p>
+              <h3 className="text-xl font-semibold mb-2">{product.productTitle}</h3>
+              <p className="text-sm text-muted-foreground">{product.description}</p>
+            </div>
+
+            {product.intro && (
+              <>
+                <div className="border-t border-border my-4" />
+                <div className="mb-4">
+                  <div className="text-sm font-medium mb-2" style={{ color: '#5a4632' }}>簡介</div>
+                  <p className="text-sm leading-loose text-muted-foreground whitespace-pre-line">
+                    {product.intro}
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* 全站購物提示 */}
+            <div
+              className="mb-4 px-4 py-2.5 rounded-none"
+              style={{ background: '#FBF6EE', borderLeft: '3px solid #8B6F47' }}
+            >
+              <div className="text-xs leading-loose" style={{ color: '#5a4632' }}>全館單筆訂單滿 $3,000 免運</div>
+              <div className="text-xs leading-loose" style={{ color: '#5a4632' }}>年度累積 PV 點數滿額送安瓶保養組</div>
             </div>
 
             {/* 價格區塊 */}
