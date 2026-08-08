@@ -647,11 +647,11 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="text-center mb-6">
-                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       BENEFITS
                     </div>
                     <h3
-                      className="text-3xl font-bold"
+                      className="text-[22px] font-bold"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       產品用途
@@ -698,11 +698,11 @@ export default function ProductDetail() {
               {!product.storySections && product.forYou && product.forYou.length > 0 && (
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       FOR YOU
                     </div>
                     <h3
-                      className="text-3xl font-bold mb-5"
+                      className="text-[22px] font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       適用對象
@@ -723,11 +723,11 @@ export default function ProductDetail() {
               {!product.storySections && product.experience && product.experience.length > 0 && (
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       EXPERIENCE
                     </div>
                     <h3
-                      className="text-3xl font-bold mb-6"
+                      className="text-[22px] font-bold mb-6"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       質地與使用感
@@ -757,11 +757,11 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       INGREDIENTS
                     </div>
                     <h3
-                      className="text-3xl font-bold mb-5"
+                      className="text-[22px] font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       主要成分
@@ -808,11 +808,11 @@ export default function ProductDetail() {
                   <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                     <div className="max-w-4xl mx-auto">
                       <div className="text-center mb-8">
-                        <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                        <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                           HOW TO USE
                         </div>
                         <h3
-                          className="text-3xl font-bold"
+                          className="text-[22px] font-bold"
                           style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                         >
                           使用方法
@@ -872,11 +872,11 @@ export default function ProductDetail() {
                   <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                     <div className="max-w-4xl mx-auto">
                     <div className="max-w-lg mx-auto text-center">
-                      <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                         HOW TO USE
                       </div>
                       <h3
-                        className="text-3xl font-bold mb-5"
+                        className="text-[22px] font-bold mb-5"
                         style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                       >
                         使用方法
@@ -895,11 +895,11 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       TIPS
                     </div>
                     <h3
-                      className="text-3xl font-bold mb-5"
+                      className="text-[22px] font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       使用小提醒
@@ -922,11 +922,11 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       STORAGE &amp; CAUTION
                     </div>
                     <h3
-                      className="text-3xl font-bold mb-5"
+                      className="text-[22px] font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       保存方式
