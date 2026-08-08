@@ -176,7 +176,9 @@ export default function ProductDetail() {
               style={{ background: '#FBF6EE', borderLeft: '3px solid #8B6F47' }}
             >
               <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>全館單筆訂單滿 $3,000 免運</div>
-              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>年度累積 PV 點數滿額送安瓶保養組</div>
+              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>【2026 夏季限定】滿額多重送，買越多送越多！年度方案贈無痕塑形筋膜儀乙台</div>
+              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>【2026 年集點贈】年度累積 PV 點數滿額贈！安瓶保養組及熱銷第一名膠原凝露</div>
+              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>【門市限定】UIS訂製化妝包滿額贈</div>
             </div>
 
             {/* 價格區塊 */}
