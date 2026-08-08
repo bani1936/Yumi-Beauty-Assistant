@@ -710,6 +710,8 @@ export default function ProductDetail() {
                     <div className="inline-block text-left space-y-2.5">
                       {product.forYou.map((item, idx) => (
                         <div key={idx} className="flex gap-2.5 text-base leading-relaxed" style={{ color: '#6B6B6B' }}>
+                          <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                          <span>{item}</span>
                         </div>
                       ))}
                     </div>
