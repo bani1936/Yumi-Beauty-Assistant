@@ -13,7 +13,9 @@ export interface Product {
   price: number;
   memberPrice?: number;   // 會員價
   description: string;
+  intro?: string;         // 簡介（產品詳情頁的長文案說明）
   image?: string;
+  images?: string[];      // 多張商品圖（產品詳情頁輪播用，未填則退回單張 image）
   benefits?: string[];
   size?: string;
   volume?: string;
@@ -1673,6 +1675,7 @@ export const PRODUCTS: Product[] = [
     price: 1280,
     memberPrice: 980,
     description: '草本精油，安撫舒緩',
+    intro: '橙花優雅明亮的花果香調，交織著天竺葵溫柔沉穩的草本氣息，調和出柔和又讓人放鬆的典雅香氣。感覺就像與自然大地之息接軌，沉浸在陽光灑落花園的平靜美好中，讓您在日常繁忙緊繃的時刻，能得到片刻的跳脫與身心靈舒緩，重新拾回內心的寧靜與柔嫩肌膚的被呵護感。',
     image: '/27.jpg',
     benefits: ['草本', '安撫', '舒緩'],
     size: '標準',
@@ -1693,6 +1696,7 @@ export const PRODUCTS: Product[] = [
     price: 1380,
     memberPrice: 1080,
     description: '草本精油，通暢活化',
+    intro: '橙花優雅清甜的花果香調，交織著天竺葵與薰衣草的沉穩草本氣息，溫柔包裹每一吋肌膚。植物花草交融出的層次感，宛如漫步於清晨拂過的日光花園，帶走滿身疲憊與緊繃。配合甜杏仁油與玻尿酸的深層滋養，讓您在繁忙的日常裡重拾身心靈的平衡與平靜，享受被溫柔呵護的片刻時光。',
     image: '/28.jpg',
     benefits: ['草本', '通暢', '活化'],
     size: '標準',
