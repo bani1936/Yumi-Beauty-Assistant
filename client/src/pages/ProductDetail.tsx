@@ -658,17 +658,17 @@ export default function ProductDetail() {
                     </h3>
                   </div>
                   {product.benefitCards && product.benefitCards.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+                    <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
                       {product.benefitCards.map((card, idx) => (
                         <div
                           key={idx}
-                          className="rounded-lg p-4 text-center"
-                          style={{ background: 'rgba(255,255,255,0.6)' }}
+                          className="rounded-lg p-6 text-center flex flex-col justify-center"
+                          style={{ background: '#FBF6EE' }}
                         >
-                          <div className="text-sm font-semibold mb-1.5" style={{ color: '#5a4632' }}>
+                          <div className="text-lg font-semibold mb-2" style={{ color: '#5a4632' }}>
                             {card.title}
                           </div>
-                          <div className="text-xs leading-relaxed" style={{ color: '#6B6B6B' }}>
+                          <div className="text-base leading-relaxed" style={{ color: '#6B6B6B' }}>
                             {card.description}
                           </div>
                         </div>
