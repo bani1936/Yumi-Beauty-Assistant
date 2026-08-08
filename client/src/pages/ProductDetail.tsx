@@ -1,5 +1,5 @@
 import { useLocation } from 'wouter';
-import { ChevronLeft, GlassWater, Clock, Calendar } from 'lucide-react';
+import { ChevronLeft, GlassWater, Clock, Calendar, Feather, Flower2 } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products';
 
 const HOW_TO_USE_ICONS = { cup: GlassWater, clock: Clock, calendar: Calendar } as const;
@@ -646,16 +646,36 @@ export default function ProductDetail() {
               {!product.storySections && (
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
-                  <div className="max-w-lg mx-auto text-center">
+                  <div className="text-center mb-6">
                     <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       BENEFITS
                     </div>
                     <h3
-                      className="text-xl font-bold mb-5"
+                      className="text-xl font-bold"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       產品用途
                     </h3>
+                  </div>
+                  {product.benefitCards && product.benefitCards.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+                      {product.benefitCards.map((card, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-lg p-4 text-center"
+                          style={{ background: 'rgba(255,255,255,0.6)' }}
+                        >
+                          <div className="text-sm font-semibold mb-1.5" style={{ color: '#5a4632' }}>
+                            {card.title}
+                          </div>
+                          <div className="text-xs leading-relaxed" style={{ color: '#6B6B6B' }}>
+                            {card.description}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="max-w-lg mx-auto text-center">
                     <p
                       className="leading-relaxed whitespace-pre-wrap"
                       style={{
@@ -668,7 +688,66 @@ export default function ProductDetail() {
                     >
                       {product.usage || product.description}
                     </p>
+                    </div>
+                  )}
                   </div>
+                </div>
+              )}
+
+              {/* 適用對象（旗艦故事頁不顯示） */}
+              {!product.storySections && product.forYou && product.forYou.length > 0 && (
+                <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
+                  <div className="max-w-lg mx-auto text-center">
+                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      FOR YOU
+                    </div>
+                    <h3
+                      className="text-xl font-bold mb-5"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      適用對象
+                    </h3>
+                    <div className="inline-block text-left space-y-2.5">
+                      {product.forYou.map((item, idx) => (
+                        <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                          <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 質地與使用感（旗艦故事頁不顯示） */}
+              {!product.storySections && product.experience && product.experience.length > 0 && (
+                <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
+                  <div className="max-w-lg mx-auto text-center">
+                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      EXPERIENCE
+                    </div>
+                    <h3
+                      className="text-xl font-bold mb-6"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      質地與使用感
+                    </h3>
+                    <div className="flex flex-wrap justify-center gap-6">
+                      {product.experience.map((item, idx) => {
+                        const Icon = item.icon === 'flower' ? Flower2 : Feather;
+                        return (
+                          <div key={idx} className="flex-1 min-w-[140px] max-w-[200px]">
+                            <Icon className="w-5 h-5 mx-auto mb-2" style={{ color: '#8B6F47' }} />
+                            <div className="text-sm font-semibold mb-1" style={{ color: '#5a4632' }}>
+                              {item.title}
+                            </div>
+                            <div className="text-xs leading-relaxed" style={{ color: '#6B6B6B' }}>
+                              {item.description}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               )}
