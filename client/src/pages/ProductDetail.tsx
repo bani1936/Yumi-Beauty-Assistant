@@ -9,45 +9,24 @@ import { Card } from '@/components/ui/card';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import * as React from 'react';
 
+const CATEGORY_LABELS: Record<string, string> = {
+  'all': '明星商品',
+  'micro-lifting-small': '熨斗系列(小)',
+  'micro-lifting-large': '熨斗系列(大)',
+  'skin-care': '都都好系列',
+  'cleansing': '淨膚系列',
+  'brightening': '晶亮系列',
+  'elasticity': 'Q彈精緻系列',
+  'special': '特殊系列',
+  'bust': '美胸系列',
+  'essential-oil': '精油系列',
+  'cleaning': '清潔系列',
+};
+
 export default function ProductDetail() {
   const [, navigate] = useLocation();
   const productId = new URLSearchParams(window.location.search).get('id');
   const product = PRODUCTS.find(p => p.id === productId);
-
-  const handleGoBack = () => {
-    // 從 URL 參數獲取來源分類
-    const fromCategory = new URLSearchParams(window.location.search).get('from');
-
-    if (fromCategory) {
-      // 如果有來源分類，返回到該分類
-      navigate(`/products?category=${encodeURIComponent(fromCategory)}`);
-    } else {
-      // 否則根據產品類別返回到相應的篩選頁面
-      if (product?.category === 'essential-oil') {
-        navigate('/products?category=精油系列');
-      } else if (product?.category === 'micro-lifting-small') {
-        navigate('/products?category=熨斗系列(小)');
-      } else if (product?.category === 'micro-lifting-large') {
-        navigate('/products?category=熨斗系列(大)');
-      } else if (product?.category === 'skin-care') {
-        navigate('/products?category=都都好系列');
-      } else if (product?.category === 'cleansing') {
-        navigate('/products?category=淨膚系列');
-      } else if (product?.category === 'brightening') {
-        navigate('/products?category=晶亮系列');
-      } else if (product?.category === 'elasticity') {
-        navigate('/products?category=Q彈精緻系列');
-      } else if (product?.category === 'special') {
-        navigate('/products?category=特殊系列');
-      } else if (product?.category === 'bust') {
-        navigate('/products?category=美胸系列');
-      } else if (product?.category === 'cleaning') {
-        navigate('/products?category=清潔系列');
-      } else {
-        navigate('/products');
-      }
-    }
-  };
 
   if (!product) {
     return (
@@ -73,28 +52,41 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-8">
-      {/* 導航欄 */}
-      <div className="sticky top-0 z-40 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <button
-            onClick={handleGoBack}
-            className="flex items-center gap-2 text-foreground hover:text-accent transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            <span>返回</span>
-          </button>
-          <h1 className="text-lg font-semibold flex-1 text-center px-4 truncate">
-            {product.productNumber ? `${product.productNumber} ` : ''}{product.productTitle.replace('(小)', '').replace('(大)', '').trim()}
-          </h1>
-          <div className="w-10" />
+      {/* 麵包屑導航 */}
+      <div className="bg-white border-b" style={{ borderColor: '#E8E4E0' }}>
+        <div className="container max-w-6xl mx-auto px-4 py-3">
+          <div className="flex items-center gap-2 text-sm flex-wrap" style={{ color: '#9c8a76' }}>
+            <button onClick={() => navigate('/')} className="hover:opacity-70 transition-opacity">
+              全部商品
+            </button>
+            <span>›</span>
+            <button onClick={() => navigate('/products')} className="hover:opacity-70 transition-opacity">
+              系列產品介紹
+            </button>
+            {CATEGORY_LABELS[product.category] && (
+              <>
+                <span>›</span>
+                <button
+                  onClick={() => navigate(`/products?category=${encodeURIComponent(CATEGORY_LABELS[product.category])}`)}
+                  className="hover:opacity-70 transition-opacity"
+                >
+                  {CATEGORY_LABELS[product.category]}
+                </button>
+              </>
+            )}
+            <span>›</span>
+            <span style={{ color: '#5a4632' }} className="font-medium">
+              {product.productNumber ? `${product.productNumber} ` : ''}{product.productTitle.replace('(小)', '').replace('(大)', '').trim()}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,380px)_1fr] gap-8 mb-8 items-start">
+      <div className="container max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-[minmax(0,380px)_1fr] gap-8 mb-8 items-start">
           {/* 左側：產品圖片輪播 */}
           <div className={product.storySections ? 'max-w-[260px] md:max-w-none mx-auto md:mx-0 w-full' : 'w-full'}>
-            <div className="relative w-full aspect-[4/5] bg-secondary rounded-lg overflow-hidden flex items-center justify-center">
+            <div className="relative w-full aspect-square bg-secondary rounded-lg overflow-hidden flex items-center justify-center">
               {galleryImages.length > 0 ? (
                 <ImageWithFallback
                   src={galleryImages[activeImage]}
