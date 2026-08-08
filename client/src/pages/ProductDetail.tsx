@@ -91,7 +91,7 @@ export default function ProductDetail() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-[0.9fr_1fr] gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,380px)_1fr] gap-8 mb-8 items-start">
           {/* 左側：產品圖片輪播 */}
           <div className={product.storySections ? 'max-w-[260px] md:max-w-none mx-auto md:mx-0 w-full' : 'w-full'}>
             <div className="relative w-full aspect-[4/5] bg-secondary rounded-lg overflow-hidden flex items-center justify-center">
