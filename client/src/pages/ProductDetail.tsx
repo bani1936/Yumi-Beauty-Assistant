@@ -1,5 +1,5 @@
 import { useLocation } from 'wouter';
-import { ChevronLeft, Target, Leaf, Droplet, Package, Sparkles, GlassWater, Clock, Calendar } from 'lucide-react';
+import { ChevronLeft, GlassWater, Clock, Calendar } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products';
 
 const HOW_TO_USE_ICONS = { cup: GlassWater, clock: Clock, calendar: Calendar } as const;
@@ -636,209 +636,223 @@ export default function ProductDetail() {
           </div>
         )}
 
-        {/* 詳細信息 - 單頁滾動式 */}
-        <div className="space-y-5">
-          {/* 產品用途（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
-          {!product.storySections && (
-            <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: '#F5F1ED', color: '#8B6F47' }}
-                >
-                  <Target className="w-4 h-4" />
-                </div>
-                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                  產品用途
-                </h3>
-              </div>
-              <p
-                className="leading-relaxed whitespace-pre-wrap"
-                style={{
-                  color: '#4a4038',
-                  fontSize: product.usageModes ? '19px' : '16px',
-                  fontWeight: product.usageModes ? 600 : 400,
-                  fontFamily: product.usageModes ? "'Playfair Display', serif" : 'inherit',
-                  lineHeight: product.usageModes ? 1.7 : 1.75,
-                }}
-              >
-                {product.usage || product.description}
-              </p>
-            </Card>
-          )}
-
-          {/* 主要成分（旗艦故事頁不顯示，內容已在 INGREDIENTS 故事區塊中呈現） */}
-          {!product.storySections && (
-            <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: '#F5F1ED', color: '#8B6F47' }}
-                >
-                  <Leaf className="w-4 h-4" />
-                </div>
-                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                  主要成分
-                </h3>
-              </div>
-
-              {product.ingredients && (
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {product.ingredients.split('、').map((ing, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs px-3 py-1.5 rounded-full font-medium"
-                      style={{ background: '#FBF6EE', color: '#8B6F47' }}
-                    >
-                      {ing.trim()}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {product.precautions && product.precautions.length > 0 && (
-                <div className="space-y-3 pt-4" style={{ borderTop: '1px solid #F0EAE2' }}>
-                  <div className="text-xs font-semibold" style={{ color: '#B59A8A' }}>
-                    成分小知識
-                  </div>
-                  {product.precautions.map((fact, idx) => (
-                    <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
-                      <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
-                      <span>{fact}</span>
+        {/* 詳細信息 - 交替色塊、置中排版 */}
+        {(() => {
+          let blockIdx = 0;
+          const nextBg = () => (blockIdx++ % 2 === 0 ? '#FFFFFF' : '#FBF6EE');
+          const fullBleed = { marginLeft: 'calc(50% - 50vw)', marginRight: 'calc(50% - 50vw)' } as const;
+          return (
+            <>
+              {/* 產品用途（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
+              {!product.storySections && (
+                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-lg mx-auto text-center">
+                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      BENEFITS
                     </div>
-                  ))}
+                    <h3
+                      className="text-xl font-bold mb-5"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      產品用途
+                    </h3>
+                    <p
+                      className="leading-relaxed whitespace-pre-wrap"
+                      style={{
+                        color: '#4a4038',
+                        fontSize: product.usageModes ? '19px' : '16px',
+                        fontWeight: product.usageModes ? 600 : 400,
+                        fontFamily: product.usageModes ? "'Playfair Display', serif" : 'inherit',
+                        lineHeight: product.usageModes ? 1.7 : 1.75,
+                      }}
+                    >
+                      {product.usage || product.description}
+                    </p>
+                  </div>
                 </div>
               )}
-            </Card>
-          )}
 
-          {/* 使用方法（旗艦故事頁不顯示，01/02/03 已在故事區塊中呈現） */}
-          {!product.storySections && (
-            product.usageModes && product.usageModes.length > 0 ? (
-              <div className="space-y-4">
-                <div className="flex items-center gap-2.5 px-1">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: '#F5F1ED', color: '#8B6F47' }}
-                  >
-                    <Droplet className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                    使用方法
-                  </h3>
-                </div>
+              {/* 主要成分（旗艦故事頁不顯示，內容已在 INGREDIENTS 故事區塊中呈現） */}
+              {!product.storySections && (
+                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-lg mx-auto text-center">
+                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      INGREDIENTS
+                    </div>
+                    <h3
+                      className="text-xl font-bold mb-5"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      主要成分
+                    </h3>
 
-                {product.usageModes.map((mode, idx) => (
-                  <Card
-                    key={idx}
-                    className="p-6 md:p-8"
-                    style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}
-                  >
-                    <div className="flex gap-5 md:gap-7">
-                      <div
-                        className="flex-shrink-0 text-3xl md:text-4xl font-bold"
-                        style={{ color: '#D9C6A5', fontFamily: "'Playfair Display', serif" }}
-                      >
-                        {mode.label}
+                    {product.ingredients && (
+                      <div className="flex flex-wrap gap-2 justify-center mb-5">
+                        {product.ingredients.split('、').map((ing, idx) => (
+                          <span
+                            key={idx}
+                            className="text-xs px-3 py-1.5 rounded-full font-medium"
+                            style={{ background: '#FFFFFF', color: '#8B6F47' }}
+                          >
+                            {ing.trim()}
+                          </span>
+                        ))}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h4
-                          className="text-lg md:text-xl font-bold mb-2.5"
+                    )}
+
+                    {product.precautions && product.precautions.length > 0 && (
+                      <div
+                        className="inline-block text-left space-y-3 pt-4 mt-2"
+                        style={{ borderTop: '1px solid #E8DCC8' }}
+                      >
+                        <div className="text-xs font-semibold text-center" style={{ color: '#B59A8A' }}>
+                          成分小知識
+                        </div>
+                        {product.precautions.map((fact, idx) => (
+                          <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                            <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                            <span>{fact}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* 使用方法（旗艦故事頁不顯示，01/02/03 已在故事區塊中呈現） */}
+              {!product.storySections && (
+                product.usageModes && product.usageModes.length > 0 ? (
+                  <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                    <div className="max-w-2xl mx-auto">
+                      <div className="text-center mb-8">
+                        <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                          HOW TO USE
+                        </div>
+                        <h3
+                          className="text-xl font-bold"
                           style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                         >
-                          {mode.title}
-                        </h4>
-                        <p className="text-sm leading-relaxed mb-3" style={{ color: '#6B6B6B' }}>
-                          {mode.description}
-                        </p>
-                        {mode.tags && mode.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            {mode.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="text-xs px-3 py-1.5 rounded-full font-medium"
-                                style={{ background: 'rgba(255,255,255,0.7)', color: '#8B6F47' }}
+                          使用方法
+                        </h3>
+                      </div>
+
+                      <div className="space-y-4">
+                        {product.usageModes.map((mode, idx) => (
+                          <Card
+                            key={idx}
+                            className="p-6 md:p-8"
+                            style={{ background: '#FFFFFF', border: '1px solid #E8DCC8' }}
+                          >
+                            <div className="flex gap-5 md:gap-7">
+                              <div
+                                className="flex-shrink-0 text-3xl md:text-4xl font-bold"
+                                style={{ color: '#D9C6A5', fontFamily: "'Playfair Display', serif" }}
                               >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        {mode.note && (
-                          <div className="text-xs" style={{ color: '#B59A8A' }}>
-                            ⚠️ {mode.note}
-                          </div>
-                        )}
+                                {mode.label}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4
+                                  className="text-lg md:text-xl font-bold mb-2.5"
+                                  style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                                >
+                                  {mode.title}
+                                </h4>
+                                <p className="text-sm leading-relaxed mb-3" style={{ color: '#6B6B6B' }}>
+                                  {mode.description}
+                                </p>
+                                {mode.tags && mode.tags.length > 0 && (
+                                  <div className="flex flex-wrap gap-2 mb-3">
+                                    {mode.tags.map((tag) => (
+                                      <span
+                                        key={tag}
+                                        className="text-xs px-3 py-1.5 rounded-full font-medium"
+                                        style={{ background: '#FBF6EE', color: '#8B6F47' }}
+                                      >
+                                        {tag}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                                {mode.note && (
+                                  <div className="text-xs" style={{ color: '#B59A8A' }}>
+                                    ⚠️ {mode.note}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </Card>
+                        ))}
                       </div>
                     </div>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card className="p-6" style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}>
-                <div className="flex items-center gap-2.5 mb-4">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'rgba(255,255,255,0.6)', color: '#8B6F47' }}
-                  >
-                    <Droplet className="w-4 h-4" />
                   </div>
-                  <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                    使用方法
-                  </h3>
-                </div>
-                <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#5a4632' }}>
-                  {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
-                </p>
-              </Card>
-            )
-          )}
-
-          {/* 使用小提醒（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
-          {!product.storySections && product.usageTips && product.usageTips.length > 0 && (
-            <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: '#F5F1ED', color: '#8B6F47' }}
-                >
-                  <Sparkles className="w-4 h-4" />
-                </div>
-                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                  使用小提醒
-                </h3>
-              </div>
-              <div className="space-y-3">
-                {product.usageTips.map((tip, idx) => (
-                  <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
-                    <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
-                    <span>{tip}</span>
+                ) : (
+                  <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                    <div className="max-w-lg mx-auto text-center">
+                      <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                        HOW TO USE
+                      </div>
+                      <h3
+                        className="text-xl font-bold mb-5"
+                        style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                      >
+                        使用方法
+                      </h3>
+                      <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
+                        {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
+                      </p>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </Card>
-          )}
+                )
+              )}
 
-          {/* 保存方式（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
-          {!product.storySections && (
-            <Card className="p-6" style={{ border: '1px solid #E8E4E0' }}>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: '#F5F1ED', color: '#8B6F47' }}
-                >
-                  <Package className="w-4 h-4" />
+              {/* 使用小提醒（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
+              {!product.storySections && product.usageTips && product.usageTips.length > 0 && (
+                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-lg mx-auto text-center">
+                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      TIPS
+                    </div>
+                    <h3
+                      className="text-xl font-bold mb-5"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      使用小提醒
+                    </h3>
+                    <div className="inline-block text-left space-y-3">
+                      {product.usageTips.map((tip, idx) => (
+                        <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
+                          <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
+                          <span>{tip}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-base font-bold" style={{ color: '#5a4632' }}>
-                  保存方式
-                </h3>
-              </div>
-              <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
-                {product.storage || '存放於陰涼乾燥處。避免陽光直射及潮濕環境。'}
-              </p>
-            </Card>
-          )}
-        </div>
+              )}
+
+              {/* 保存方式（旗艦故事頁不顯示，內容已在故事區塊中呈現） */}
+              {!product.storySections && (
+                <div style={{ background: nextBg(), ...fullBleed }} className="py-14 px-4">
+                  <div className="max-w-lg mx-auto text-center">
+                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      STORAGE &amp; CAUTION
+                    </div>
+                    <h3
+                      className="text-xl font-bold mb-5"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      保存方式
+                    </h3>
+                    <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
+                      {product.storage || '存放於陰涼乾燥處。避免陽光直射及潮濕環境。'}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
+          );
+        })()}
       </div>
     </div>
   );
