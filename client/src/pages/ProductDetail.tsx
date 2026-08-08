@@ -647,11 +647,11 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="text-center mb-6">
-                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       BENEFITS
                     </div>
                     <h3
-                      className="text-xl font-bold"
+                      className="text-3xl font-bold"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       產品用途
@@ -698,20 +698,18 @@ export default function ProductDetail() {
               {!product.storySections && product.forYou && product.forYou.length > 0 && (
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       FOR YOU
                     </div>
                     <h3
-                      className="text-xl font-bold mb-5"
+                      className="text-3xl font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       適用對象
                     </h3>
                     <div className="inline-block text-left space-y-2.5">
                       {product.forYou.map((item, idx) => (
-                        <div key={idx} className="flex gap-2.5 text-sm leading-relaxed" style={{ color: '#6B6B6B' }}>
-                          <span className="flex-shrink-0" style={{ color: '#C9A876' }}>✦</span>
-                          <span>{item}</span>
+                        <div key={idx} className="flex gap-2.5 text-base leading-relaxed" style={{ color: '#6B6B6B' }}>
                         </div>
                       ))}
                     </div>
@@ -723,11 +721,11 @@ export default function ProductDetail() {
               {!product.storySections && product.experience && product.experience.length > 0 && (
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       EXPERIENCE
                     </div>
                     <h3
-                      className="text-xl font-bold mb-6"
+                      className="text-3xl font-bold mb-6"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       質地與使用感
@@ -738,10 +736,10 @@ export default function ProductDetail() {
                         return (
                           <div key={idx} className="flex-1 min-w-[140px] max-w-[200px]">
                             <Icon className="w-5 h-5 mx-auto mb-2" style={{ color: '#8B6F47' }} />
-                            <div className="text-sm font-semibold mb-1" style={{ color: '#5a4632' }}>
+                            <div className="text-lg font-semibold mb-1" style={{ color: '#5a4632' }}>
                               {item.title}
                             </div>
-                            <div className="text-xs leading-relaxed" style={{ color: '#6B6B6B' }}>
+                            <div className="text-base leading-relaxed" style={{ color: '#6B6B6B' }}>
                               {item.description}
                             </div>
                           </div>
@@ -757,11 +755,11 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       INGREDIENTS
                     </div>
                     <h3
-                      className="text-xl font-bold mb-5"
+                      className="text-3xl font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       主要成分
@@ -772,7 +770,7 @@ export default function ProductDetail() {
                         {product.ingredients.split('、').map((ing, idx) => (
                           <span
                             key={idx}
-                            className="text-xs px-3 py-1.5 rounded-full font-medium"
+                            className="text-base px-3 py-1.5 rounded-full font-medium"
                             style={{ background: '#FFFFFF', color: '#8B6F47' }}
                           >
                             {ing.trim()}
@@ -808,11 +806,11 @@ export default function ProductDetail() {
                   <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                     <div className="max-w-4xl mx-auto">
                       <div className="text-center mb-8">
-                        <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                        <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                           HOW TO USE
                         </div>
                         <h3
-                          className="text-xl font-bold"
+                          className="text-3xl font-bold"
                           style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                         >
                           使用方法
@@ -872,16 +870,16 @@ export default function ProductDetail() {
                   <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                     <div className="max-w-4xl mx-auto">
                     <div className="max-w-lg mx-auto text-center">
-                      <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                         HOW TO USE
                       </div>
                       <h3
-                        className="text-xl font-bold mb-5"
+                        className="text-3xl font-bold mb-5"
                         style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                       >
                         使用方法
                       </h3>
-                      <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
+                      <p className="text-base leading-relaxed whitespace-pre-wrap" style={{ color: '#6B6B6B' }}>
                         {product.instructions || '清潔後，取適量塗抹於全身肌膚乾燥處。'}
                       </p>
                     </div>
@@ -895,11 +893,11 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       TIPS
                     </div>
                     <h3
-                      className="text-xl font-bold mb-5"
+                      className="text-3xl font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       使用小提醒
@@ -922,16 +920,16 @@ export default function ProductDetail() {
                 <div style={{ background: nextBg() }} className="py-14 px-4 max-w-4xl mx-auto">
                   <div className="max-w-4xl mx-auto">
                   <div className="max-w-lg mx-auto text-center">
-                    <div className="text-[11px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                    <div className="text-[17px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
                       STORAGE &amp; CAUTION
                     </div>
                     <h3
-                      className="text-xl font-bold mb-5"
+                      className="text-3xl font-bold mb-5"
                       style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
                     >
                       保存方式
                     </h3>
-                    <p className="leading-relaxed whitespace-pre-wrap" style={{ color: '#4a4038' }}>
+                    <p className="text-base leading-relaxed whitespace-pre-wrap" style={{ color: '#6B6B6B' }}>
                       {product.storage || '存放於陰涼乾燥處。避免陽光直射及潮濕環境。'}
                     </p>
                   </div>
