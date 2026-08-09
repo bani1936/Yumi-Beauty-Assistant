@@ -249,78 +249,83 @@ export default function Products() {
 
             {/* 系列介紹：主打功效與特色（圖示化，精簡文字） */}
             {SERIES_INTROS[selectedCategory] && (
-              <div
-                className="rounded-2xl p-6 md:p-8 mb-8"
-                style={{ background: "#FBF6EE", border: "1px solid #E8DCC8" }}
-              >
-                <div
-                  className={`grid gap-4 md:gap-5 ${
-                    SERIES_INTROS[selectedCategory].features.length >= 5
-                      ? 'grid-cols-2 md:grid-cols-5'
-                      : 'grid-cols-2 md:grid-cols-4'
-                  }`}
-                >
-                  {SERIES_INTROS[selectedCategory].features.map((f, idx) => {
-                    const Icon = SERIES_FEATURE_ICONS[f.icon] || Sparkles;
-                    return (
-                      <div key={idx} className="flex flex-col items-center text-center gap-2.5">
-                        <div
-                          className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0"
-                          style={{ background: "#8B6F47" }}
-                        >
-                          <Icon className="w-5 h-5" style={{ color: "#fff" }} />
-                        </div>
-                        <span className="text-xs md:text-sm font-semibold leading-snug" style={{ color: "#5a4632" }}>
-                          {f.title}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+              <div style={{ background: '#FFFFFF' }} className="-mx-4 px-4 py-14 mb-8">
+                <div className="max-w-4xl mx-auto">
+                  <div className="text-center mb-7">
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      SERIES HIGHLIGHTS
+                    </div>
+                    <h2
+                      className="text-[22px] font-bold"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      系列特色
+                    </h2>
+                  </div>
 
-                {SERIES_INTROS[selectedCategory].closing && (
-                  <p
-                    className="text-center text-sm md:text-base font-medium mt-6 pt-5"
-                    style={{ color: "#8B6F47", borderTop: "1px solid #E8DCC8", fontFamily: "'Playfair Display', serif" }}
-                  >
-                    「{SERIES_INTROS[selectedCategory].closing}」
-                  </p>
-                )}
-
-                <div className="text-center mt-4">
-                  <button
-                    onClick={() => setShowFullIntro((prev) => !prev)}
-                    className="inline-flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70"
-                    style={{ color: "#9c7a3f" }}
-                  >
-                    {showFullIntro ? '收合說明' : '了解更多'}
-                    <ChevronDown
-                      className="w-3.5 h-3.5 transition-transform"
-                      style={{ transform: showFullIntro ? 'rotate(180deg)' : 'none' }}
-                    />
-                  </button>
-                </div>
-
-                {showFullIntro && (
-                  <div className="mt-4 pt-4" style={{ borderTop: "1px solid #E8DCC8" }}>
-                    <p className="text-sm leading-relaxed mb-4" style={{ color: "#6B6B6B" }}>
-                      {SERIES_INTROS[selectedCategory].description}
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
-                      {SERIES_INTROS[selectedCategory].features.map((f, idx) => (
-                        <div key={idx} className="flex gap-2 text-sm leading-relaxed">
-                          <span className="flex-shrink-0" style={{ color: "#C9A876" }}>✦</span>
-                          <span style={{ color: "#4a4038" }}>
-                            <span className="font-semibold" style={{ color: "#8B6F47" }}>
-                              {f.title}：
-                            </span>
-                            {f.description}
+                  <div className="flex flex-wrap justify-center gap-x-9 gap-y-6 max-w-2xl mx-auto mb-7">
+                    {SERIES_INTROS[selectedCategory].features.map((f, idx) => {
+                      const Icon = SERIES_FEATURE_ICONS[f.icon] || Sparkles;
+                      return (
+                        <div key={idx} className="flex flex-col items-center text-center gap-2.5 w-[100px]">
+                          <div
+                            className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{ background: "#8B6F47" }}
+                          >
+                            <Icon className="w-5 h-5" style={{ color: "#fff" }} />
+                          </div>
+                          <span className="text-xs md:text-sm font-semibold leading-snug" style={{ color: "#5a4632" }}>
+                            {f.title}
                           </span>
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })}
                   </div>
-                )}
+
+                  {SERIES_INTROS[selectedCategory].closing && (
+                    <p
+                      className="text-center text-sm md:text-base font-medium"
+                      style={{ color: "#8B6F47", fontFamily: "'Playfair Display', serif" }}
+                    >
+                      「{SERIES_INTROS[selectedCategory].closing}」
+                    </p>
+                  )}
+
+                  <div className="text-center mt-4">
+                    <button
+                      onClick={() => setShowFullIntro((prev) => !prev)}
+                      className="inline-flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70"
+                      style={{ color: "#9c7a3f" }}
+                    >
+                      {showFullIntro ? '收合說明' : '了解更多'}
+                      <ChevronDown
+                        className="w-3.5 h-3.5 transition-transform"
+                        style={{ transform: showFullIntro ? 'rotate(180deg)' : 'none' }}
+                      />
+                    </button>
+                  </div>
+
+                  {showFullIntro && (
+                    <div className="mt-4 pt-4 max-w-2xl mx-auto" style={{ borderTop: "1px solid #E8DCC8" }}>
+                      <p className="text-sm leading-relaxed mb-4 text-center" style={{ color: "#6B6B6B" }}>
+                        {SERIES_INTROS[selectedCategory].description}
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+                        {SERIES_INTROS[selectedCategory].features.map((f, idx) => (
+                          <div key={idx} className="flex gap-2 text-sm leading-relaxed">
+                            <span className="flex-shrink-0" style={{ color: "#C9A876" }}>✦</span>
+                            <span style={{ color: "#4a4038" }}>
+                              <span className="font-semibold" style={{ color: "#8B6F47" }}>
+                                {f.title}：
+                              </span>
+                              {f.description}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
@@ -431,68 +436,67 @@ export default function Products() {
 
             {/* 完整使用流程 + 整套提示橫幅 */}
             {USAGE_SEQUENCES[selectedCategory] && (
-              <div
-                className="rounded-2xl p-5 md:p-7 mb-8"
-                style={{ background: "#FBF6EE", border: "1px solid #E8DCC8" }}
-              >
-                <div className="flex items-start gap-3 mb-6">
-                  <div
-                    className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-base"
-                    style={{ background: "#8B6F47", color: "#fff" }}
-                  >
-                    ✓
-                  </div>
-                  <div>
-                    <div className="font-semibold mb-1" style={{ color: "#5a4632" }}>
-                      整套使用效果最佳
+              <div style={{ background: '#FBF6EE' }} className="-mx-4 px-4 py-14 mb-8">
+                <div className="max-w-4xl mx-auto">
+                  <div className="text-center mb-7">
+                    <div className="text-[13px] font-semibold tracking-[3px] mb-1.5" style={{ color: '#B59A8A' }}>
+                      COMPLETE SET
                     </div>
-                    <div className="text-sm leading-relaxed" style={{ color: "#8a7a68" }}>
+                    <h3
+                      className="text-[22px] font-bold mb-3"
+                      style={{ color: '#5a4632', fontFamily: "'Playfair Display', serif" }}
+                    >
+                      整套使用效果最佳
+                    </h3>
+                    <p className="text-base leading-relaxed max-w-2xl mx-auto" style={{ color: '#6B6B6B' }}>
                       完整保養建議：{USAGE_SEQUENCES[selectedCategory].fullSetLabel}
                       　｜　使用完畢後，單一產品可個別購買
-                    </div>
+                    </p>
                   </div>
-                </div>
 
-                <div className="text-xs font-semibold mb-3" style={{ color: "#8B6F47" }}>
-                  使用順序 &amp; 用法
-                </div>
-                <div className="flex flex-wrap gap-x-1 gap-y-4">
-                  {USAGE_SEQUENCES[selectedCategory].steps.map((step, idx) => {
-                    const product = PRODUCTS.find(
-                      (p) => p.productNumber === step.productNumber && p.category === CATEGORY_MAP[selectedCategory]
-                    );
-                    const isLast = idx === USAGE_SEQUENCES[selectedCategory].steps.length - 1;
-                    return (
-                      <React.Fragment key={idx}>
-                        <div className="flex flex-col items-center text-center w-[84px]">
-                          <div
-                            className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mb-2"
-                            style={{ background: "#5a4632", color: "#fff" }}
-                          >
-                            {step.step}
+                  <div className="text-xs font-semibold mb-4 text-center" style={{ color: "#8B6F47" }}>
+                    使用順序 &amp; 用法
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-x-1 gap-y-4">
+                    {USAGE_SEQUENCES[selectedCategory].steps.map((step, idx) => {
+                      const product = PRODUCTS.find(
+                        (p) => p.productNumber === step.productNumber && p.category === CATEGORY_MAP[selectedCategory]
+                      );
+                      const isLast = idx === USAGE_SEQUENCES[selectedCategory].steps.length - 1;
+                      const isRowBreak = !isLast && (idx + 1) % 5 === 0;
+                      return (
+                        <React.Fragment key={idx}>
+                          <div className="flex flex-col items-center text-center w-[84px]">
+                            <div
+                              className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mb-2"
+                              style={{ background: "#5a4632", color: "#fff" }}
+                            >
+                              {step.step}
+                            </div>
+                            <div className="text-xs font-semibold" style={{ color: "#5a4632" }}>
+                              {step.productNumber}
+                            </div>
+                            {product && (
+                              <div className="text-[10px] leading-tight mt-0.5 line-clamp-2" style={{ color: "#9c8a76" }}>
+                                {product.productTitle}
+                              </div>
+                            )}
+                            {step.note && (
+                              <div className="text-[10px] leading-tight mt-1" style={{ color: "#B59A8A" }}>
+                                {step.note}
+                              </div>
+                            )}
                           </div>
-                          <div className="text-xs font-semibold" style={{ color: "#5a4632" }}>
-                            {step.productNumber}
-                          </div>
-                          {product && (
-                            <div className="text-[10px] leading-tight mt-0.5 line-clamp-2" style={{ color: "#9c8a76" }}>
-                              {product.productTitle}
+                          {!isLast && !isRowBreak && (
+                            <div className="flex items-center text-sm" style={{ color: "#D8CFC2" }}>
+                              →
                             </div>
                           )}
-                          {step.note && (
-                            <div className="text-[10px] leading-tight mt-1" style={{ color: "#B59A8A" }}>
-                              {step.note}
-                            </div>
-                          )}
-                        </div>
-                        {!isLast && (
-                          <div className="flex items-center text-sm" style={{ color: "#D8CFC2" }}>
-                            →
-                          </div>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
+                          {isRowBreak && <div className="basis-full h-0" />}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}
