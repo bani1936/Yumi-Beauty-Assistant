@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/accordion";
 
 // 消費者分頁（LV.1~3）簡化版升等條件文字，避免出現「直B」「領代」等經營術語
-const SIMPLE_REQUIREMENT: Record<string, string> = {
-  member: "加入即享",
-  "group-leader": "消費滿額或累積點數滿 3 萬 PV",
-  "section-leader": "消費滿額或累積點數滿 12 萬 PV",
+const SIMPLE_REQUIREMENTS: Record<string, string[]> = {
+  member: ["加入即享"],
+  "group-leader": ["個人累積消費滿 3 萬 PV 點", "推薦好友累積消費滿 3 萬 PV 點"],
+  "section-leader": ["首購當月個人累積消費滿 12 萬 PV 點", "無限期推薦好友累積消費滿 20 萬 PV 點"],
 };
 
 const FAQ_ITEMS = [
@@ -161,7 +161,7 @@ export default function Membership() {
 
                   <div className="text-left text-sm space-y-1.5 mb-4" style={{ color: isTop ? "#5a4632" : "#6B6B6B" }}>
                     <div>
-                      <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 回饋金 {tier.commission}
+                      <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 現金回饋金 {tier.commission}
                     </div>
                     <div>
                       <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 產品折扣 {tier.discount}
@@ -180,12 +180,34 @@ export default function Membership() {
                   </div>
 
                   {activeTab === 'consumer' ? (
-                    <div
-                      className="text-xs pt-2.5"
-                      style={{ color: isTop ? "#9c7a3f" : "#B0A797", borderTop: "1px dashed #E0D9CD" }}
-                    >
-                      升等條件｜{SIMPLE_REQUIREMENT[tier.id] || tier.requirements[0]}
-                    </div>
+                    (() => {
+                      const reqs = SIMPLE_REQUIREMENTS[tier.id] || [tier.requirements[0]];
+                      return reqs.length > 1 ? (
+                        <div
+                          className="text-left pt-2.5"
+                          style={{ borderTop: "1px dashed #E0D9CD" }}
+                        >
+                          <div className="text-xs font-semibold mb-1.5" style={{ color: "#8B6F47" }}>
+                            升等條件（符合任一即可）
+                          </div>
+                          <div className="space-y-1">
+                            {reqs.map((req, idx) => (
+                              <div key={idx} className="flex gap-1.5 text-xs leading-relaxed" style={{ color: "#6B6B6B" }}>
+                                <span style={{ color: "#C9A876" }}>✓</span>
+                                <span>{req}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className="text-xs pt-2.5"
+                          style={{ color: isTop ? "#9c7a3f" : "#B0A797", borderTop: "1px dashed #E0D9CD" }}
+                        >
+                          升等條件｜{reqs[0]}
+                        </div>
+                      );
+                    })()
                   ) : (
                     <>
                       <button
