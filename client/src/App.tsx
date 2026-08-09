@@ -78,6 +78,28 @@ function GlobalNav() {
   );
 }
 
+function PromoMarquee() {
+  return (
+    <div className="overflow-hidden py-2" style={{ background: '#000000' }}>
+      <div className="flex animate-marquee">
+        {Array.from({ length: 2 }).map((_, groupIdx) => (
+          <div key={groupIdx} className="flex items-center flex-shrink-0">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <span
+                key={i}
+                className="mx-16 text-sm font-normal whitespace-nowrap"
+                style={{ color: '#FFFFFF' }}
+              >
+                台新、永豐、中信 刷卡3、6 期零利率！
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function AppRoutes() {
   return (
     <Switch>
@@ -127,6 +149,7 @@ function App() {
           <Toaster />
           <WouterRouter hook={useHashLocation}>
             <GlobalNav />
+            <PromoMarquee />
             <AppRoutes />
           </WouterRouter>
           <LineFloatButton />
