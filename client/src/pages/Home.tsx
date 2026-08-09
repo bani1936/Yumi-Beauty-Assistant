@@ -53,25 +53,6 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: '#FAFAF8' }}>
 
-      {/* 跑馬燈：刷卡分期優惠 */}
-      <div className="overflow-hidden py-2" style={{ background: '#F0EAE2', borderBottom: '1px solid #E8DCC8' }}>
-        <div className="flex animate-marquee">
-          {Array.from({ length: 2 }).map((_, groupIdx) => (
-            <div key={groupIdx} className="flex items-center flex-shrink-0">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="mx-6 text-sm font-medium whitespace-nowrap"
-                  style={{ color: '#8B6F47' }}
-                >
-                  台新、永豐、中信 刷卡3、6 期零利率！
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Hero 標題區 */}
       <section
         className="py-14 md:py-16 text-center px-4"
