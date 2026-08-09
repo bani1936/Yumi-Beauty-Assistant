@@ -684,6 +684,7 @@ export default function ProductDetail() {
                       );
                       const isCurrent = step.productNumber === product.productNumber;
                       const isLast = idx === USAGE_SEQUENCES[product.series].steps.length - 1;
+                      const isRowBreak = !isLast && (idx + 1) % 5 === 0;
                       return (
                         <React.Fragment key={idx}>
                           <div className="flex flex-col items-center text-center w-[84px]">
@@ -711,11 +712,12 @@ export default function ProductDetail() {
                               </div>
                             )}
                           </div>
-                          {!isLast && (
+                          {!isLast && !isRowBreak && (
                             <div className="flex items-center text-sm" style={{ color: '#D8CFC2' }}>
                               →
                             </div>
                           )}
+                          {isRowBreak && <div className="basis-full h-0" />}
                         </React.Fragment>
                       );
                     })}
