@@ -160,12 +160,16 @@ export default function Membership() {
                   </h3>
 
                   <div className="text-left text-sm space-y-1.5 mb-4" style={{ color: isTop ? "#5a4632" : "#6B6B6B" }}>
-                    <div>
-                      <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 現金回饋金 {tier.commission}
-                    </div>
-                    <div>
-                      <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 產品折扣 {tier.discount}
-                    </div>
+                    {tier.id !== 'member' && (
+                      <>
+                        <div>
+                          <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 現金回饋金 {tier.commission}
+                        </div>
+                        <div>
+                          <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 產品折扣 {tier.discount}
+                        </div>
+                      </>
+                    )}
                     {activeTab === 'consumer' &&
                       tier.perks.map((perk, idx) => (
                         <div key={idx}>
