@@ -746,7 +746,7 @@ export default function ProductDetail() {
                         <div
                           key={idx}
                           className="rounded-lg p-6 text-center flex flex-col justify-center"
-                          style={{ background: '#FBF6EE' }}
+                          style={{ background: '#FBF6EE', border: '1px solid #E8DCC8' }}
                         >
                           <div className="text-lg font-semibold mb-2" style={{ color: '#5a4632' }}>
                             {card.title}
@@ -857,7 +857,7 @@ export default function ProductDetail() {
                         <span
                           key={idx}
                           className="text-base px-3 py-1.5 rounded-full font-medium whitespace-nowrap"
-                          style={{ background: '#FFFFFF', color: '#8B6F47' }}
+                          style={{ background: '#FFFFFF', color: '#8B6F47', border: '1px solid #E8DCC8' }}
                         >
                           {ing.trim()}
                         </span>
