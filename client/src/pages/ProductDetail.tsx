@@ -23,10 +23,48 @@ const CATEGORY_LABELS: Record<string, string> = {
   'cleaning': '清潔系列',
 };
 
+// 全站共用促銷活動明細（商品詳情頁點擊促銷提示行時彈出）
+const PROMO_CAMPAIGNS = [
+  {
+    id: 'summer',
+    label: '【2026 夏季限定】滿額多重送，買越多送越多！年度方案贈無痕塑形筋膜儀乙台',
+    title: '【2026 夏季限定】盛夏不鬧肌',
+    date: '2026/7/21－2026/8/20',
+    items: [
+      '滿額贈｜滿 19,000 PV 送 安瓶保養組1組',
+      '滿額贈｜滿 30,000 PV 送 安瓶保養組2組',
+      '滿額贈｜滿 88,000 PV 送 安瓶保養組1組',
+      '滿額贈｜滿 120,000 PV 送 安瓶保養組10組、120ml噴液任選1瓶、38修護柔敏膠原凝露1瓶',
+      '滿額贈｜訂單滿 NT$ 298,000 贈 安瓶保養組20組、無痕塑形筋膜儀1台、38修護柔敏膠原凝露1瓶、系列保養沙龍組1套',
+    ],
+  },
+  {
+    id: 'points',
+    label: '【2026 年集點贈】年度累積 PV 點數滿額贈！安瓶保養組及熱銷第一名膠原凝露',
+    title: '【2026 年集點贈】點點成金，PV換好禮！',
+    date: '2026/1/1－2026/12/31',
+    items: [
+      '集點贈｜累積滿 40,000 PV 送 安瓶保養組1組',
+      '集點贈｜累積滿 80,000 PV 送 安瓶保養組1組、2250PV產品任選1瓶',
+      '集點贈｜滿 200,000 PV 送 安瓶保養組3組、2250PV產品任選1瓶、38修護柔敏膠原凝露1瓶',
+    ],
+  },
+  {
+    id: 'store',
+    label: '【門市限定】UIS訂製化妝包滿額贈',
+    title: '【米米門市限定】UIS訂製化妝包滿額贈',
+    date: '數量有限，送完為止！',
+    items: [
+      '滿額贈｜新會員首筆訂單滿 30,000 PV 送 UIS訂製化妝包1個',
+    ],
+  },
+];
+
 export default function ProductDetail() {
   const [, navigate] = useLocation();
   const productId = new URLSearchParams(window.location.search).get('id');
   const product = PRODUCTS.find(p => p.id === productId);
+  const [activeCampaign, setActiveCampaign] = React.useState<typeof PROMO_CAMPAIGNS[number] | null>(null);
 
   if (!product) {
     return (
@@ -175,11 +213,57 @@ export default function ProductDetail() {
               className="mb-4 px-4 py-2.5 rounded-none"
               style={{ background: '#FBF6EE', borderLeft: '3px solid #8B6F47' }}
             >
+              <div className="text-sm font-bold mb-1.5" style={{ color: '#C0527A' }}>全館活動</div>
               <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>全館單筆訂單滿 $3,000 免運</div>
-              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>【2026 夏季限定】滿額多重送，買越多送越多！年度方案贈無痕塑形筋膜儀乙台</div>
-              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>【2026 年集點贈】年度累積 PV 點數滿額贈！安瓶保養組及熱銷第一名膠原凝露</div>
-              <div className="text-sm leading-loose" style={{ color: '#5a4632' }}>【門市限定】UIS訂製化妝包滿額贈</div>
+              {PROMO_CAMPAIGNS.map((campaign) => (
+                <div
+                  key={campaign.id}
+                  onClick={() => setActiveCampaign(campaign)}
+                  className="text-sm leading-loose cursor-pointer hover:opacity-70 transition-opacity"
+                  style={{ color: '#5a4632', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                >
+                  {campaign.label}
+                </div>
+              ))}
             </div>
+
+            {/* 活動明細彈窗 */}
+            {activeCampaign && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center px-4"
+                style={{ background: 'rgba(0,0,0,0.4)' }}
+                onClick={() => setActiveCampaign(null)}
+              >
+                <div
+                  className="bg-white rounded-xl p-6 max-w-md w-full"
+                  style={{ border: '1px solid #E8DCC8', boxShadow: '0 12px 40px rgba(0,0,0,0.18)' }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-start justify-between mb-3.5">
+                    <div>
+                      <div className="text-base font-bold" style={{ color: '#5a4632' }}>
+                        {activeCampaign.title}
+                      </div>
+                      <div className="text-xs mt-1" style={{ color: '#B0A797' }}>
+                        {activeCampaign.date}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setActiveCampaign(null)}
+                      className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
+                      style={{ background: '#F5F1ED', color: '#8B6F47' }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="text-sm leading-loose" style={{ color: '#6B6B6B' }}>
+                    {activeCampaign.items.map((item, idx) => (
+                      <div key={idx}>．{item}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* 價格區塊 */}
             <Card className="p-6 mb-6 bg-secondary/50">
