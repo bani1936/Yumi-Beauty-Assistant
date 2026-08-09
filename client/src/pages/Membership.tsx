@@ -74,9 +74,9 @@ export default function Membership() {
         </div>
       </nav>
 
-      {/* Hero 標題區 */}
+      {/* Hero 標題區 + 位階卡片區：同一塊漸層背景，跟下方權益一覽的白底做出區隔 */}
       <section
-        className="py-14 px-4 text-center"
+        className="pt-14 pb-12 px-4 text-center"
         style={{ background: "linear-gradient(135deg, #F0EAE2, #F5F1ED)" }}
       >
         <div
@@ -91,22 +91,20 @@ export default function Membership() {
         >
           會員位階與升級禮遇
         </h2>
-        <p className="text-sm md:text-base" style={{ color: "#6B6B6B" }}>
+        <p className="text-sm md:text-base mb-10" style={{ color: "#6B6B6B" }}>
           加入即享專屬會員價與終身點數累積，輕鬆升級再享高額回饋與專屬折扣！
         </p>
-      </section>
 
-      {/* 分頁切換：會員消費權益／合夥與代理制度 */}
-      <section className="px-4 -mt-8 relative z-10">
-        <div className="container max-w-5xl mx-auto">
-          <div className="flex justify-center gap-2 border-b mb-8" style={{ borderColor: "#E8E4E0" }}>
+        {/* 分頁切換：會員消費權益／合夥與代理制度 */}
+        <div className="container max-w-5xl mx-auto text-left">
+          <div className="flex justify-center gap-2 border-b mb-8" style={{ borderColor: "#E0D4C0" }}>
             <button
               onClick={() => setActiveTab('consumer')}
               className="px-5 py-2.5 text-sm transition-colors"
               style={
                 activeTab === 'consumer'
                   ? { color: "#8B6F47", fontWeight: 700, borderBottom: "2px solid #8B6F47" }
-                  : { color: "#B0A797", fontWeight: 500 }
+                  : { color: "#9c8a76", fontWeight: 500 }
               }
             >
               會員消費權益
@@ -117,7 +115,7 @@ export default function Membership() {
               style={
                 activeTab === 'partner'
                   ? { color: "#8B6F47", fontWeight: 700, borderBottom: "2px solid #8B6F47" }
-                  : { color: "#B0A797", fontWeight: 500 }
+                  : { color: "#9c8a76", fontWeight: 500 }
               }
             >
               合夥與代理制度
@@ -163,7 +161,7 @@ export default function Membership() {
                     {tier.id !== 'member' && (
                       <>
                         <div>
-                          <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 現金回饋金 {tier.commission}
+                          <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 現金回饋 {tier.commission}
                         </div>
                         <div>
                           <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 產品折扣 {tier.discount}
