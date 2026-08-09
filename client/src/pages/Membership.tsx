@@ -187,7 +187,10 @@ export default function Membership() {
                           className="text-left pt-2.5"
                           style={{ borderTop: "1px dashed #E0D9CD" }}
                         >
-                          <div className="text-xs font-semibold mb-1.5" style={{ color: "#8B6F47" }}>
+                          <div
+                            className="text-xs font-semibold mb-1.5 text-center"
+                            style={{ color: isTop ? "#9c7a3f" : "#B0A797" }}
+                          >
                             升等條件（符合任一即可）
                           </div>
                           <div className="space-y-1">
