@@ -285,7 +285,7 @@ export default function Membership() {
             <table className="w-full border-collapse bg-white text-sm min-w-[720px]">
               <thead>
                 <tr style={{ background: "#F5F1ED" }}>
-                  <td className="p-4 font-semibold" style={{ color: "#6B6B6B" }}>
+                  <td className="p-2.5 md:p-4 font-semibold" style={{ color: "#6B6B6B" }}>
                     位階
                   </td>
                   {visibleTiers.map((tier) => {
@@ -293,7 +293,7 @@ export default function Membership() {
                     return (
                       <td
                         key={tier.id}
-                        className="p-4 text-center font-semibold whitespace-nowrap"
+                        className="p-2.5 md:p-4 text-center font-semibold whitespace-nowrap"
                         style={
                           isTop
                             ? { background: "#F3E8D8", color: "#5a4632" }
@@ -308,7 +308,7 @@ export default function Membership() {
               </thead>
               <tbody>
                 <tr className="border-t" style={{ borderColor: "#EEE9E3" }}>
-                  <td className="p-4" style={{ color: "#8a8a8a" }}>
+                  <td className="p-2.5 md:p-4" style={{ color: "#8a8a8a" }}>
                     回饋金
                   </td>
                   {visibleTiers.map((tier) => {
@@ -316,7 +316,7 @@ export default function Membership() {
                     return (
                       <td
                         key={tier.id}
-                        className="p-4 text-center"
+                        className="p-2.5 md:p-4 text-center"
                         style={
                           isTop
                             ? { background: "#FBF6EE", color: "#8B6F47", fontWeight: 700 }
@@ -329,7 +329,7 @@ export default function Membership() {
                   })}
                 </tr>
                 <tr className="border-t" style={{ borderColor: "#EEE9E3", background: "#FAFAF8" }}>
-                  <td className="p-4" style={{ color: "#8a8a8a" }}>
+                  <td className="p-2.5 md:p-4" style={{ color: "#8a8a8a" }}>
                     產品折扣
                   </td>
                   {visibleTiers.map((tier) => {
@@ -337,7 +337,7 @@ export default function Membership() {
                     return (
                       <td
                         key={tier.id}
-                        className="p-4 text-center"
+                        className="p-2.5 md:p-4 text-center"
                         style={
                           isTop
                             ? { background: "#FBF6EE", color: "#8B6F47", fontWeight: 600 }
@@ -350,7 +350,7 @@ export default function Membership() {
                   })}
                 </tr>
                 <tr className="border-t" style={{ borderColor: "#EEE9E3" }}>
-                  <td className="p-4" style={{ color: "#8a8a8a" }}>
+                  <td className="p-2.5 md:p-4" style={{ color: "#8a8a8a" }}>
                     輔導獎金
                   </td>
                   {visibleTiers.map((tier) => {
@@ -359,7 +359,7 @@ export default function Membership() {
                     return (
                       <td
                         key={tier.id}
-                        className="p-4 text-center"
+                        className="p-2.5 md:p-4 text-center"
                         style={
                           isTop
                             ? { background: "#FBF6EE", color: "#8B6F47", fontWeight: 700 }
