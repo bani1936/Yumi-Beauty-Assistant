@@ -13,6 +13,23 @@ const SIMPLE_REQUIREMENTS: Record<string, string[]> = {
   member: ["加入即享"],
   "group-leader": ["個人累積消費滿 3 萬 PV 點", "推薦好友累積消費滿 3 萬 PV 點"],
   "section-leader": ["首購當月個人累積消費滿 12 萬 PV 點", "無限期推薦好友累積消費滿 20 萬 PV 點"],
+  "consumer-small-plate": ["首購當月個人累積消費滿 NT$298,000 元"],
+};
+
+// 「會員消費權益」分頁專用的 LV.4 小盤卡片
+// 注意：這是獨立資料，跟「合夥與代理制度」分頁裡 membership-tiers.ts 的「小盤督導」互不影響，各自維護
+const CONSUMER_SMALL_PLATE_TIER = {
+  id: "consumer-small-plate",
+  name: "小盤",
+  commission: "35%",
+  discount: "35%",
+  entryFee: "NT$298,000",
+  requirements: ["首購當月個人累積消費滿 NT$298,000 元"],
+  benefits: ["35% 現金回饋", "35% 永久產品折扣", "推薦好友加碼現金回饋"],
+  perks: ["推薦好友加碼現金回饋"],
+  color: "bg-amber-50",
+  icon: "🎖️",
+  order: 4,
 };
 
 const FAQ_ITEMS = [
@@ -41,7 +58,7 @@ export default function Membership() {
   const [activeTab, setActiveTab] = React.useState<'consumer' | 'partner'>('consumer');
   const [expandedIds, setExpandedIds] = React.useState<Set<string>>(new Set());
 
-  const consumerTiers = MEMBERSHIP_TIERS.filter((t) => t.order <= 3);
+  const consumerTiers = [...MEMBERSHIP_TIERS.filter((t) => t.order <= 3), CONSUMER_SMALL_PLATE_TIER];
   const partnerTiers = MEMBERSHIP_TIERS.filter((t) => t.order >= 4);
   const visibleTiers = activeTab === 'consumer' ? consumerTiers : partnerTiers;
 
@@ -124,7 +141,7 @@ export default function Membership() {
 
           <div
             className={`grid grid-cols-1 gap-4 ${
-              activeTab === 'consumer' ? 'md:grid-cols-3' : 'md:grid-cols-3 lg:grid-cols-5'
+              activeTab === 'consumer' ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3 lg:grid-cols-5'
             }`}
           >
             {visibleTiers.map((tier) => {
@@ -164,7 +181,7 @@ export default function Membership() {
                           <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 現金回饋 {tier.commission}
                         </div>
                         <div>
-                          <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> 產品折扣 {tier.discount}
+                          <span style={{ color: isTop ? "#9c7a3f" : "#C9A876" }}>✦</span> {activeTab === 'consumer' ? '永久產品折扣' : '產品折扣'} {tier.discount}
                         </div>
                       </>
                     )}
