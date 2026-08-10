@@ -35,8 +35,23 @@ const CONSUMER_SMALL_PLATE_TIER = {
 const FAQ_ITEMS = [
   {
     question: "會籍是終身嗎？",
-    answer:
-      "會籍自加入會員起當年至隔年年底，隔年起每年消費累積滿 15,000 PV，下一年度自動續會。",
+    answer: (
+      <>
+        <p>會籍非終身制，但只要維持消費即可持續享有原位階的權益與折扣：</p>
+        <p className="mt-2">
+          <span className="font-semibold" style={{ color: "#8B6F47" }}>1. 首購權益：</span>
+          加入會員即享有會籍至「次年 12 月 31 日」。
+        </p>
+        <p className="mt-2">
+          <span className="font-semibold" style={{ color: "#8B6F47" }}>2. 免費自動續會：</span>
+          於會籍期間內，每年累積消費滿 15,000 PV，下一年度即可自動免費續會，並繼續保留您現有的位階與相關回饋。
+        </p>
+        <p className="mt-2">
+          <span className="font-semibold" style={{ color: "#8B6F47" }}>3. 會籍暫停與恢復：</span>
+          若未達續會條件，會籍將暫時凍結；凍結期間如欲購買產品，僅需支付 500 元續會費即可恢復會籍（有效期限至「當年 12 月 31 日」），恢復後同樣享有原位階權益。
+        </p>
+      </>
+    ),
   },
   {
     question: "回饋金領取方式？",
@@ -351,11 +366,14 @@ export default function Membership() {
                 </tr>
                 <tr className="border-t" style={{ borderColor: "#EEE9E3" }}>
                   <td className="p-2.5 md:p-4" style={{ color: "#8a8a8a" }}>
-                    輔導獎金
+                    {activeTab === 'consumer' ? '加碼回饋' : '輔導獎金'}
                   </td>
                   {visibleTiers.map((tier) => {
                     const isTop = tier.id === topTier.id;
-                    const has = Boolean(tier.guidanceGenerations);
+                    const has =
+                      activeTab === 'consumer'
+                        ? tier.id === 'consumer-small-plate'
+                        : Boolean(tier.guidanceGenerations);
                     return (
                       <td
                         key={tier.id}
