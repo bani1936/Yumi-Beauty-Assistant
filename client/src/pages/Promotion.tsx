@@ -94,7 +94,7 @@ export default function Promotion() {
       <div className="container max-w-6xl mx-auto px-4 pt-8">
         <div
           className="relative rounded-2xl overflow-hidden"
-          style={{ border: '1px solid #E8E4E0', aspectRatio: '8 / 3' }}
+          style={{ border: '1px solid #E8E4E0', aspectRatio: '2 / 1' }}
           onTouchStart={handleHeroTouchStart}
           onTouchEnd={handleHeroTouchEnd}
         >
