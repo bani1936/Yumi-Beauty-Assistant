@@ -449,8 +449,7 @@ export default function Products() {
                       整套使用效果最佳
                     </h3>
                     <p className="text-base leading-relaxed max-w-2xl mx-auto" style={{ color: '#6B6B6B' }}>
-                      完整保養建議：{USAGE_SEQUENCES[selectedCategory].fullSetLabel}
-                      　｜　使用完畢後，單一產品可個別購買
+                      初次使用建議搭配全套完整護膚；後續可依肌膚狀況單品補貨。
                     </p>
                   </div>
 
@@ -474,7 +473,7 @@ export default function Products() {
                               {step.step}
                             </div>
                             <div className="text-xs font-semibold" style={{ color: "#5a4632" }}>
-                              {step.productNumber}
+                              {step.label || step.productNumber}
                             </div>
                             {product && (
                               <div className="text-[10px] leading-tight mt-0.5 line-clamp-2" style={{ color: "#9c8a76" }}>

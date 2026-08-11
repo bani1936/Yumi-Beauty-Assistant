@@ -671,11 +671,7 @@ export default function ProductDetail() {
                       {product.productNumber === '7號' ? (
                         '7號 活膚煥采亮顏乳 可搭配在任一系列保養的最後一道，作為日常防塵防曬使用'
                       ) : (
-                        <>
-                          {product.productNumber} {product.productTitle} 是「{product.series.replace('(小)', '').replace('(大)', '').trim()}」整組保養的其中一環，完整保養建議：
-                          {USAGE_SEQUENCES[product.series].fullSetLabel}
-                          　｜　使用完畢後，單一產品可個別購買
-                        </>
+                        '初次使用建議搭配全套完整護膚；後續可依肌膚狀況單品補貨。'
                       )}
                     </p>
                   </div>
@@ -705,7 +701,7 @@ export default function ProductDetail() {
                               {step.step}
                             </div>
                             <div className="text-xs font-semibold" style={{ color: isCurrent ? '#9c7a3f' : '#5a4632' }}>
-                              {step.productNumber}
+                              {step.label || step.productNumber}
                             </div>
                             {stepProduct && (
                               <div className="text-[10px] leading-tight mt-0.5 line-clamp-2" style={{ color: '#9c8a76' }}>

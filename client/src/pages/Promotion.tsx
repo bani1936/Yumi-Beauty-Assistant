@@ -9,7 +9,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 // 尚未做成橫版的海報暫時沿用原圖，裁切效果可能不完美，之後補齊橫版素材後直接替換 src 即可。
 const HERO_POSTERS: { src: string; alt: string }[] = [
   { src: "/promo-banner-newcustomer.jpg", alt: "August 新會員消費滿額贈 UIS訂製化妝包" },
-  { src: "/promo-poster-summer.png", alt: "盛夏不鬧肌活動：2026/7/21～8/20 滿額贈安瓶保養組" },
+  { src: "/promo-banner-summer.jpg", alt: "盛夏不鬧肌 夏季活動限定贈品：無痕塑形筋膜儀，2026/7/21～8/20 指定門檻滿額贈送" },
   { src: "/promo-poster-pvexchange.jpg", alt: "點點成金，PV換好禮：年度集點活動" },
 ];
 
