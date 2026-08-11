@@ -110,7 +110,7 @@ export default function Promotion() {
       {/* 活動海報輪播：橫版 Banner，容器改用寬版比例 */}
       <div className="container max-w-6xl mx-auto px-4 pt-8">
         <div
-          className="relative rounded-2xl overflow-hidden"
+          className="relative overflow-hidden"
           style={{ border: '1px solid #E8E4E0', aspectRatio: '2 / 1' }}
           onTouchStart={handleHeroTouchStart}
           onTouchEnd={handleHeroTouchEnd}
@@ -164,7 +164,7 @@ export default function Promotion() {
                 src={HERO_POSTERS[heroIndex].detailSrc}
                 fallbackSrc="/favicon.png"
                 alt={HERO_POSTERS[heroIndex].detailAlt || HERO_POSTERS[heroIndex].alt}
-                className="max-h-[85vh] w-auto rounded-xl object-contain"
+                className="max-h-[85vh] w-auto object-contain"
               />
               <button
                 type="button"
@@ -199,7 +199,7 @@ export default function Promotion() {
               key={idx}
               type="button"
               onClick={() => setAmpoulePreviewIndex(idx)}
-              className="relative aspect-square rounded-xl overflow-hidden cursor-pointer transition-transform hover:-translate-y-0.5"
+              className="relative aspect-square overflow-hidden cursor-pointer transition-transform hover:-translate-y-0.5"
               style={{ border: '1px solid #E8E4E0', background: '#F5F1ED' }}
             >
               <ImageWithFallback
@@ -240,7 +240,7 @@ export default function Promotion() {
                 key={idx}
                 type="button"
                 onClick={() => setPreviewIndex(idx)}
-                className="aspect-square rounded-xl overflow-hidden cursor-pointer transition-transform hover:-translate-y-0.5"
+                className="aspect-square overflow-hidden cursor-pointer transition-transform hover:-translate-y-0.5"
                 style={{ border: '1px solid #E8E4E0', background: '#F5F1ED' }}
               >
                 <ImageWithFallback
@@ -268,7 +268,7 @@ export default function Promotion() {
                 src={GALLERY_IMAGES[previewIndex]}
                 fallbackSrc="/favicon.png"
                 alt={`UIS訂製化妝包實拍 ${previewIndex + 1}`}
-                className="max-h-[80vh] w-auto rounded-xl object-contain"
+                className="max-h-[80vh] w-auto object-contain"
               />
 
               <button
@@ -325,7 +325,7 @@ export default function Promotion() {
                 src={AMPOULE_SET_IMAGES[ampoulePreviewIndex].src}
                 fallbackSrc="/favicon.png"
                 alt={AMPOULE_SET_IMAGES[ampoulePreviewIndex].label}
-                className="max-h-[80vh] w-auto rounded-xl object-contain"
+                className="max-h-[80vh] w-auto object-contain"
               />
 
               <button
