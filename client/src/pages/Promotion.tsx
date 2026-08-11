@@ -7,10 +7,26 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 // 活動海報輪播（可左右滑動／點箭頭切換）— 之後有新活動海報，把圖放進 client/public/ 並在這裡增減即可。
 // 橫式 Banner 統一比例約 8:3（對應設計稿 1920x720），輪播容器用固定比例 + object-cover 裁切呈現，
 // 尚未做成橫版的海報暫時沿用原圖，裁切效果可能不完美，之後補齊橫版素材後直接替換 src 即可。
-const HERO_POSTERS: { src: string; alt: string }[] = [
-  { src: "/promo-banner-newcustomer.jpg", alt: "August 新會員消費滿額贈 UIS訂製化妝包" },
-  { src: "/promo-banner-summer.jpg", alt: "盛夏不鬧肌 夏季活動限定贈品：無痕塑形筋膜儀，2026/7/21～8/20 指定門檻滿額贈送" },
-  { src: "/promo-poster-pvexchange.jpg", alt: "點點成金，PV換好禮：年度集點活動" },
+// detailSrc：點擊 Banner 後彈出的完整活動明細圖（贈品門檻、條件等），沒有的話點擊不會有反應。
+const HERO_POSTERS: { src: string; alt: string; detailSrc?: string; detailAlt?: string }[] = [
+  {
+    src: "/promo-banner-newcustomer.jpg",
+    alt: "August 新會員消費滿額贈 UIS訂製化妝包",
+    detailSrc: "/promo-poster-newcustomer.png",
+    detailAlt: "新會員消費滿額贈完整活動明細",
+  },
+  {
+    src: "/promo-banner-summer.jpg",
+    alt: "盛夏不鬧肌 夏季活動限定贈品：無痕塑形筋膜儀，2026/7/21～8/20 指定門檻滿額贈送",
+    detailSrc: "/promo-detail-summer.png",
+    detailAlt: "盛夏不鬧肌活動完整贈品門檻明細表",
+  },
+  {
+    src: "/promo-poster-pvexchange.jpg",
+    alt: "點點成金，PV換好禮：年度集點活動",
+    detailSrc: "/promo-poster-pvexchange.jpg",
+    detailAlt: "點點成金 PV 集點活動完整明細",
+  },
 ];
 
 // UIS訂製化妝包實拍 — 之後把照片放進 client/public/，把檔名加進這個陣列即可自動顯示在下方相簿。
@@ -35,6 +51,7 @@ const AMPOULE_SET_IMAGES: { src: string; label: string }[] = [
 export default function Promotion() {
   const [, navigate] = useLocation();
   const [heroIndex, setHeroIndex] = useState(0);
+  const [heroDetailOpen, setHeroDetailOpen] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
@@ -98,13 +115,21 @@ export default function Promotion() {
           onTouchStart={handleHeroTouchStart}
           onTouchEnd={handleHeroTouchEnd}
         >
-          <ImageWithFallback
-            key={heroIndex}
-            src={HERO_POSTERS[heroIndex].src}
-            fallbackSrc="/favicon.png"
-            alt={HERO_POSTERS[heroIndex].alt}
-            className="w-full h-full object-cover block"
-          />
+          <button
+            type="button"
+            onClick={() => HERO_POSTERS[heroIndex].detailSrc && setHeroDetailOpen(true)}
+            aria-label="查看完整活動明細"
+            className="block w-full h-full p-0 border-0"
+            style={{ cursor: HERO_POSTERS[heroIndex].detailSrc ? 'pointer' : 'default' }}
+          >
+            <ImageWithFallback
+              key={heroIndex}
+              src={HERO_POSTERS[heroIndex].src}
+              fallbackSrc="/favicon.png"
+              alt={HERO_POSTERS[heroIndex].alt}
+              className="w-full h-full object-cover block"
+            />
+          </button>
 
           {HERO_POSTERS.length > 1 && (
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
@@ -126,6 +151,33 @@ export default function Promotion() {
           )}
         </div>
       </div>
+
+      {/* 放大燈箱：活動完整明細圖 */}
+      <Dialog open={heroDetailOpen} onOpenChange={setHeroDetailOpen}>
+        <DialogContent
+          className="max-w-2xl w-[95vw] p-0 border-0 bg-transparent shadow-none flex items-center justify-center"
+          showCloseButton={false}
+        >
+          {HERO_POSTERS[heroIndex].detailSrc && (
+            <div className="relative w-full flex items-center justify-center">
+              <ImageWithFallback
+                src={HERO_POSTERS[heroIndex].detailSrc}
+                fallbackSrc="/favicon.png"
+                alt={HERO_POSTERS[heroIndex].detailAlt || HERO_POSTERS[heroIndex].alt}
+                className="max-h-[85vh] w-auto rounded-xl object-contain"
+              />
+              <button
+                type="button"
+                onClick={() => setHeroDetailOpen(false)}
+                className="absolute -top-3 -right-3 md:top-2 md:right-2 w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md"
+                style={{ color: '#5a4632' }}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* 安瓶保養組 4 款總覽（不受活動檔期切換影響，講解優惠時可直接點開給客人看） */}
       <div className="container max-w-4xl mx-auto px-4 mt-10">
