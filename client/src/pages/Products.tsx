@@ -590,7 +590,7 @@ export default function Products() {
                       {!!product.memberPrice && product.memberPrice < product.price && (
                         <span
                           className="text-xs line-through mb-0.5"
-                          style={{ color: "#B0A797" }}
+                          style={{ color: "#B0A797", fontFamily: "'Playfair Display', serif" }}
                         >
                           原價 NT$ {product.price}
                         </span>

@@ -270,13 +270,19 @@ export default function ProductDetail() {
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <div className="text-xs text-muted-foreground mb-1">原價</div>
-                  <div className="text-xl font-bold line-through text-muted-foreground">
+                  <div
+                    className="text-xl font-bold line-through text-muted-foreground"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
                     ${product.price}
                   </div>
                 </div>
                 <div>
                   <div className="text-xs text-muted-foreground mb-1">會員價</div>
-                  <div className="text-2xl font-bold" style={{ color: '#8b6f47' }}>
+                  <div
+                    className="text-2xl font-bold"
+                    style={{ color: '#8b6f47', fontFamily: "'Playfair Display', serif" }}
+                  >
                     ${Math.round(memberPrice)}
                   </div>
                   {discount > 0 && (
