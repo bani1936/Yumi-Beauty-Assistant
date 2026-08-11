@@ -9,9 +9,10 @@ export default function Home() {
     {
       id: 'promotion',
       icon: <Gift className="w-7 h-7" />,
+      image: '/promo-banner-newcustomer.jpg',
       subtitle: 'LATEST PROMOTION',
       title: '最新活動',
-      description: '新會員限定好禮，滿額即享升級禮遇',
+      description: '新會員消費滿額贈 UIS訂製化妝包｜還有更多好禮進行中',
       buttonText: '了解詳情',
       path: '/promotion',
       highlight: true,
@@ -94,6 +95,34 @@ export default function Home() {
                 }
                 onClick={() => navigate(tool.path)}
               >
+                {tool.id === 'promotion' && tool.image ? (
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="-mx-8 -mt-8 mb-5 aspect-[16/9] overflow-hidden">
+                      <img
+                        src={tool.image}
+                        alt={tool.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col items-center justify-center text-center flex-1">
+                      <div
+                        className="text-[11px] tracking-[1.5px] font-semibold mb-2"
+                        style={{ color: '#9c7a3f' }}
+                      >
+                        {tool.subtitle}
+                      </div>
+                      <h3
+                        className="text-xl md:text-2xl font-semibold mb-3"
+                        style={{ color: '#5a4632', fontFamily: HEADING_FONT }}
+                      >
+                        {tool.title}
+                      </h3>
+                      <p className="leading-relaxed text-sm md:text-base whitespace-pre-line" style={{ color: '#8a8a8a' }}>
+                        {tool.description}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
                 <div className="relative z-10 flex flex-col items-center justify-center text-center h-full">
                   <div
                     className="mb-6 flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300"
@@ -126,6 +155,7 @@ export default function Home() {
                     </p>
                   )}
                 </div>
+                )}
               </Card>
             ))}
           </div>
