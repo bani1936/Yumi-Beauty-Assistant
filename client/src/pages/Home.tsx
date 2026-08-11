@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { useLocation } from 'wouter';
 import { Gift, Calculator, Sparkles, Users } from 'lucide-react';
+import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -98,8 +99,9 @@ export default function Home() {
                 {tool.id === 'promotion' && tool.image ? (
                   <div className="relative z-10 flex flex-col h-full">
                     <div className="-mx-8 -mt-8 mb-5 aspect-[16/9] overflow-hidden">
-                      <img
+                      <ImageWithFallback
                         src={tool.image}
+                        fallbackSrc="/favicon.png"
                         alt={tool.title}
                         className="w-full h-full object-cover"
                       />
