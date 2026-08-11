@@ -5,8 +5,10 @@ import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 // 活動海報輪播（可左右滑動／點箭頭切換）— 之後有新活動海報，把圖放進 client/public/ 並在這裡增減即可。
+// 橫式 Banner 統一比例約 8:3（對應設計稿 1920x720），輪播容器用固定比例 + object-cover 裁切呈現，
+// 尚未做成橫版的海報暫時沿用原圖，裁切效果可能不完美，之後補齊橫版素材後直接替換 src 即可。
 const HERO_POSTERS: { src: string; alt: string }[] = [
-  { src: "/promo-poster-newcustomer.png", alt: "新會員消費滿額贈：訂製旅行化妝包及安瓶保養組2組" },
+  { src: "/promo-banner-newcustomer.jpg", alt: "August 新會員消費滿額贈 UIS訂製化妝包" },
   { src: "/promo-poster-summer.png", alt: "盛夏不鬧肌活動：2026/7/21～8/20 滿額贈安瓶保養組" },
   { src: "/promo-poster-pvexchange.jpg", alt: "點點成金，PV換好禮：年度集點活動" },
 ];
@@ -88,11 +90,11 @@ export default function Promotion() {
         </div>
       </nav>
 
-      {/* 活動海報輪播 */}
-      <div className="container max-w-2xl mx-auto px-4 pt-8">
+      {/* 活動海報輪播：橫版 Banner，容器改用寬版比例 */}
+      <div className="container max-w-6xl mx-auto px-4 pt-8">
         <div
           className="relative rounded-2xl overflow-hidden"
-          style={{ border: '1px solid #E8E4E0' }}
+          style={{ border: '1px solid #E8E4E0', aspectRatio: '8 / 3' }}
           onTouchStart={handleHeroTouchStart}
           onTouchEnd={handleHeroTouchEnd}
         >
@@ -101,7 +103,7 @@ export default function Promotion() {
             src={HERO_POSTERS[heroIndex].src}
             fallbackSrc="/favicon.png"
             alt={HERO_POSTERS[heroIndex].alt}
-            className="w-full h-auto block"
+            className="w-full h-full object-cover block"
           />
 
           {HERO_POSTERS.length > 1 && (
