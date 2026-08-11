@@ -22,10 +22,10 @@ const HERO_POSTERS: { src: string; alt: string; detailSrc?: string; detailAlt?: 
     detailAlt: "盛夏不鬧肌活動完整贈品門檻明細表",
   },
   {
-    src: "/promo-poster-pvexchange.jpg",
+    src: "/promo-banner-pvexchange.jpg",
     alt: "點點成金，PV換好禮：年度集點活動",
-    detailSrc: "/promo-poster-pvexchange.jpg",
-    detailAlt: "點點成金 PV 集點活動完整明細",
+    detailSrc: "/promo-detail-pvexchange.png",
+    detailAlt: "點點成金 PV 集點活動完整明細（Q1~Q3 級距）",
   },
 ];
 
