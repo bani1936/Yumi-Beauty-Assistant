@@ -153,6 +153,13 @@ html {
   animation: marquee-scroll 75s linear infinite;
 }
 
+/* 手機版跑馬燈加速（螢幕較窄，慢速捲動反而顯得拖沓） */
+@media (max-width: 767px) {
+  .animate-marquee {
+    animation-duration: 20s;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
