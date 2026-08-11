@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
@@ -52,6 +52,15 @@ export default function Promotion() {
   const [, navigate] = useLocation();
   const [heroIndex, setHeroIndex] = useState(0);
   const [heroDetailOpen, setHeroDetailOpen] = useState(false);
+
+  // 自動輪播：每 2.5 秒切換下一張活動海報，持續循環，不會因為使用者操作而停下來
+  useEffect(() => {
+    if (HERO_POSTERS.length <= 1) return;
+    const timer = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % HERO_POSTERS.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
   const touchStartX = useRef<number | null>(null);
 
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
