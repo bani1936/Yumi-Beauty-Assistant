@@ -588,7 +588,7 @@ export default function Products() {
                     <div className="flex flex-col items-center justify-center mb-3">
                       {!!product.memberPrice && product.memberPrice < product.price && (
                         <span
-                          className="text-xs line-through mb-0.5"
+                          className="text-xs mb-0.5"
                           style={{ color: "#B0A797", fontFamily: "'Playfair Display', serif" }}
                         >
                           原價 NT$ {product.price}
