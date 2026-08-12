@@ -271,7 +271,7 @@ export default function ProductDetail() {
                 <div>
                   <div className="text-xs text-muted-foreground mb-1">原價</div>
                   <div
-                    className="text-xl font-bold line-through text-muted-foreground"
+                    className="text-xl font-bold text-muted-foreground"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     ${product.price}
