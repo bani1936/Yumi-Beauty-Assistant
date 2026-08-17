@@ -138,6 +138,19 @@ function App() {
     }
   }, [showSplash]);
 
+  // 修正 bfcache（瀏覽器上一頁/下一頁快取）造成畫面沒跟著網址更新的問題：
+  // 使用 hash 路由的 SPA 從 bfcache 還原時，網址列會變、但頁面內容是被凍結的舊畫面，
+  // 偵測到這種還原狀況就強制重新整理一次，確保畫面永遠跟網址同步。
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
+
   return (
     <ErrorBoundary>
       <ThemeProvider
