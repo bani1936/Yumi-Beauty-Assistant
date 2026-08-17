@@ -160,6 +160,13 @@ export default function Products() {
     }
   }, [categoryFromUrl]);
 
+  // 切換分類時同步更新網址（用 replace 避免瀏覽紀錄爆量），
+  // 這樣從商品詳情頁按「上一頁」才能正確回到剛剛選的那個分類，而不是回到沒有分類參數的初始狀態
+  const handleCategoryChange = (cat: string) => {
+    setSelectedCategory(cat);
+    navigate(`/products?category=${encodeURIComponent(cat)}`, { replace: true });
+  };
+
   return (
     <div className="min-h-screen" style={{ background: "#FAFAF8" }}>
       {/* 麵包屑導航 */}
@@ -189,7 +196,7 @@ export default function Products() {
                 return (
                   <button
                     key={cat}
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => handleCategoryChange(cat)}
                     className="text-left pl-3 pr-2 py-2.5 text-sm transition-all"
                     style={
                       isActive
@@ -217,7 +224,7 @@ export default function Products() {
             {/* 手機版分類下拉選單 */}
             <div className="md:hidden mb-6">
               <div className="mb-2 text-xs tracking-wider" style={{ color: "#9c8a76" }}>選擇系列</div>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select value={selectedCategory} onValueChange={handleCategoryChange}>
                 <SelectTrigger
                   className="w-full h-12 text-sm font-medium transition-all"
                   style={{ border: "1px solid #E0D5C5", background: "#FBF6EE", color: "#5a4632" }}
