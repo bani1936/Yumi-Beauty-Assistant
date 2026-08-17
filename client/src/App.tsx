@@ -138,17 +138,16 @@ function App() {
     }
   }, [showSplash]);
 
-  // 修正 bfcache（瀏覽器上一頁/下一頁快取）造成畫面沒跟著網址更新的問題：
-  // 使用 hash 路由的 SPA 從 bfcache 還原時，網址列會變、但頁面內容是被凍結的舊畫面，
-  // 偵測到這種還原狀況就強制重新整理一次，確保畫面永遠跟網址同步。
+  // 修正瀏覽器「上一頁/下一頁」按鈕沒有正確刷新畫面的問題：
+  // 這個網站是純前端單頁應用（用 hash 路由切換畫面，網址從沒真正離開過），
+  // 按上一頁/下一頁時瀏覽器一定會觸發 popstate 事件（跟一般網頁重新整理無關），
+  // 直接在這個事件發生時強制重新整理，確保畫面內容一定跟網址列同步，不依賴框架內部的狀態同步機制。
   useEffect(() => {
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) {
-        window.location.reload();
-      }
+    const handlePopState = () => {
+      window.location.reload();
     };
-    window.addEventListener('pageshow', handlePageShow);
-    return () => window.removeEventListener('pageshow', handlePageShow);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   return (
