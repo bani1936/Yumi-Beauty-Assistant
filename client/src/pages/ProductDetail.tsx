@@ -714,12 +714,12 @@ export default function ProductDetail() {
                               </div>
                             )}
                           </div>
-                          {!isLast && !isRowBreak && (
+                          {!isLast && (
                             <div className="flex items-center text-sm" style={{ color: '#D8CFC2' }}>
                               →
                             </div>
                           )}
-                          {isRowBreak && <div className="basis-full h-0" />}
+                          {isRowBreak && <div className="hidden md:block basis-full h-0" />}
                         </React.Fragment>
                       );
                     })}
