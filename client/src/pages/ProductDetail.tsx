@@ -822,12 +822,12 @@ export default function ProductDetail() {
                     {product.experience.map((item, idx) => {
                       const Icon = item.icon === 'flower' ? Flower2 : Feather;
                       return (
-                        <div key={idx} className="flex-1 min-w-[140px] text-center">
+                        <div key={idx} className="flex-1 min-w-[140px] max-w-[280px] mx-auto text-center">
                           <Icon className="w-5 h-5 mx-auto mb-2" style={{ color: '#8B6F47' }} />
                           <div className="text-lg font-semibold mb-1" style={{ color: '#5a4632' }}>
                             {item.title}
                           </div>
-                          <div className="text-base leading-relaxed md:whitespace-nowrap" style={{ color: '#6B6B6B' }}>
+                          <div className="text-base leading-relaxed" style={{ color: '#6B6B6B' }}>
                             {item.description}
                           </div>
                         </div>
